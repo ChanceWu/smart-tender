@@ -95,6 +95,44 @@ export default defineConfig({
       ],
     },
     {
+      path: '/tender-center',
+      routes: [
+        {
+          path: '/tender-center',
+          redirect: '/tender-center/list',
+        },
+        {
+          name: '我的标书',
+          path: '/tender-center/list',
+          component: './tender-center/list',
+        },
+        {
+          name: '制作标书',
+          path: '/tender-center/make',
+          component: './tender-center/make',
+        },
+      ],
+    },
+    {
+      path: '/manage-center',
+      routes: [
+        {
+          path: '/manage-center',
+          redirect: '/manage-center/list',
+        },
+        {
+          name: '标书管理',
+          path: '/manage-center/tender',
+          component: './manage-center/tender',
+        },
+        {
+          name: '审核管理',
+          path: '/manage-center/audit',
+          component: './manage-center/audit',
+        },
+      ],
+    },
+    {
       path: '/form',
       icon: 'form',
       name: 'form',
