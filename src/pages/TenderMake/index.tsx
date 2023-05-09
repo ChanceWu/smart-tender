@@ -1,7 +1,15 @@
 import React from 'react';
+import DirTree from './components/DirTree';
+import MaterialList from './components/MaterialList';
+import styles from './index.less';
 
-function TenderMake() {
-  return <div>TenderMake</div>;
-}
+const TenderMake = () => {
+  return (
+    <div className={styles.container}>
+      <DirTree />
+      <MaterialList />
+    </div>
+  );
+};
 
 export default TenderMake;
