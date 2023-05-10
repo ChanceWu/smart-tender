@@ -1,5 +1,5 @@
 import React, { RefObject, useEffect, useMemo, useRef } from 'react';
-import { Form, Input, Modal, Spin, Tree } from 'antd';
+import { Button, Form, Input, Modal, Spin, Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import DirTreeTitle from '../DirTreeTitle';
 import styles from './index.less';
@@ -9,14 +9,17 @@ import { useMount, useRequest } from 'ahooks';
 import { TenderApi } from '@/services';
 import { getTreeFromList } from '@/utils/tender';
 import useModalForm from '@/hooks/useModalForm';
+import DirNameModal from '../DirNameModal';
+import PreFormat from '../PreFormat';
 
 type TenderDirTreeNode = TenderType.TenderDirTreeNode[];
 
 const DirTree = () => {
-  const { dirTree, dirList, setDirList, updateDir, delDir } = useModel('useTenderModel');
+  const { dirTree, dirList, setDirList, updateDir, delDir, setPreFormat } =
+    useModel('useTenderModel');
   const {
     openModal,
-    modalProps,
+    modalProps: dirNameModalProps,
     form: dirForm,
     formData: dirFormData,
   } = useModalForm<TenderType.TenderDir>({
@@ -30,6 +33,15 @@ const DirTree = () => {
           { name: d.name, id: Date.now().toString(), isMaterial: false, parentId: d.parentId },
         ]);
       }
+    },
+  });
+  const {
+    modalProps: preFormatModalProps,
+    openModal: openPreFormatModal,
+    form: preFormatForm,
+  } = useModalForm<TenderType.PreFormat>({
+    onOk: (d) => {
+      setPreFormat(d);
     },
   });
 
@@ -73,9 +85,15 @@ const DirTree = () => {
     return dp(dirTree);
   }, [dirTree, openModal]);
   return (
-    <div>
+    <div className={styles.dirTreeContainer}>
       <Spin spinning={loading}>
-        <div>sss</div>
+        <div className={styles.header}>
+          <div>投标书内容</div>
+          <div>
+            <Button onClick={() => openPreFormatModal('预设格式')}>预设格式</Button>
+            <Button type="primary">生成标书</Button>
+          </div>
+        </div>
         <div>
           {treeData.length && (
             <Tree
@@ -88,22 +106,9 @@ const DirTree = () => {
           )}
         </div>
       </Spin>
-      <Modal {...modalProps}>
-        <Form form={dirForm}>
-          <Form.Item name="id" hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item name="parentId" hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="名称"
-            name="name"
-            rules={[{ required: true, message: '目录名称不能为空' }]}
-          >
-            <Input placeholder="请输入目录名称" maxLength={15} />
-          </Form.Item>
-        </Form>
+      <DirNameModal modalProps={dirNameModalProps} form={dirForm} />
+      <Modal {...preFormatModalProps} width={'80vw'}>
+        <PreFormat form={preFormatForm} />
       </Modal>
     </div>
   );

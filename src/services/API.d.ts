@@ -16,4 +16,22 @@ declare namespace TenderType {
     parentId: string;
     children: TenderDirTreeNode[];
   }
+  export interface MarginSet {
+    left: string;
+    right: string;
+    top: string;
+    bottom: string;
+  }
+  export interface TitleSet {
+    id: string;
+    level: string;
+    fontFamily: string;
+    fontSize: string;
+    lineHeight: string;
+    align: string;
+  }
+  export interface PreFormat {
+    margin: MarginSet;
+    title: TitleSet[];
+  }
 }

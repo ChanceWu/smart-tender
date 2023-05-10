@@ -5,6 +5,8 @@ export default function useTenderModel() {
   const [dirList, setDirList] = useState<TenderType.TenderDir[]>([]);
   const [dirTree, setDirTree] = useState<TenderType.TenderDirTreeNode[]>([]);
 
+  const [preFormat, setPreFormat] = useState<TenderType.PreFormat>();
+
   useEffect(() => {
     setDirTree(getTreeFromList(dirList));
   }, [dirList]);
@@ -45,5 +47,7 @@ export default function useTenderModel() {
     updateDir,
     dirTree,
     setDirTree,
+    preFormat,
+    setPreFormat,
   };
 }
