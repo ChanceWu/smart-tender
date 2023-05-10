@@ -1,13 +1,5 @@
-interface TreeNode {
-  name: string;
-  id: string;
-  isMaterial: boolean;
-  parentId: string;
-  file?: string;
-  children?: TreeNode[];
-}
-
-export const getTreeFromList = (nodes: TreeNode[]) => {
+type TreeNode = TenderType.TenderDirTreeNode;
+export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
   const map: { [id: string]: TreeNode } = {};
   const roots: TreeNode[] = [];
 

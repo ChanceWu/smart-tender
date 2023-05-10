@@ -13,6 +13,7 @@ declare namespace TenderType {
     name: string;
     isMaterial: boolean;
     file?: string;
+    parentId: string;
     children: TenderDirTreeNode[];
   }
 }

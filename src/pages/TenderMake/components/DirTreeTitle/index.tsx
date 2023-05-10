@@ -3,22 +3,31 @@ import React from 'react';
 import styles from './index.less';
 
 interface IProps {
-  title: string;
-  isMaterial: boolean;
+  data: TenderType.TenderDirTreeNode;
   isRoot: boolean;
-  onAdd: () => void;
+  openModal: (modalTitle?: string, data?: TenderType.TenderDir, editing?: boolean) => void;
+  onDel: () => void;
 }
 
-const DirTreeTitle: React.FC<IProps> = ({ title, isMaterial, isRoot, onAdd }) => {
+const DirTreeTitle: React.FC<IProps> = ({ data, isRoot, openModal, onDel }) => {
   return (
     <span className={styles.dirTreeTitle}>
-      <span className={styles.title} title={title}>
-        {title}
+      <span className={styles.title} title={data.name}>
+        {data.name}
       </span>
       <span className={styles.btn}>
-        {!isMaterial && <PlusCircleOutlined title="新增" onClick={onAdd} />}
-        {!isRoot && !isMaterial && <EditOutlined title="编辑" />}
-        {!isRoot && <MinusCircleOutlined title="删除" />}
+        {!data.isMaterial && (
+          <PlusCircleOutlined
+            title="新增"
+            onClick={() =>
+              openModal('新建子目录', { id: '', name: '', isMaterial: false, parentId: data.id })
+            }
+          />
+        )}
+        {!isRoot && !data.isMaterial && (
+          <EditOutlined title="编辑" onClick={() => openModal('编辑目录', data, true)} />
+        )}
+        {!isRoot && <MinusCircleOutlined title="删除" onClick={onDel} />}
       </span>
     </span>
   );
