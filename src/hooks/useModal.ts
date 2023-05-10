@@ -1,37 +1,46 @@
-import type { ModalProps } from 'antd';
+import { message } from 'antd';
 import { useState } from 'react';
 
-interface UseModalResult {
-  openModal: (name: string) => void;
-  modalProps: ModalProps;
+interface Options {
+  onOk?: () => Promise<void> | void;
 }
-
-function useModal(): UseModalResult {
-  const [visible, setVisible] = useState(false);
+export default (options: Options) => {
+  const [visible, setVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
 
-  const openModal = (name: string) => {
+  function openModal(modalTitle?: string) {
     setVisible(true);
-    setTitle(name);
-  };
-
-  const onOk = () => {
-    setVisible(true);
-  };
-
-  const closeModal = () => {
+    if (modalTitle) setTitle(modalTitle);
+  }
+  function closeModal() {
+    setTitle('');
     setVisible(false);
-  };
+  }
+  async function onOk() {
+    if (!options.onOk) return;
+    setLoading(true);
+    try {
+      await options.onOk();
+      closeModal();
+    } catch (error: any) {
+      if (error.data === 'string') {
+        message.error(error.data);
+      }
+    }
+    setLoading(false);
+  }
 
   return {
     modalProps: {
-      visible,
       title,
-      onOk,
+      visible,
+      loading,
       onCancel: closeModal,
+      onOk,
+      maskClosable: false,
     },
     openModal,
+    closeModal,
   };
-}
-
-export default useModal;
+};

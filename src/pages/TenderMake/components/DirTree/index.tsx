@@ -1,8 +1,13 @@
-import React, { useMemo } from 'react';
-import { Tree } from 'antd';
+import React, { RefObject, useMemo, useRef } from 'react';
+import { Form, Input, Modal, Spin, Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import DirTreeTitle from '../DirTreeTitle';
 import styles from './index.less';
+import useModal from '@/hooks/useModal';
+import { useModel } from 'umi';
+import { useMount, useRequest } from 'ahooks';
+import { TenderApi } from '@/services';
+import { getTreeFromList } from '@/utils/tender';
 
 interface DataType {
   id: string;
@@ -42,51 +47,74 @@ const data: DataType[] = [
 ];
 
 const DirTree = () => {
-  // const treeData: DataNode[] = [
-  //   {
-  //     title: 'parent 0',
-  //     key: '0-0',
-  //     children: [
-  //       { title: 'leaf 0-0', key: '0-0-0', isLeaf: true },
-  //       { title: 'leaf 0-1', key: '0-0-1', isLeaf: true },
-  //     ],
-  //   },
-  //   {
-  //     title: 'parent 1',
-  //     key: '0-1',
-  //     children: [
-  //       { title: 'leaf 1-0', key: '0-1-0', isLeaf: true },
-  //       { title: 'leaf 1-1', key: '0-1-1', isLeaf: true },
-  //     ],
-  //   },
-  // ];
+  const { dirTree, setDirList, setDirTree } = useModel('useTenderModel');
+  const treeRef = useRef(null);
+  const [form] = Form.useForm();
+  const { openModal, modalProps } = useModal({});
+
+  const { loading, run } = useRequest(() => TenderApi.queryTenderDirList(), {
+    onSuccess: ({ resultList }) => {
+      const list = [
+        { name: '我的标书', id: '0', isMaterial: false, parentId: '-1' },
+        ...resultList,
+      ];
+      setDirList(list);
+      setDirTree(getTreeFromList(list));
+      // if (treeRef.current) treeRef.current?.onExpandAll?.(true);
+    },
+  });
+  useMount(() => {
+    run();
+  });
+
   const treeData: DataNode[] = useMemo(() => {
     const dp = (d: TreeDataType): DataNode[] => {
       return d.map((v) => {
         let child: DataNode['children'] = [];
         if (v.children.length) child = dp(v.children);
         return {
-          title: <DirTreeTitle title={v.name} isMaterial={v.isMaterial} isRoot={v.id === 'root'} />,
+          title: (
+            <DirTreeTitle
+              title={v.name}
+              isMaterial={v.isMaterial}
+              isRoot={v.id === '-1'}
+              onAdd={() => openModal('新建子目录')}
+            />
+          ),
           key: v.id,
           isLeaf: !v.children.length,
           children: child,
         };
       });
     };
-    return dp(data);
-  }, []);
+    return dp(dirTree);
+  }, [dirTree, openModal]);
   return (
     <div>
-      <div>sss</div>
-      <div>
-        <Tree
-          className={styles.dirTree}
-          multiple
-          defaultExpandAll
-          treeData={treeData}
-          selectable={false}
-        />
-      </div>
+      <Spin spinning={loading}>
+        <div>sss</div>
+        <div>
+          <Tree
+            ref={treeRef}
+            className={styles.dirTree}
+            multiple
+            defaultExpandAll
+            treeData={treeData}
+            selectable={false}
+          />
+        </div>
+      </Spin>
+      <Modal {...modalProps}>
+        <Form form={form}>
+          <Form.Item
+            label="名称"
+            name="name"
+            rules={[{ required: true, message: '目录名称不能为空' }]}
+          >
+            <Input placeholder="请输入目录名称" maxLength={15} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
