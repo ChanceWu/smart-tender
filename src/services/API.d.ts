@@ -34,4 +34,21 @@ declare namespace TenderType {
     margin: MarginSet;
     title: TitleSet[];
   }
+  export interface KMSDirList {
+    name: string;
+    id: string;
+    parentId: string;
+    children: KMSDirList[];
+  }
+  export interface KMSList {
+    name: string;
+    type: string;
+    status: 'public' | 'private';
+    id: string;
+    path: string;
+  }
+  export interface KMSListQueryParams {
+    type?: string;
+    keyword?: string;
+  }
 }

@@ -60,7 +60,7 @@ const DirTree = () => {
 
   useEffect(() => {
     if (dirFormData) dirForm.setFieldsValue(dirFormData);
-  }, [dirFormData]);
+  }, [dirForm, dirFormData]);
 
   const treeData: DataNode[] = useMemo(() => {
     const dp = (d: TenderDirTreeNode): DataNode[] => {
@@ -83,7 +83,7 @@ const DirTree = () => {
       });
     };
     return dp(dirTree);
-  }, [dirTree, openModal]);
+  }, [delDir, dirTree, openModal]);
   return (
     <div className={styles.dirTreeContainer}>
       <Spin spinning={loading}>

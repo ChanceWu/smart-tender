@@ -1,3 +1,4 @@
+import { TenderApi } from '@/services';
 import { getTreeFromList } from '@/utils/tender';
 import { useState, useCallback, useEffect } from 'react';
 
@@ -6,6 +7,19 @@ export default function useTenderModel() {
   const [dirTree, setDirTree] = useState<TenderType.TenderDirTreeNode[]>([]);
 
   const [preFormat, setPreFormat] = useState<TenderType.PreFormat>();
+
+  const [kmsDirList, setKMSDirList] = useState<TenderType.KMSDirList[]>([]);
+  const [kmsList, setKMSList] = useState<TenderType.KMSList[]>([]);
+
+  const queryTenderKMSDirList = useCallback(async () => {
+    const { resultList } = await TenderApi.queryTenderKMSDirList();
+    setKMSDirList(resultList);
+  }, []);
+
+  const queryTenderKMSList = useCallback(async (p: TenderType.KMSListQueryParams) => {
+    const { resultList } = await TenderApi.queryTenderKMSList(p);
+    setKMSList(resultList);
+  }, []);
 
   useEffect(() => {
     setDirTree(getTreeFromList(dirList));
@@ -30,16 +44,6 @@ export default function useTenderModel() {
     [dirList],
   );
 
-  const signin = useCallback((account, password) => {
-    // signin implementation
-    // setUser(user from signin API)
-  }, []);
-
-  const signout = useCallback(() => {
-    // signout implementation
-    // setUser(null)
-  }, []);
-
   return {
     dirList,
     setDirList,
@@ -49,5 +53,9 @@ export default function useTenderModel() {
     setDirTree,
     preFormat,
     setPreFormat,
+    kmsDirList,
+    queryTenderKMSDirList,
+    kmsList,
+    queryTenderKMSList,
   };
 }
