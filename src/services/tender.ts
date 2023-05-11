@@ -3,10 +3,21 @@ import type { PaginationResult } from './types';
 
 // 标书制作 目录列表
 export async function queryTenderDirList() {
-  return request<PaginationResult<TenderType.TenderDir>>(`/api/mock/tender/dirList`, {
+  return request<PaginationResult<TenderType.TenderDir>>(`/usercenter/inter-api/rbac/v1/userPermission/findUserOperate`, {
     method: 'get',
+    headers: {
+      Authorization: 'Bearer 1486f884-a2ea-4a87-aec1-eb5018bee0b8'
+    },
+    params: {
+      menuInfoCode: 'ShiftLog_5.0.0.00_shiftLogInfo_handoverOperation'
+    }
   });
 }
+// export async function queryTenderDirList() {
+//   return request<PaginationResult<TenderType.TenderDir>>(`/api/mock/tender/dirList`, {
+//     method: 'get',
+//   });
+// }
 
 // 标书制作 KMS目录列表
 export async function queryTenderKMSDirList() {

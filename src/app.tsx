@@ -28,9 +28,17 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser();
+      window.addEventListener('message',function(e){
+				 console.log(99999999999,e)
+		 })
+      // const msg = await queryCurrentUser();
       
-      return msg.data;
+      // return msg.data;
+      return {
+        status: 'ok',
+        type: 'account',
+        currentAuthority: 'admin',
+      } as API.CurrentUser
     } catch (error) {
       history.push(loginPath);
     }

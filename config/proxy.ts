@@ -9,6 +9,11 @@
 export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
+    '/usercenter/': {
+      target: 'http://10.30.5.248:8080',
+      changeOrigin: true, // 允许跨域
+      pathRewrite: { '/usercenter/': '/' },
+    },
     '/api/': {
       // 要代理的地址
       target: 'https://preview.pro.ant.design',
