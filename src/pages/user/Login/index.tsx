@@ -7,7 +7,7 @@ import {
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProFormCaptcha, ProFormCheckbox, ProFormText, LoginForm } from '@ant-design/pro-form';
 import { useIntl, history, FormattedMessage, SelectLang, useModel } from 'umi';
 import Footer from '@/components/Footer';
@@ -15,6 +15,7 @@ import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 
 import styles from './index.less';
+import { getAuthorize } from '@/services/tender';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -35,6 +36,18 @@ const Login: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const intl = useIntl();
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const ticket = urlParams.get('ticket');
+    console.log('ticket', ticket)
+    ticket && sessionStorage.setItem('supconTicket', ticket);
+    // document.cookie['supconTicket'] = ticket; // 将 ticket 保存在本地
+    ticket && getAuthorize(ticket).then((res) => {
+      console.log(res);
+      window.location.href = '/'; // 重定向到首页
+    })
+  }, []);
 
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();

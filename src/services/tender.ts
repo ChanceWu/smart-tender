@@ -1,6 +1,16 @@
 import { request } from 'umi';
 import type { PaginationResult } from './types';
 
+export async function getAuthorize(ticket: string) {
+  return request<any>(`/gate/inter-api/auth/v1/third/authorize`, {
+    method: 'get',
+    params: {
+      ticket
+    },
+    // withCredentials: true
+  });
+}
+
 // 标书制作 目录列表
 // export async function queryTenderDirList() {
 //   return request<PaginationResult<TenderType.TenderDir>>(

@@ -400,6 +400,12 @@ export default defineConfig({
       schemaPath: 'https://gw.alipayobjects.com/os/antfincdn/CA1dOm%2631B/openapi.json',
       projectName: 'swagger',
     },
+    {
+      requestLibPath: "import { request } from 'umi'",
+      schemaPath: 'http://10.10.168.177:8080/v2/api-docs',
+      projectName: 'smart-tender-api',
+      mock: false,
+    },
   ],
   nodeModulesTransform: {
     type: 'none',

@@ -14,6 +14,16 @@ export default {
       changeOrigin: true, // 允许跨域
       pathRewrite: { '/usercenter/': '/' },
     },
+    '/tender/': {
+      target: 'http://10.10.168.177:8080',
+      changeOrigin: true, // 允许跨域
+      pathRewrite: { '^/': '/' },
+    },
+    '/gate/': {
+      target: 'http://portal.supcon.com',
+      changeOrigin: true, // 允许跨域
+      pathRewrite: { '/gate/': '/' },
+    },
     '/api/': {
       // 要代理的地址
       target: 'https://preview.pro.ant.design',

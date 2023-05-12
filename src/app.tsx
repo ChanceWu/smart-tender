@@ -1,7 +1,7 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import type { RunTimeLayoutConfig } from 'umi';
+import { request, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
@@ -32,16 +32,24 @@ export async function getInitialState(): Promise<{
       window.addEventListener('message', function (e) {
         console.log(99999999999, e);
       });
-      // const msg = await queryCurrentUser();
+      const msg = await queryCurrentUser();
 
-      // return msg.data;
+      return msg.data;
       return {
         status: 'ok',
         type: 'account',
         currentAuthority: 'admin',
       } as API.CurrentUser;
     } catch (error) {
-      history.push(loginPath);
+      location.href = 'https://portal.supcon.com/cas-web/login?service=http://10.30.60.130:8000/user/login'
+      // const res = await request<any>('/login', {
+      //   method: 'get',
+      //   params: {
+      //     service: 'http://10.30.60.130:8000/user/login'
+      //   }
+      // });
+      // console.log(res)
+      // history.push(loginPath);
     }
     return undefined;
   };

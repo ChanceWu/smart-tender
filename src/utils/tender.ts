@@ -20,3 +20,12 @@ export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
 
   return roots;
 };
+
+export const formatTreeData = (data: API.TreeNode_[]): TenderType.KMSDirList[] => {
+  return data.map(v => {
+    return {
+      ...v.t,
+      children: v.children?.length ? formatTreeData(v.children) : [],
+    }
+  })
+}

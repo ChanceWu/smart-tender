@@ -35,10 +35,10 @@ declare namespace TenderType {
     title: TitleSet[];
   }
   export interface KMSDirList {
-    name: string;
-    id: string;
-    parentId: string;
-    children: KMSDirList[];
+    name?: string;
+    id?: number;
+    parentId?: number;
+    children?: KMSDirList[];
   }
   export interface KMSList {
     name: string;
