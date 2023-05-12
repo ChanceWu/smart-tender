@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
 import { BookOutlined, LinkOutlined } from '@ant-design/icons';
 import defaultSettings from '../config/defaultSettings';
+import Header from './components/layout/Header';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -62,12 +63,13 @@ export async function getInitialState(): Promise<{
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
+    headerRender: (props) => <Header {...props} />,
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    waterMarkProps: {
-      content: initialState?.currentUser?.name,
-    },
-    footerRender: () => <Footer />,
+    // waterMarkProps: {
+    //   content: initialState?.currentUser?.name,
+    // },
+    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login

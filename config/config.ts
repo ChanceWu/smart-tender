@@ -5,6 +5,7 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 
 const { REACT_APP_ENV } = process.env;
+const hideInMenu = true;
 
 export default defineConfig({
   hash: true,
@@ -97,6 +98,9 @@ export default defineConfig({
     {
       path: '/tender-center',
       name: '标书制作中心',
+      layout: 'top',
+      flatMenu: true,
+      header: '标书制作中心',
       routes: [
         {
           path: '/tender-center',
@@ -117,6 +121,7 @@ export default defineConfig({
     {
       path: '/manage-center',
       name: '管理中心',
+      header: '数据采集中心',
       routes: [
         {
           path: '/manage-center',
@@ -138,6 +143,7 @@ export default defineConfig({
       path: '/form',
       icon: 'form',
       name: 'form',
+      hideInMenu,
       routes: [
         {
           path: '/form',
@@ -167,6 +173,7 @@ export default defineConfig({
       path: '/list',
       icon: 'table',
       name: 'list',
+      hideInMenu,
       routes: [
         {
           path: '/list/search',
@@ -225,6 +232,7 @@ export default defineConfig({
       path: '/profile',
       name: 'profile',
       icon: 'profile',
+      hideInMenu,
       routes: [
         {
           path: '/profile',
@@ -248,6 +256,7 @@ export default defineConfig({
       name: 'result',
       icon: 'CheckCircleOutlined',
       path: '/result',
+      hideInMenu,
       routes: [
         {
           path: '/result',
@@ -271,6 +280,7 @@ export default defineConfig({
       name: 'exception',
       icon: 'warning',
       path: '/exception',
+      hideInMenu,
       routes: [
         {
           path: '/exception',
@@ -300,6 +310,7 @@ export default defineConfig({
       name: 'account',
       icon: 'user',
       path: '/account',
+      hideInMenu,
       routes: [
         {
           path: '/account',
@@ -323,6 +334,7 @@ export default defineConfig({
       name: 'editor',
       icon: 'highlight',
       path: '/editor',
+      hideInMenu,
       routes: [
         {
           path: '/editor',

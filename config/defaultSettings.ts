@@ -4,18 +4,18 @@ const Settings: LayoutSettings & {
   pwa?: boolean;
   logo?: string;
 } = {
-  navTheme: 'dark',
+  navTheme: 'light',
   // 拂晓蓝
-  primaryColor: '#1890ff',
+  primaryColor: '#0f71e2',
   layout: 'side',
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '智能标书',
+  title: '中控·SUPCON',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-  iconfontUrl: '',
+  // logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  // iconfontUrlW: '',
 };
 
 export default Settings;
