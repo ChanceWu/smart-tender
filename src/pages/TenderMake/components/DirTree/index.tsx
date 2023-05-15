@@ -15,7 +15,7 @@ import PreFormat from '../PreFormat';
 type TenderDirTreeNode = TenderType.TenderDirTreeNode[];
 
 const DirTree = () => {
-  const { dirTree, dirList, setDirList, updateDir, delDir, setPreFormat } =
+  const { dirTree, dirList, setDirList, updateDir, delDir, setPreFormat, createTender } =
     useModel('useTenderModel');
   const {
     openModal,
@@ -91,7 +91,9 @@ const DirTree = () => {
           <div>投标书内容</div>
           <div>
             <Button onClick={() => openPreFormatModal('预设格式')}>预设格式</Button>
-            <Button type="primary">生成标书</Button>
+            <Button type="primary" onClick={createTender}>
+              生成标书
+            </Button>
           </div>
         </div>
         <div>

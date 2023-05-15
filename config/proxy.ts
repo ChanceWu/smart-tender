@@ -9,6 +9,11 @@
 export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
+    '/inner/': {
+      target: 'http://localhost:3000',
+      changeOrigin: true, // 允许跨域
+      pathRewrite: { '/inner/': '/' },
+    },
     '/usercenter/': {
       target: 'http://10.30.5.248:8080',
       changeOrigin: true, // 允许跨域

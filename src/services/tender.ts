@@ -2,10 +2,10 @@ import { request } from 'umi';
 import type { PaginationResult } from './types';
 
 export async function getAuthorize(ticket: string) {
-  return request<any>(`/gate/inter-api/auth/v1/third/authorize`, {
+  return request<any>(`/inner/authorize`, {
     method: 'get',
     params: {
-      ticket
+      ticket,
     },
     // withCredentials: true
   });
@@ -44,5 +44,12 @@ export async function queryTenderKMSList(params: TenderType.KMSListQueryParams) 
   return request<PaginationResult<TenderType.KMSList>>(`/api/mock/tender/kmsList`, {
     method: 'get',
     params,
+  });
+}
+
+// 标书制作 生成标书
+export async function createTender() {
+  return request<PaginationResult<TenderType.TenderDir>>(`/inner/docx-merger`, {
+    method: 'post',
   });
 }

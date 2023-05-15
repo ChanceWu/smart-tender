@@ -40,13 +40,15 @@ const Login: React.FC = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const ticket = urlParams.get('ticket');
-    console.log('ticket', ticket)
-    ticket && sessionStorage.setItem('supconTicket', ticket);
-    // document.cookie['supconTicket'] = ticket; // 将 ticket 保存在本地
-    ticket && getAuthorize(ticket).then((res) => {
-      console.log(res);
-      window.location.href = '/'; // 重定向到首页
-    })
+    console.log('ticket', ticket);
+    if (ticket) {
+      sessionStorage.setItem('supconTicket', ticket);
+      // document.cookie['supconTicket'] = ticket; // 将 ticket 保存在本地
+      getAuthorize(ticket).then((res) => {
+        console.log(res);
+        window.location.href = '/'; // 重定向到首页
+      });
+    }
   }, []);
 
   const fetchUserInfo = async () => {
