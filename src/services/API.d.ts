@@ -1,5 +1,5 @@
 // 公共类型
-declare namespace API {}
+declare namespace API { }
 declare namespace TenderType {
   export interface TenderDir {
     id: string;
@@ -54,10 +54,24 @@ declare namespace TenderType {
 }
 
 declare namespace MaterialType {
-  export interface MaterialTree {
-    name: string;
-    id?: string;
-    parentId?: string;
-    children: MaterialTree[];
+  export interface CategoryTree {
+    name?: string;
+    id?: number;
+    parentId?: number;
+    level?: number;
+    children?: CategoryTree[];
+  }
+
+  export interface MaterialInfo {
+    /** 标书素材分类id */
+    categoryId?: number;
+    /** 标书素材分类名称 */
+    categoryName?: string;
+    /** 标书素材文件id */
+    fileIdList?: number[];
+    /** 标书素材名称 */
+    name?: string;
+    /** 文件类型 WORD:文档 PIC：图片 */
+    typeCode?: string;
   }
 }

@@ -3,7 +3,7 @@ import React from 'react';
 
 interface IProps {
   modalProps: ModalProps;
-  form: FormInstance<MaterialType.MaterialTree>;
+  form: FormInstance<MaterialType.CategoryTree>;
 }
 
 const DirNameModal: React.FC<IProps> = ({ modalProps, form }) => {

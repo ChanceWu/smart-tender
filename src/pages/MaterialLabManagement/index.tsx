@@ -2,38 +2,40 @@ import useModalForm from '@/hooks/useModalForm';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
 import { DataNode } from 'antd/lib/tree';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useModel } from 'umi';
 import DirNameModal from './components/DirNameModal';
 import DirTreeTitle from './components/DirTreeTitle';
 import styles from './index.less';
 
 function MaterialLabManagement() {
-  const { materialTree, queryMaterialTree } = useModel('useMaterialModel');
+  const { categoryTree, queryCategoryTree, delCategory, addCategory, editCategory } =
+    useModel('useMaterialModel');
   const {
     openModal,
     modalProps: dirNameModalProps,
-    form: dirForm,
-    formData: dirFormData,
-  } = useModalForm<MaterialType.MaterialTree>({
+    form: categoryForm,
+    formData: categoryFormData,
+  } = useModalForm<MaterialType.CategoryTree>({
     onOk: (d) => {
       console.log({ ...d });
-      // if (d.id) {
-      //   updateDir(d);
-      // } else {
-      //   setDirList([
-      //     ...dirList,
-      //     { name: d.name, id: Date.now().toString(), isMaterial: false, parentId: d.parentId },
-      //   ]);
-      // }
+      if (d.id) {
+        editCategory(d);
+      } else {
+        addCategory(d);
+      }
     },
   });
   useMount(() => {
-    queryMaterialTree();
+    queryCategoryTree();
   });
 
+  useEffect(() => {
+    if (categoryFormData) categoryForm.setFieldsValue(categoryFormData);
+  }, [categoryForm, categoryFormData]);
+
   const treeData: DataNode[] = useMemo(() => {
-    const dp = (d: MaterialType.MaterialTree[]): DataNode[] => {
+    const dp = (d: MaterialType.CategoryTree[]): DataNode[] => {
       return d.map((v) => {
         let child: DataNode['children'] = [];
         if (v.children?.length) child = dp(v.children);
@@ -41,9 +43,9 @@ function MaterialLabManagement() {
           title: (
             <DirTreeTitle
               data={v}
-              isRoot={v.parentId === '0'}
+              isRoot={v.parentId === 0}
               openModal={openModal}
-              // onDel={() => delDir(v.id)}
+              onDel={() => delCategory(v.id!)}
             />
           ),
           key: v.id!,
@@ -52,12 +54,12 @@ function MaterialLabManagement() {
         };
       });
     };
-    return dp(materialTree);
-  }, [materialTree, openModal]);
+    return dp(categoryTree);
+  }, [categoryTree, openModal]);
 
   return (
-    <div>
-      <div>素材库名称</div>
+    <div className={styles.container}>
+      <div className={styles.header}>素材库名称</div>
       <div>
         {treeData.length && (
           <Tree
@@ -69,7 +71,7 @@ function MaterialLabManagement() {
           />
         )}
       </div>
-      <DirNameModal modalProps={dirNameModalProps} form={dirForm} />
+      <DirNameModal modalProps={dirNameModalProps} form={categoryForm} />
     </div>
   );
 }

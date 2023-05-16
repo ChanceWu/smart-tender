@@ -1,51 +1,95 @@
 import { MaterialApi, TenderApi } from '@/services';
-import { formatTreeData, getTreeFromList } from '@/utils/tender';
+import { uploadUsingPOST } from '@/services/smart-tender-api/fileController';
+import { allUsingGET, createUsingPOST1, deleteUsingPOST1, listByPidUsingPOST, updateUsingPOST1 } from '@/services/smart-tender-api/tenderSourceCategoryController';
+import { pageUsingPOST1 } from '@/services/smart-tender-api/tenderSourceController';
+import { addLevelToTree, formatTreeData, getTreeFromList } from '@/utils/tender';
+import { message } from 'antd';
 import { useState, useCallback, useEffect } from 'react';
 
 export default function useMaterialModel() {
-  const [dirList, setDirList] = useState<TenderType.TenderDir[]>([]);
-  const [dirTree, setDirTree] = useState<TenderType.TenderDirTreeNode[]>([]);
+  const [categoryTree, setCategoryTree] = useState<MaterialType.CategoryTree[]>([]);
 
-  const [materialTree, setMaterialTree] = useState<MaterialType.MaterialTree[]>([]);
+  const [materialList, setMaterialList] = useState<API.Pinyin_7[]>([]);
 
-  const queryMaterialTree = useCallback(async () => {
-    const { resultList } = await MaterialApi.queryMaterialList();
-    // const { data = [] } = await allUsingGET();
-    // const topDirList = formatTreeData(data);
-    setMaterialTree(resultList);
+  const queryCategoryTree = useCallback(async () => {
+    // const { resultList } = await MaterialApi.queryMaterialList();
+    const { data = [] } = await allUsingGET();
+    const categoryTree = formatTreeData(data);
+    setCategoryTree(addLevelToTree(categoryTree));
   }, []);
 
-  useEffect(() => {
-    setDirTree(getTreeFromList(dirList));
-  }, [dirList]);
+  const queryCategoryTreeById = useCallback(async (id: number) => {
+    // const { resultList } = await MaterialApi.queryMaterialList();
+    const { data = [] } = await listByPidUsingPOST({ id });
+    const categoryTree = formatTreeData(data);
+    setCategoryTree(addLevelToTree(categoryTree));
+  }, []);
 
-  const delDir = useCallback(
-    (id: string) => {
-      const newDirList = dirList.filter((v) => v.id !== id);
-      setDirList(newDirList);
-    },
-    [dirList],
-  );
+  const addCategory = useCallback(async (p: API.TenderSourceCategoryCreateReq) => {
+    try {
+      const { code, msg } = await createUsingPOST1(p);
+      if (code === 1) {
+        message.success('修改成功！')
+        queryCategoryTree();
+      } else {
+        message.error(msg)
+      }
+    } catch (error) {
+      message.error(error)
+    }
+  }, []);
 
-  const updateDir = useCallback(
-    (d: TenderType.TenderDir) => {
-      const newDirList = dirList.map((v) => {
-        if (v.id !== d.id) return v;
-        return { ...v, name: d.name };
-      });
-      setDirList(newDirList);
-    },
-    [dirList],
-  );
+  const editCategory = useCallback(async (p: API.Pinyin_6) => {
+    const { code, msg } = await updateUsingPOST1(p);
+    if (code === 1) {
+      message.success('修改成功！')
+      queryCategoryTree();
+    } else {
+      message.error(msg)
+    }
+  }, []);
+
+  const delCategory = useCallback(async (id: number) => {
+    const { code, msg } = await deleteUsingPOST1({ id });
+    if (code === 1) {
+      message.success('删除成功！')
+      queryCategoryTree();
+    } else {
+      message.error(msg)
+    }
+  }, []);
+
+
+  const queryMaterialList = useCallback(async (p: API.Pinyin_2) => {
+    // const { resultList } = await MaterialApi.queryMaterialList();
+    const { data, code, msg } = await pageUsingPOST1(p);
+    if (code === 1) {
+      setMaterialList(data?.data || []);
+    } else {
+      message.error(msg)
+    }
+  }, []);
+
+  const uploadFile = useCallback(async (p: any) => {
+    // const { resultList } = await MaterialApi.queryMaterialList();
+    const { data, code, msg } = await uploadUsingPOST({}, p[0].originFileObj);
+    // if (code === 1) {
+    //   setMaterialList(data?.data || []);
+    // } else {
+    //   message.error(msg)
+    // }
+  }, []);
 
   return {
-    dirList,
-    setDirList,
-    delDir,
-    updateDir,
-    dirTree,
-    setDirTree,
-    materialTree,
-    queryMaterialTree,
+    categoryTree,
+    queryCategoryTree,
+    delCategory,
+    addCategory,
+    editCategory,
+    queryCategoryTreeById,
+
+    materialList,
+    queryMaterialList,
+    uploadFile,
   };
 }

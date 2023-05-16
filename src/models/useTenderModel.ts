@@ -1,6 +1,6 @@
 import { TenderApi } from '@/services';
+import { allUsingGET } from '@/services/smart-tender-api/tenderSourceCategoryController';
 import { formatTreeData, getTreeFromList } from '@/utils/tender';
-import { allUsingGET } from '@/services/smart-tender-api/tenderCategoryController';
 import { useState, useCallback, useEffect } from 'react';
 
 export default function useTenderModel() {

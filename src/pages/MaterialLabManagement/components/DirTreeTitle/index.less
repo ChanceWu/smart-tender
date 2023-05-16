@@ -13,9 +13,14 @@
   .btn {
     display: inline-flex;
     align-items: center;
-    justify-content: space-around;
-    width: 200px;
-    // visibility: hidden;
+    justify-content: right;
+    width: 220px;
+    & > a {
+      border-right: 1px solid #ccc;
+    }
+    & > a:last-child {
+      border-right: none;
+    }
   }
   // &:hover .btn {
   //   visibility: visible;

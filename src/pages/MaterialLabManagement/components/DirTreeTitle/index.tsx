@@ -9,10 +9,10 @@ import React from 'react';
 import styles from './index.less';
 
 interface IProps {
-  data: MaterialType.MaterialTree;
+  data: MaterialType.CategoryTree;
   isRoot: boolean;
-  openModal: (modalTitle?: string, data?: MaterialType.MaterialTree, editing?: boolean) => void;
-  // onDel: () => void;
+  openModal: (modalTitle?: string, data?: MaterialType.CategoryTree, editing?: boolean) => void;
+  onDel: () => void;
 }
 
 const DirTreeTitle: React.FC<IProps> = ({ data, isRoot, openModal, onDel }) => {
@@ -22,18 +22,19 @@ const DirTreeTitle: React.FC<IProps> = ({ data, isRoot, openModal, onDel }) => {
         {data.name}
       </span>
       <span className={styles.btn}>
-        {!data.children.length && (
+        {(!data.level || data.level < 2) && (
           <Button
             type="link"
-            onClick={() =>
-              openModal('新建子分类', { id: '', name: '', parentId: data.id, children: [] })
-            }
+            onClick={() => {
+              console.log('first', data);
+              openModal('新增子分类', { name: '', parentId: data.id });
+            }}
           >
             新增子分类
           </Button>
         )}
         {!isRoot && (
-          <Button type="link" onClick={() => openModal('编辑类', data, true)}>
+          <Button type="link" onClick={() => openModal('编辑分类', data, true)}>
             修改
           </Button>
         )}

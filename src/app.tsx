@@ -1,7 +1,7 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
 import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { request, RunTimeLayoutConfig } from 'umi';
+import { RequestConfig, RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
@@ -126,4 +126,26 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     ...initialState?.settings,
   };
+};
+
+
+export const request: RequestConfig = {
+  errorConfig: {},
+  middlewares: [],
+  requestInterceptors: [(url, options) => {
+    options.headers = {
+      ...options.headers,
+      userName: 'wuqianpeng',
+      staffCode: '0120230934',
+      staffName: 'eee',
+      companyCode: 'tech',
+      companyName: 'eee',
+      userId: 'wuqianpeng',
+    }
+    console.log('intercepter')
+    return {
+      url, options
+    };
+  }],
+  responseInterceptors: [],
 };
