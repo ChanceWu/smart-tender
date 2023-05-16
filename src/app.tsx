@@ -128,24 +128,26 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
   };
 };
 
-
 export const request: RequestConfig = {
   errorConfig: {},
   middlewares: [],
-  requestInterceptors: [(url, options) => {
-    options.headers = {
-      ...options.headers,
-      userName: 'wuqianpeng',
-      staffCode: '0120230934',
-      staffName: 'eee',
-      companyCode: 'tech',
-      companyName: 'eee',
-      userId: 'wuqianpeng',
-    }
-    console.log('intercepter')
-    return {
-      url, options
-    };
-  }],
+  requestInterceptors: [
+    (url, options) => {
+      options.headers = {
+        ...options.headers,
+        userName: 'wuqianpeng',
+        staffCode: '0120230934',
+        staffName: 'eee',
+        companyCode: 'tech',
+        companyName: 'eee',
+        userId: '1',
+      };
+      console.log('intercepter');
+      return {
+        url,
+        options,
+      };
+    },
+  ],
   responseInterceptors: [],
 };
