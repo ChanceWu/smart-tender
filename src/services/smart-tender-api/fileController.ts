@@ -35,7 +35,7 @@ export async function uploadUsingPOST(body: {}, file?: File, options?: { [key: s
     }
   });
 
-  return request<API.BaseResultString_>('/file/upload', {
+  return request<API.BaseResult2>('/file/upload', {
     method: 'POST',
     data: formData,
     requestType: 'form',
