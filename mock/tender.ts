@@ -84,8 +84,46 @@ const getTenderKMSList = (req: Request, res: Response) => {
   });
 };
 
+const getMaterialList = (req: Request, res: Response) => {
+  res.status(200).send({
+    total: 6,
+    page: 1,
+    pageSize: 10,
+    resultList: [
+      {
+        name: '标书模板库',
+        id: '1',
+        parentId: '0',
+        children: [
+          {
+            name: '分类一',
+            id: '11',
+            parentId: '1',
+            children: [
+              { name: '分类1.1', id: '111', parentId: '11', children: [] },
+              { name: '分类1.2', id: '112', parentId: '11', children: [] },
+            ],
+          },
+          { name: '分类二', id: '12', parentId: '1', children: [] },
+        ],
+      },
+      {
+        name: '标书产品库',
+        id: '2',
+        parentId: '0',
+        children: [{ name: '分类一', id: '21', parentId: '2', children: [] }],
+      },
+      { name: '标书商务库', id: '3', parentId: '0', children: [] },
+      { name: '标书封面库', id: '4', parentId: '0', children: [] },
+      { name: '标书工业库', id: '5', parentId: '0', children: [] },
+      { name: '标书制造库', id: '6', parentId: '0', children: [] },
+    ],
+  });
+};
+
 export default {
   'GET /api/mock/tender/dirList': getTenderDirList,
   'GET /api/mock/tender/kmsDirList': getTenderKMSDirList,
   'GET /api/mock/tender/kmsList': getTenderKMSList,
+  'GET /api/mock/material/list': getMaterialList,
 };

@@ -122,20 +122,31 @@ export default defineConfig({
       path: '/manage-center',
       name: '管理中心',
       header: '数据采集中心',
+      flatMenu: true,
       routes: [
         {
           path: '/manage-center',
-          redirect: '/manage-center/list',
+          redirect: '/manage-center/materialLab',
         },
         {
           name: '标书管理',
           path: '/manage-center/tender',
           component: './TenderManagement',
         },
+        // {
+        //   name: '审核管理',
+        //   path: '/manage-center/audit',
+        //   component: './AuditManagement',
+        // },
         {
-          name: '审核管理',
-          path: '/manage-center/audit',
-          component: './AuditManagement',
+          name: '素材管理',
+          path: '/manage-center/material',
+          component: './MaterialManagement',
+        },
+        {
+          name: '素材库管理',
+          path: '/manage-center/materialLab',
+          component: './MaterialLabManagement',
         },
       ],
     },
@@ -362,7 +373,7 @@ export default defineConfig({
     },
     {
       path: '/',
-      redirect: '/tender-center/make',
+      redirect: '/manage-center',
     },
     {
       component: '404',

@@ -52,3 +52,12 @@ declare namespace TenderType {
     keyword?: string;
   }
 }
+
+declare namespace MaterialType {
+  export interface MaterialTree {
+    name: string;
+    id?: string;
+    parentId?: string;
+    children: MaterialTree[];
+  }
+}

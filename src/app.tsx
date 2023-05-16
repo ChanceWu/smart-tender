@@ -32,16 +32,17 @@ export async function getInitialState(): Promise<{
       window.addEventListener('message', function (e) {
         console.log(99999999999, e);
       });
-      const msg = await queryCurrentUser();
+      // const msg = await queryCurrentUser();
 
-      return msg.data;
+      // return msg.data;
       return {
         status: 'ok',
         type: 'account',
         currentAuthority: 'admin',
       } as API.CurrentUser;
     } catch (error) {
-      location.href = 'https://portal.supcon.com/cas-web/login?service=http://10.30.60.130:8000/user/login'
+      location.href =
+        'https://portal.supcon.com/cas-web/login?service=http://10.30.60.130:8000/user/login';
       // const res = await request<any>('/login', {
       //   method: 'get',
       //   params: {
@@ -74,6 +75,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     headerRender: (props) => <Header {...props} />,
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
+    siderWidth: 200,
     // waterMarkProps: {
     //   content: initialState?.currentUser?.name,
     // },
