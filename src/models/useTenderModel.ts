@@ -13,9 +13,9 @@ export default function useTenderModel() {
   const [kmsList, setKMSList] = useState<TenderType.KMSList[]>([]);
 
   const queryTenderKMSDirList = useCallback(async () => {
-    // const { resultList } = await TenderApi.queryTenderKMSDirList();
-    const { data = [] } = await allUsingGET();
-    const topDirList = formatTreeData(data);
+    const { resultList } = await TenderApi.queryTenderKMSDirList();
+    // const { data = [] } = await allUsingGET();
+    const topDirList = formatTreeData(resultList);
     setKMSDirList(topDirList);
   }, []);
 
@@ -25,8 +25,9 @@ export default function useTenderModel() {
   }, []);
 
   const createTender = useCallback(async (p: TenderType.KMSListQueryParams) => {
+    console.log(dirList)
     const { resultList } = await TenderApi.createTender();
-  }, []);
+  }, [dirList]);
 
   useEffect(() => {
     setDirTree(getTreeFromList(dirList));

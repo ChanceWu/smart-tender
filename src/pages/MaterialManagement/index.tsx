@@ -136,7 +136,7 @@ function MaterialManagement() {
             queryMaterialList(values);
           }}
         >
-          <Form.Item label="素材分类" name="categoryId" getValueFromEvent={(v) => v[v.length - 1]}>
+          <Form.Item label="素材分类" name={["req","categoryId"]} getValueFromEvent={(v) => v[v.length - 1]}>
             <Cascader
               options={TypeOption}
               fieldNames={{ label: 'name', value: 'id' }}
@@ -145,7 +145,7 @@ function MaterialManagement() {
               changeOnSelect
             />
           </Form.Item>
-          <Form.Item label="素材名称" name="name">
+          <Form.Item label="素材名称" name={["req","name"]}>
             <Input placeholder="请输入素材名称" />
           </Form.Item>
           <Form.Item style={{ marginLeft: 'auto' }}>

@@ -54,8 +54,6 @@ declare namespace API {
   type Pinyin__ = {
     /** 标书素材分类id */
     categoryId?: number;
-    /** 标书素材分类名称 */
-    categoryName?: string;
     /** 标书素材文件id */
     fileIdList?: number[];
     /** 主键id */
@@ -92,8 +90,6 @@ declare namespace API {
   type Pinyin_4 = {
     /** 标书素材分类id */
     categoryId?: number;
-    /** 标书素材分类名称 */
-    categoryName?: string;
     /** 标书素材文件id */
     fileIdList?: number[];
     /** 标书素材名称 */
@@ -133,6 +129,12 @@ declare namespace API {
     fileDetailRespList?: Pinyin_5[];
     /** 主键id */
     id?: number;
+    /** 修改人 */
+    modifier?: string;
+    /** 修改人id */
+    modifierId?: number;
+    /** 修改人名称 */
+    modifierName?: string;
     /** 分类名称 */
     name?: string;
     /** 文件类型 WORD:文档 PIC：图片 */

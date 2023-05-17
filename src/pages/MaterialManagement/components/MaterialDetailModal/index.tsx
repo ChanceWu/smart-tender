@@ -64,8 +64,9 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, typeOption })
             action="/file/upload"
             listType={typeCode === 'PIC' ? 'picture-card' : 'text'}
             beforeUpload={() => false}
+            multiple
           >
-            <Button icon={<UploadOutlined />}>Click to upload</Button>
+            {typeCode === 'PIC' ? '上传图片' : <Button icon={<UploadOutlined />}>上传附件</Button>}
           </Upload>
         </Form.Item>
         {/* <Form.Item

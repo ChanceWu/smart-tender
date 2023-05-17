@@ -70,23 +70,29 @@ export default function useMaterialModel() {
     }
   }, []);
 
-  const uploadFile = async (p: any) => {
+  const uploadFile = async (p: any[] = []) => {
     // const { resultList } = await MaterialApi.queryMaterialList();
-    const { data, code, msg } = await uploadUsingPOST({}, p[0].originFileObj);
-    if (code === 1) {
-      return data?.id;
-    } else {
-      message.error(msg);
-      return -1;
-    }
+    const req = p.map(v => uploadUsingPOST({}, v.originFileObj));
+    return Promise.all(req).then((res) => {
+      return res.map(v => v.data!.id!)
+    }).catch(() => {
+      message.error('文件上传失败');
+      return undefined;
+    })
+    // const { data, code, msg } = await uploadUsingPOST({}, p[0].originFileObj);
+    // if (code === 1) {
+    //   return data?.id;
+    // } else {
+    //   message.error(msg);
+    // }
   };
 
   const addMaterial = useCallback(async (p: API.Pinyin_4) => {
     try {
       const { fileIdList, ...rest } = p;
-      const res = await uploadFile(p.fileIdList);
+      const res = await uploadFile(fileIdList);
       if (!res) return;
-      const { code, msg } = await createUsingPOST2({ ...rest, fileIdList: [res] });
+      const { code, msg } = await createUsingPOST2({ ...rest, fileIdList: res });
       if (code === 1) {
         message.success('创建成功！')
         queryMaterialList({});
