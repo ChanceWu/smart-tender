@@ -1,8 +1,8 @@
 import useModalForm from '@/hooks/useModalForm';
 import { useMount } from 'ahooks';
 import { Tree } from 'antd';
-import { DataNode } from 'antd/lib/tree';
-import React, { useEffect, useMemo } from 'react';
+import type { DataNode } from 'antd/lib/tree';
+import { useEffect, useMemo } from 'react';
 import { useModel } from 'umi';
 import DirNameModal from './components/DirNameModal';
 import DirTreeTitle from './components/DirTreeTitle';
@@ -55,12 +55,12 @@ function MaterialLabManagement() {
       });
     };
     return dp(categoryTree);
-  }, [categoryTree, openModal]);
+  }, [categoryTree, delCategory, openModal]);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>素材库名称</div>
-      <div>
+      <div className={styles.content}>
         {treeData.length && (
           <Tree
             className={styles.dirTree}

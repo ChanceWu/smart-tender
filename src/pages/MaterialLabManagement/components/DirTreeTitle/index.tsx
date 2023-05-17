@@ -1,9 +1,4 @@
-import {
-  EditOutlined,
-  ExclamationCircleFilled,
-  MinusCircleOutlined,
-  PlusCircleOutlined,
-} from '@ant-design/icons';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Button, Popconfirm } from 'antd';
 import React from 'react';
 import styles from './index.less';
@@ -26,7 +21,6 @@ const DirTreeTitle: React.FC<IProps> = ({ data, isRoot, openModal, onDel }) => {
           <Button
             type="link"
             onClick={() => {
-              console.log('first', data);
               openModal('新增子分类', { name: '', parentId: data.id });
             }}
           >

@@ -1,4 +1,5 @@
-import { Form, FormInstance, Input, Modal, ModalProps } from 'antd';
+import type { FormInstance, ModalProps } from 'antd';
+import { Form, Input, Modal } from 'antd';
 import React from 'react';
 
 interface IProps {
@@ -17,11 +18,11 @@ const DirNameModal: React.FC<IProps> = ({ modalProps, form }) => {
           <Input />
         </Form.Item>
         <Form.Item
-          label="名称"
+          label="分类名称"
           name="name"
-          rules={[{ required: true, message: '目录名称不能为空' }]}
+          rules={[{ required: true, message: '分类名称不能为空' }]}
         >
-          <Input placeholder="请输入目录名称" maxLength={15} />
+          <Input placeholder="请输入分类名称" maxLength={15} />
         </Form.Item>
       </Form>
     </Modal>
