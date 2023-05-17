@@ -1,12 +1,12 @@
-import React, { useMemo, useState } from 'react';
-import { Button, Cascader, Divider, Form, Input, Table, Tabs } from 'antd';
-import { useModel } from 'umi';
-import { useMount } from 'ahooks';
-import styles from './index.less';
-import usePagination from '@/hooks/usePagination';
-import { ColumnsType } from 'antd/lib/table';
 import useModalForm from '@/hooks/useModalForm';
+import usePagination from '@/hooks/usePagination';
+import { useMount } from 'ahooks';
+import { Button, Cascader, Divider, Form, Input, Table, Tabs } from 'antd';
+import type { ColumnsType } from 'antd/lib/table';
+import { useMemo, useState } from 'react';
+import { useModel } from 'umi';
 import MaterialDetailModal from './components/MaterialDetailModal';
+import styles from './index.less';
 
 function MaterialManagement() {
   const {
@@ -15,7 +15,7 @@ function MaterialManagement() {
     materialList,
     queryMaterialList,
     addMaterial,
-    uploadFile,
+    editMaterial,
   } = useModel('useMaterialModel');
   const [activeKey, setActiveKey] = useState<string>('1');
   const [form] = Form.useForm();
@@ -27,11 +27,11 @@ function MaterialManagement() {
   } = useModalForm<MaterialType.MaterialInfo>({
     onOk: (d) => {
       console.log({ ...d });
-      // if (d.id) {
-      // uploadFile((d as any).fileIdList);
-      // } else {
-      addMaterial(d);
-      // }
+      if (d.id) {
+        editMaterial(d);
+      } else {
+        addMaterial(d);
+      }
     },
   });
 
@@ -76,13 +76,14 @@ function MaterialManagement() {
     },
     {
       title: '上传人',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'modifier',
+      key: 'modifier',
+      render: (value, record) => `${value}(${record.modifierId})`,
     },
     {
       title: '上传时间',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'modifierTime',
+      key: 'modifierTime',
     },
     {
       title: '操作',
@@ -98,7 +99,6 @@ function MaterialManagement() {
           >
             预览
           </Button>
-          <Divider type="vertical" />
           <Button
             type="link"
             onClick={() => {
@@ -107,7 +107,6 @@ function MaterialManagement() {
           >
             编辑
           </Button>
-          <Divider type="vertical" />
           <Button
             type="link"
             onClick={() => {
@@ -136,7 +135,11 @@ function MaterialManagement() {
             queryMaterialList(values);
           }}
         >
-          <Form.Item label="素材分类" name={["req","categoryId"]} getValueFromEvent={(v) => v[v.length - 1]}>
+          <Form.Item
+            label="素材分类"
+            name={['req', 'categoryId']}
+            getValueFromEvent={(v) => v[v.length - 1]}
+          >
             <Cascader
               options={TypeOption}
               fieldNames={{ label: 'name', value: 'id' }}
@@ -145,7 +148,7 @@ function MaterialManagement() {
               changeOnSelect
             />
           </Form.Item>
-          <Form.Item label="素材名称" name={["req","name"]}>
+          <Form.Item label="素材名称" name={['req', 'name']}>
             <Input placeholder="请输入素材名称" />
           </Form.Item>
           <Form.Item style={{ marginLeft: 'auto' }}>
@@ -158,6 +161,7 @@ function MaterialManagement() {
               htmlType="button"
               onClick={() => {
                 form.resetFields();
+                queryMaterialList({});
               }}
             >
               重置
@@ -165,10 +169,10 @@ function MaterialManagement() {
           </Form.Item>
         </Form>
         <div>
-          <Button type="primary" onClick={() => openModal('新增素材')}>
+          <Button className={styles.createBtn} type="primary" onClick={() => openModal('新增素材')}>
             新增素材
           </Button>
-          <Table columns={columns} dataSource={materialList} pagination={pagination} />
+          <Table columns={columns} dataSource={materialList} pagination={pagination} bordered />
         </div>
       </div>
       <MaterialDetailModal modalProps={modalProps} form={detailForm} typeOption={TypeOption} />
