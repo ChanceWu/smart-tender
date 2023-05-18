@@ -29,11 +29,6 @@ export default {
       changeOrigin: true, // 允许跨域
       pathRewrite: { '^/': '/' },
     },
-    '/gate/': {
-      target: 'http://portal.supcon.com',
-      changeOrigin: true, // 允许跨域
-      pathRewrite: { '/gate/': '/' },
-    },
     '/api/': {
       // 要代理的地址
       target: 'https://preview.pro.ant.design',

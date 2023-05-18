@@ -21,7 +21,7 @@ const MaterialList = () => {
     () =>
       kmsDirList.map((v) => ({
         label: v.name,
-        key: v.id,
+        key: v.id! + '',
       })),
     [kmsDirList],
   );
