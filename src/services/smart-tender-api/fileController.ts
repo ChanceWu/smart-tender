@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import request from '@/utils/request';
 
 /** 下载 GET /file/download/${param0} */
 export async function createUsingGET(

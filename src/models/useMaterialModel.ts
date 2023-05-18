@@ -23,9 +23,9 @@ export default function useMaterialModel() {
   const [materialList, setMaterialList] = useState<API.Pinyin_7[]>([]);
 
   const queryCategoryTree = useCallback(async () => {
-    const { resultList } = await TenderApi.queryTenderKMSDirList();
-    // const { data = [] } = await allUsingGET();
-    const result = formatTreeData(resultList);
+    // const { resultList } = await TenderApi.queryTenderKMSDirList();
+    const { data } = await allUsingGET();
+    const result = formatTreeData(data ?? []);
     setCategoryTree(addLevelToTree(result));
   }, []);
 
@@ -99,7 +99,7 @@ export default function useMaterialModel() {
     // }
   };
 
-  const addMaterial = useCallback(async (p: API.Pinyin_4) => {
+  const addMaterial = useCallback(async (p: API.Pinyin_5) => {
     try {
       const { fileIdList, ...rest } = p;
       const res = await uploadFile(fileIdList);

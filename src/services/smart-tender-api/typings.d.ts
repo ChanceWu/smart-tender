@@ -7,13 +7,19 @@ declare namespace API {
 
   type BaseResult2 = {
     code?: number;
-    data?: Pinyin_5;
+    data?: Pinyin_6;
     msg?: string;
   };
 
   type BaseResult3 = {
     code?: number;
-    data?: Pinyin_7;
+    data?: Pinyin_8;
+    msg?: string;
+  };
+
+  type BaseResult4 = {
+    code?: number;
+    data?: Pinyin_10;
     msg?: string;
   };
 
@@ -23,15 +29,9 @@ declare namespace API {
     msg?: string;
   };
 
-  type BaseResultList_ = {
-    code?: number;
-    data?: Pinyin_7[];
-    msg?: string;
-  };
-
   type BaseResultListTreeNode_ = {
     code?: number;
-    data?: TreeNode_[];
+    data?: TreeNode2[];
     msg?: string;
   };
 
@@ -64,6 +64,8 @@ declare namespace API {
     typeCode?: string;
   };
 
+  type Pinyin_10 = true;
+
   type Pinyin_2 = {
     /** 分页查询页码 */
     pageNumber?: number;
@@ -71,12 +73,12 @@ declare namespace API {
     pageSize?: number;
     /** 上传上传最大id */
     queryId?: number;
-    req?: Pinyin_8;
+    req?: Pinyin_9;
   };
 
   type Pinyin_3 = {
     /** 分页查询数据集合 */
-    data?: Pinyin_7[];
+    data?: Pinyin_8[];
     /** 分页查询页码 */
     pageNumber?: number;
     /** 分页查询单页大小 */
@@ -88,6 +90,16 @@ declare namespace API {
   };
 
   type Pinyin_4 = {
+    /** 标书名称 */
+    name: string;
+    /** 标书素材id */
+    tenderSourceId?: number;
+    tenderToc: TreeNode_;
+    /** 是否创建目录 */
+    tocCreateFlag: boolean;
+  };
+
+  type Pinyin_5 = {
     /** 标书素材分类id */
     categoryId?: number;
     /** 标书素材文件id */
@@ -98,7 +110,7 @@ declare namespace API {
     typeCode?: string;
   };
 
-  type Pinyin_5 = {
+  type Pinyin_6 = {
     /** 文件地址 */
     fileUrl?: string;
     /** 主键id */
@@ -111,7 +123,7 @@ declare namespace API {
     postfix?: string;
   };
 
-  type Pinyin_6 = {
+  type Pinyin_7 = {
     /** 主键id */
     id?: number;
     /** 分类名称 */
@@ -120,13 +132,13 @@ declare namespace API {
     parentId?: number;
   };
 
-  type Pinyin_7 = {
+  type Pinyin_8 = {
     /** 分类id */
     categoryId?: number;
     /** 分类名称 */
     categoryName?: string;
     /** 文件详情对象 */
-    fileDetailRespList?: Pinyin_5[];
+    fileDetailRespList?: Pinyin_6[];
     /** 主键id */
     id?: number;
     /** 修改人 */
@@ -135,6 +147,8 @@ declare namespace API {
     modifierId?: number;
     /** 修改人名称 */
     modifierName?: string;
+    /** 修改时间 */
+    modifyTime?: string;
     /** 分类名称 */
     name?: string;
     /** 文件类型 WORD:文档 PIC：图片 */
@@ -143,7 +157,7 @@ declare namespace API {
     typeName?: string;
   };
 
-  type Pinyin_8 = {
+  type Pinyin_9 = {
     /** 素材分类id */
     categoryId?: number;
     /** 素材名称 */
@@ -159,6 +173,11 @@ declare namespace API {
 
   type TreeNode_ = {
     children?: TreeNode_[];
-    t?: Pinyin_7;
+    t?: Pinyin_4;
+  };
+
+  type TreeNode2 = {
+    children?: TreeNode2[];
+    t?: Pinyin_8;
   };
 }

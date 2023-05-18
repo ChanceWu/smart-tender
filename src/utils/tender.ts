@@ -21,7 +21,7 @@ export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
   return roots;
 };
 
-export const formatTreeData = (data: API.TreeNode_[]): MaterialType.CategoryTree[] => {
+export const formatTreeData = (data: API.TreeNode2[]): MaterialType.CategoryTree[] => {
   return data.map(v => {
     return {
       ...v.t,

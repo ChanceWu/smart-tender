@@ -1,9 +1,9 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import request from '@/utils/request';
 
 /** 保存 POST /tender/source/create */
-export async function createUsingPOST2(body: API.Pinyin_4, options?: { [key: string]: any }) {
+export async function createUsingPOST2(body: API.Pinyin_5, options?: { [key: string]: any }) {
   return request<API.BaseResultBoolean_>('/tender/source/create', {
     method: 'POST',
     headers: {

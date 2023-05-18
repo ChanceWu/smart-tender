@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import request from '@/utils/request';
 
 /** 全标签分类结构 GET /tender/source/category/all */
 export async function allUsingGET(options?: { [key: string]: any }) {
@@ -50,7 +50,7 @@ export async function listByPidUsingPOST(body: API.Id_, options?: { [key: string
 }
 
 /** 修改 POST /tender/source/category/update */
-export async function updateUsingPOST1(body: API.Pinyin_6, options?: { [key: string]: any }) {
+export async function updateUsingPOST1(body: API.Pinyin_7, options?: { [key: string]: any }) {
   return request<API.BaseResult3>('/tender/source/category/update', {
     method: 'POST',
     headers: {
