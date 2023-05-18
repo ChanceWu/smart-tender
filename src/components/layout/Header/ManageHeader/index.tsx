@@ -6,9 +6,11 @@ import styles from './index.less';
 import MenuItem from './MenuItem/index';
 import RightContent from './RightContent/index';
 
-const ManageHeader: React.FunctionComponent<LayoutProps & {
-  module: string
-}> = (props) => {
+const ManageHeader: React.FunctionComponent<
+  LayoutProps & {
+    module: string;
+  }
+> = (props) => {
   const { menuData, matchMenuKeys } = props;
   const history = useHistory();
   const isActive = (menu: MenuDataItem) => {
@@ -27,12 +29,18 @@ const ManageHeader: React.FunctionComponent<LayoutProps & {
     }
   };
   return (
-    <div className={styles.headerWrap}>
+    <div
+      className={`${styles.headerWrap} ${props.module === '数据采集中心' && styles.customStyle}`}
+    >
       <div className={styles.logoTitle}>
-         <h1>{props.module}</h1>
+        <h1>中控·SUPCON</h1>
+      </div>
+      <div>
+        <span>{props.module}</span>
       </div>
       <div className={styles.headerMenu}>
-        {menuData &&
+        {props.module === '标书制作中心' &&
+          menuData &&
           menuData.map((item) => {
             return (
               item.name &&

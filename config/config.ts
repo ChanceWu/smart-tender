@@ -28,7 +28,7 @@ export default defineConfig({
     baseNavigator: true,
   },
   dynamicImport: {
-    loading: '@ant-design/pro-layout/es/PageLoading',
+    // loading: '@ant-design/pro-layout/es/PageLoading',
   },
   targets: {
     ie: 11,
@@ -122,7 +122,9 @@ export default defineConfig({
       path: '/manage-center',
       name: '管理中心',
       header: '数据采集中心',
+      component: '@/layouts/ManageLayout',
       flatMenu: true,
+      layout: false,
       routes: [
         {
           path: '/manage-center',
@@ -130,6 +132,7 @@ export default defineConfig({
         },
         {
           name: '标书管理',
+          header: '数据采集中心',
           path: '/manage-center/tender',
           component: './TenderManagement',
         },
@@ -140,11 +143,13 @@ export default defineConfig({
         // },
         {
           name: '素材管理',
+          header: '数据采集中心',
           path: '/manage-center/material',
           component: './MaterialManagement',
         },
         {
           name: '素材库管理',
+          header: '数据采集中心',
           path: '/manage-center/materialLab',
           component: './MaterialLabManagement',
         },
@@ -420,6 +425,9 @@ export default defineConfig({
   ],
   nodeModulesTransform: {
     type: 'none',
+  },
+  cssModulesTypescriptLoader: {
+    mode: 'emit',
   },
   mfsu: {},
   webpack5: {},

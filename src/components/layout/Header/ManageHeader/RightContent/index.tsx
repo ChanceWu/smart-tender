@@ -13,8 +13,8 @@ const RightContent: React.FunctionComponent = () => {
     <div className={styles.rightContent}>
       <div>您好，admin</div>
       <div className={styles.split}></div>
-      <SettingOutlined onClick={() => routerTo('/settings')} />
-      <LogoutOutlined />
+      {/* <SettingOutlined onClick={() => routerTo('/settings')} /> */}
+      <a>退出</a>
     </div>
   );
 };
