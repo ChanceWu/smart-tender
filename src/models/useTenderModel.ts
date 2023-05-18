@@ -1,6 +1,6 @@
 import { TenderApi } from '@/services';
+import { allUsingGET } from '@/services/smart-tender-api/tenderSourceCategoryController';
 import { formatTreeData, getTreeFromList } from '@/utils/tender';
-import { allUsingGET } from '@/services/smart-tender-api/tenderCategoryController';
 import { useState, useCallback, useEffect } from 'react';
 
 export default function useTenderModel() {
@@ -13,9 +13,9 @@ export default function useTenderModel() {
   const [kmsList, setKMSList] = useState<TenderType.KMSList[]>([]);
 
   const queryTenderKMSDirList = useCallback(async () => {
-    // const { resultList } = await TenderApi.queryTenderKMSDirList();
-    const { data = [] } = await allUsingGET();
-    const topDirList = formatTreeData(data);
+    const { resultList } = await TenderApi.queryTenderKMSDirList();
+    // const { data = [] } = await allUsingGET();
+    const topDirList = formatTreeData(resultList);
     setKMSDirList(topDirList);
   }, []);
 
@@ -24,9 +24,13 @@ export default function useTenderModel() {
     setKMSList(resultList);
   }, []);
 
-  const createTender = useCallback(async (p: TenderType.KMSListQueryParams) => {
-    const { resultList } = await TenderApi.createTender();
-  }, []);
+  const createTender = useCallback(
+    async (p: TenderType.KMSListQueryParams) => {
+      console.log(dirList);
+      const { resultList } = await TenderApi.createTender();
+    },
+    [dirList],
+  );
 
   useEffect(() => {
     setDirTree(getTreeFromList(dirList));

@@ -24,6 +24,11 @@ export default {
       changeOrigin: true, // 允许跨域
       pathRewrite: { '^/': '/' },
     },
+    '/file/': {
+      target: 'http://10.10.168.177:8080',
+      changeOrigin: true, // 允许跨域
+      pathRewrite: { '^/': '/' },
+    },
     '/gate/': {
       target: 'http://portal.supcon.com',
       changeOrigin: true, // 允许跨域

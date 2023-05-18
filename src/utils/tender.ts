@@ -21,11 +21,25 @@ export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
   return roots;
 };
 
-export const formatTreeData = (data: API.TreeNode_[]): TenderType.KMSDirList[] => {
+export const formatTreeData = (data: API.TreeNode_[]): MaterialType.CategoryTree[] => {
   return data.map(v => {
     return {
       ...v.t,
       children: v.children?.length ? formatTreeData(v.children) : [],
     }
   })
+}
+
+export const addLevelToTree = (treeData: MaterialType.CategoryTree[], level = 0): MaterialType.CategoryTree[] => {
+  return treeData.map(node => {
+    // 为当前节点添加 level 属性
+    const currentNode = { ...node, level };
+
+    // 如果当前节点有子节点，则递归处理子节点，并将子节点的 level 属性设置为当前节点的 level + 1
+    if (currentNode.children && currentNode.children.length) {
+      currentNode.children = addLevelToTree(currentNode.children, level + 1);
+    }
+
+    return currentNode;
+  });
 }

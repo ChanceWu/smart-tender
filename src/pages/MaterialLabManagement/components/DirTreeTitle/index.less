@@ -1,0 +1,34 @@
+.dirTreeTitle {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  color: #333333;
+  font-weight: normal;
+  font-size: 14px;
+  font-family: PingFangSC-Regular;
+  line-height: 22px;
+  letter-spacing: 0em;
+  .title {
+    display: inline-block;
+    // max-width: calc(100% - 60px);
+    max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: right;
+    width: 220px;
+    & > a {
+      border-right: 1px solid #ccc;
+    }
+    & > a:last-child {
+      border-right: none;
+    }
+  }
+  // &:hover .btn {
+  //   visibility: visible;
+  // }
+}

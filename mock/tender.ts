@@ -1,5 +1,12 @@
 import { Request, Response } from 'express';
-
+interface TenderItem {
+  id: number;
+  name: string; // 目录名称/素材名称
+  parentId: number;
+  level: number; // 目录层级
+  isMaterial: boolean; // true：素材  false：目录
+  file?: string[]; // 素材下载地址
+}
 const getTenderDirList = (req: Request, res: Response) => {
   res.status(200).send({
     total: 5,
@@ -22,36 +29,148 @@ const getTenderDirList = (req: Request, res: Response) => {
 
 const KMSDirList = [
   {
-    name: '标书模板库',
-    id: '1',
-    isMaterial: false,
-    parentId: '0',
-    children: [
+    "t": {
+      "id": 1,
+      "name": "标书模板库",
+      "parentId": 0
+    },
+    "children": [
       {
-        name: '分类一',
-        id: '11',
-        isMaterial: false,
-        parentId: '1',
-        children: [
-          { name: '分类1.1', id: '111', isMaterial: false, parentId: '11' },
-          { name: '分类1.2', id: '112', isMaterial: false, parentId: '11' },
-        ],
-      },
-      { name: '分类二', id: '12', isMaterial: false, parentId: '1', children: [] },
-    ],
+        "t": {
+          "id": 29,
+          "name": "啊",
+          "parentId": 1
+        },
+        "children": []
+      }
+    ]
   },
   {
-    name: '标书产品库',
-    id: '2',
-    isMaterial: false,
-    parentId: '0',
-    children: [{ name: '分类一', id: '21', isMaterial: false, parentId: '2' }],
+    "t": {
+      "id": 2,
+      "name": "标书产品库",
+      "parentId": 0
+    },
+    "children": []
   },
-  { name: '标书商务库', id: '3', isMaterial: false, parentId: '0', children: [] },
-  { name: '标书封面库', id: '4', isMaterial: false, parentId: '0', children: [] },
-  { name: '标书工业库', id: '5', isMaterial: false, parentId: '0', children: [] },
-  { name: '标书制造库', id: '6', isMaterial: false, parentId: '0', children: [] },
+  {
+    "t": {
+      "id": 3,
+      "name": "标书商务库",
+      "parentId": 0
+    },
+    "children": []
+  },
+  {
+    "t": {
+      "id": 4,
+      "name": "标书素材库",
+      "parentId": 0
+    },
+    "children": []
+  },
+  {
+    "t": {
+      "id": 19,
+      "name": "1string",
+      "parentId": 0
+    },
+    "children": [
+      {
+        "t": {
+          "id": 21,
+          "name": "19string",
+          "parentId": 19
+        },
+        "children": []
+      },
+      {
+        "t": {
+          "id": 22,
+          "name": "191string",
+          "parentId": 19
+        },
+        "children": []
+      },
+      {
+        "t": {
+          "id": 23,
+          "name": "192string",
+          "parentId": 19
+        },
+        "children": [
+          {
+            "t": {
+              "id": 16,
+              "name": "string",
+              "parentId": 23
+            },
+            "children": [
+              {
+                "t": {
+                  "id": 17,
+                  "name": "16string",
+                  "parentId": 16
+                },
+                "children": [
+                  {
+                    "t": {
+                      "id": 18,
+                      "name": "17string",
+                      "parentId": 17
+                    },
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "t": {
+      "id": 20,
+      "name": "2string",
+      "parentId": 0
+    },
+    "children": []
+  },
+  {
+    "t": {
+      "id": 25,
+      "name": "AAA",
+      "parentId": 0
+    },
+    "children": []
+  },
+  {
+    "t": {
+      "id": 26,
+      "name": "BBB",
+      "parentId": 0
+    },
+    "children": []
+  },
+  {
+    "t": {
+      "id": 27,
+      "name": "CCC",
+      "parentId": 0
+    },
+    "children": []
+  },
+  {
+    "t": {
+      "id": 28,
+      "name": "DDDDDD",
+      "parentId": 0
+    },
+    "children": []
+  }
 ];
+
 const getTenderKMSDirList = (req: Request, res: Response) => {
   res.status(200).send({
     total: 6,
@@ -84,8 +203,46 @@ const getTenderKMSList = (req: Request, res: Response) => {
   });
 };
 
+const getMaterialList = (req: Request, res: Response) => {
+  res.status(200).send({
+    total: 6,
+    page: 1,
+    pageSize: 10,
+    resultList: [
+      {
+        name: '标书模板库',
+        id: '1',
+        parentId: '0',
+        children: [
+          {
+            name: '分类一',
+            id: '11',
+            parentId: '1',
+            children: [
+              { name: '分类1.1', id: '111', parentId: '11', children: [] },
+              { name: '分类1.2', id: '112', parentId: '11', children: [] },
+            ],
+          },
+          { name: '分类二', id: '12', parentId: '1', children: [] },
+        ],
+      },
+      {
+        name: '标书产品库',
+        id: '2',
+        parentId: '0',
+        children: [{ name: '分类一', id: '21', parentId: '2', children: [] }],
+      },
+      { name: '标书商务库', id: '3', parentId: '0', children: [] },
+      { name: '标书封面库', id: '4', parentId: '0', children: [] },
+      { name: '标书工业库', id: '5', parentId: '0', children: [] },
+      { name: '标书制造库', id: '6', parentId: '0', children: [] },
+    ],
+  });
+};
+
 export default {
   'GET /api/mock/tender/dirList': getTenderDirList,
   'GET /api/mock/tender/kmsDirList': getTenderKMSDirList,
   'GET /api/mock/tender/kmsList': getTenderKMSList,
+  'GET /api/mock/material/list': getMaterialList,
 };
