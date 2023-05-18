@@ -1,5 +1,23 @@
 // 公共类型
-declare namespace API { }
+declare namespace API {
+  export interface CurrentUser {
+    currentCompany: {
+      code: string;
+      id: number;
+      name: string;
+    };
+    expire: number;
+    loginType: string;
+    status: string;
+    tenantId: string;
+    uniqueLogin: boolean;
+    userId: number;
+    userType: number;
+    username: string;
+    ticket: string;
+  }
+  
+}
 declare namespace TenderType {
   export interface TenderDir {
     id: string;

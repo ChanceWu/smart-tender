@@ -1,12 +1,8 @@
 import type { Settings as LayoutSettings } from '@ant-design/pro-layout';
-import { SettingDrawer } from '@ant-design/pro-layout';
 import { PageLoading } from '@ant-design/pro-layout';
-import { RequestConfig, RunTimeLayoutConfig } from 'umi';
-import { history, Link } from 'umi';
-import RightContent from '@/components/RightContent';
-import Footer from '@/components/Footer';
-import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
-import { BookOutlined, LinkOutlined } from '@ant-design/icons';
+import { RequestMethod, RunTimeLayoutConfig, RequestOptionsInit } from 'umi';
+// import { extend } from 'umi-request';
+import { history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import Header from './components/layout/Header';
 
@@ -27,30 +23,22 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
+  console.log('getInitialState')
   const fetchUserInfo = async () => {
     try {
-      window.addEventListener('message', function (e) {
-        console.log(99999999999, e);
-      });
-      // const msg = await queryCurrentUser();
-
-      // return msg.data;
-      return {
-        status: 'ok',
-        type: 'account',
-        currentAuthority: 'admin',
-      } as API.CurrentUser;
+      const loginMsg: API.CurrentUser = JSON.parse(localStorage.getItem('loginMsg') || '');
+      return loginMsg;
+      // {
+      //   userName: loginMsg.username,
+      //   // staffCode: '0120230934',
+      //   // staffName: 'eee',
+      //   companyCode: loginMsg.currentCompany.code,
+      //   companyName: encodeURI(loginMsg.currentCompany.name),
+      //   userId: loginMsg.userId,
+      // }
     } catch (error) {
-      location.href =
-        'https://portal.supcon.com/cas-web/login?service=http://10.30.60.130:8000/user/login';
-      // const res = await request<any>('/login', {
-      //   method: 'get',
-      //   params: {
-      //     service: 'http://10.30.60.130:8000/user/login'
-      //   }
-      // });
-      // console.log(res)
-      // history.push(loginPath);
+      location.href = 'https://portal.supcon.com/cas-web/login?service=http://10.30.60.130:8000';
+      console.error(error);
     }
     return undefined;
   };
@@ -73,13 +61,11 @@ export async function getInitialState(): Promise<{
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
     headerRender: (props) => <Header {...props} />,
-    rightContentRender: () => <RightContent />,
     disableContentMargin: false,
     siderWidth: 200,
     // waterMarkProps: {
     //   content: initialState?.currentUser?.name,
     // },
-    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
@@ -87,67 +73,102 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         history.push(loginPath);
       }
     },
-    links: isDev
-      ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-          <Link to="/~docs" key="docs">
-            <BookOutlined />
-            <span>业务组件文档</span>
-          </Link>,
-        ]
-      : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
-    childrenRender: (children, props) => {
-      // if (initialState?.loading) return <PageLoading />;
-      return (
-        <>
-          {children}
-          {!props.location?.pathname?.includes('/login') && (
-            <SettingDrawer
-              disableUrlParams
-              enableDarkTheme
-              settings={initialState?.settings}
-              onSettingChange={(settings) => {
-                setInitialState((preInitialState) => ({
-                  ...preInitialState,
-                  settings,
-                }));
-              }}
-            />
-          )}
-        </>
-      );
-    },
+    // childrenRender: (children, props) => {
+    //   // if (initialState?.loading) return <PageLoading />;
+    //   return (
+    //     <>
+    //       {children}
+    //       {!props.location?.pathname?.includes('/login') && (
+    //         <SettingDrawer
+    //           disableUrlParams
+    //           enableDarkTheme
+    //           settings={initialState?.settings}
+    //           onSettingChange={(settings) => {
+    //             setInitialState((preInitialState) => ({
+    //               ...preInitialState,
+    //               settings,
+    //             }));
+    //           }}
+    //         />
+    //       )}
+    //     </>
+    //   );
+    // },
     ...initialState?.settings,
   };
 };
 
-export const request: RequestConfig = {
-  errorConfig: {},
-  middlewares: [],
-  requestInterceptors: [
-    (url, options) => {
-      options.headers = {
-        ...options.headers,
-        userName: 'wuqianpeng',
-        staffCode: '0120230934',
-        staffName: 'eee',
-        companyCode: 'tech',
-        companyName: 'eee',
-        userId: '1',
-      };
-      console.log('intercepter');
-      return {
-        url,
-        options,
-      };
-    },
-  ],
-  responseInterceptors: [],
-};
+// export const request: RequestMethod = {
+//   requestInterceptors: [
+//     async (url: string, options: RequestOptionsInit) => {
+//       try {
+//         const loginMsg: API.CurrentUser = JSON.parse(localStorage.getItem('loginMsg') || '');
+//         // {
+//         //   userName: loginMsg.username,
+//         //   // staffCode: '0120230934',
+//         //   // staffName: 'eee',
+//         //   companyCode: loginMsg.currentCompany.code,
+//         //   companyName: encodeURI(loginMsg.currentCompany.name),
+//         //   userId: loginMsg.userId,
+//         // }
+//         console.log('options', options)
+//         options.headers = {
+//           ...options.headers,
+//           // userName: 'wuqianpeng',
+//           // staffCode: '0120230934',
+//           // staffName: 'eee',
+//           // companyCode: 'tech',
+//           // companyName: 'eee',
+//           // userId: '1',
+//           userName: loginMsg.username,
+//           staffCode: '0120230934',
+//           staffName: 'eee',
+//           companyCode: loginMsg.currentCompany.code,
+//           companyName: encodeURI(loginMsg.currentCompany.name),
+//           userId: loginMsg.userId,
+//         };
+//         console.log('intercepter');
+//       } catch (error) {
+//         console.error(error);
+//       }
+//       return {
+//         url,
+//         options,
+//       };
+//     },
+//   ],
+//   responseInterceptors: [],
+// };
+
+// export const request = extend({
+//   prefix: '/api',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+// });
+
+// request.interceptors.request.use((url, options) => {
+//   // const token = localStorage.getItem('token');
+//   // if (token) {
+//   //   // 在请求头中添加自定义字段
+//   //   options.headers['Authorization'] = `Bearer ${token}`;
+//   // }
+//   options.headers = {
+//     ...options.headers,
+//     userName: 'wuqianpeng',
+//     staffCode: '0120230934',
+//     staffName: 'eee',
+//     companyCode: 'tech',
+//     companyName: 'eee',
+//     userId: '1',
+//   };
+//   console.log('intercepter');
+//   return {
+//     url,
+//     options,
+//   };
+// });

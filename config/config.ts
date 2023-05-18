@@ -55,7 +55,7 @@ export default defineConfig({
   fastRefresh: {},
   openAPI: [
     {
-      requestLibPath: "import { request } from 'umi'",
+      requestLibPath: "import request from '@/utils/request'",
       schemaPath: 'http://10.10.168.177:8080/v2/api-docs',
       projectName: 'smart-tender-api',
       mock: false,
