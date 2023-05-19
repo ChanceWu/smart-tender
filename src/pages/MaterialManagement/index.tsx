@@ -118,6 +118,7 @@ function MaterialManagement() {
                 fileIdList: record.fileDetailRespList as any,
                 name: record.name,
                 typeCode: record.typeCode,
+                id: record.id,
               })
             }
           >

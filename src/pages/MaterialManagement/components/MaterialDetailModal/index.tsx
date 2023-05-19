@@ -60,6 +60,9 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
           }
         }}
       >
+        <Form.Item name="id" hidden>
+          <Input />
+        </Form.Item>
         <Form.Item
           label="素材名称"
           name="name"

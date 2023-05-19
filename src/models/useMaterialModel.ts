@@ -130,7 +130,10 @@ export default function useMaterialModel() {
 
   const editMaterial = useCallback(async (p: API.Pinyin__) => {
     try {
-      const { code, msg } = await updateUsingPOST2(p);
+      const { fileIdList, ...rest } = p;
+      const res = (fileIdList as any[]).map(v => v.id);
+      const { code, msg } = await updateUsingPOST2({ ...rest, fileIdList: res });
+      // const { code, msg } = await updateUsingPOST2(p);
       if (code === 1) {
         message.success('修改成功！');
         queryMaterialList({});

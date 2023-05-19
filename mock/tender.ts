@@ -210,37 +210,124 @@ const getMaterialList = (req: Request, res: Response) => {
     pageSize: 10,
     resultList: [
       {
-        categoryId: 1,
-        categoryName: 'aaa',
-        id: 1,
-        modifier: '111',
-        modifierId: 11,
-        modifierName: 'zhangsan',
-        name: 'aa',
-        typeCode: 'WORD',
-        fileDetailRespList: [{ fileUrl: '/download?file=docx/d1.docx', name: 'dsfsdfsd' }],
+        "id": 2,
+        "name": "素材1",
+        "categoryId": 29,
+        "categoryName": "啊",
+        "fileDetailRespList": [
+          {
+            "id": 14,
+            "name": "对对对.docx",
+            "postfix": ".docx",
+            "fileUrl": "10.10.168.177:8080/file/download/d0620a5a-e528-42c4-a488-ccc7f5bfa7f2",
+            "key": "d0620a5a-e528-42c4-a488-ccc7f5bfa7f2"
+          }
+        ],
+        "typeCode": "WORD",
+        "typeName": "文档",
+        "modifierId": 1,
+        "modifier": "eee",
+        "modifierName": "wuqianpeng",
+        "modifyTime": "2023-05-17 10:00:54"
       },
       {
-        categoryId: 1,
-        categoryName: 'aaa',
-        id: 2,
-        modifier: '111',
-        modifierId: 11,
-        modifierName: 'zhangsan',
-        name: 'aa',
-        typeCode: 'PIC',
-        fileDetailRespList: [
-          { fileUrl: '/download?file=docx/001.jpg', name: 'ssssss' },
+        "id": 3,
+        "name": "素材4",
+        "categoryId": 29,
+        "categoryName": "啊",
+        "fileDetailRespList": [
           {
-            fileUrl: '/download?file=docx/002.jpg',
-            name: '发射点发射点发射点的发射点发射点发射点',
+            "id": 17,
+            "name": "test.docx",
+            "postfix": ".docx",
+            "fileUrl": "10.10.168.177:8080/file/download/aa4b27b2-758a-491e-8468-4db21cedbb6a",
+            "key": "aa4b27b2-758a-491e-8468-4db21cedbb6a"
           },
           {
-            fileUrl: '/download?file=docx/031.png',
-            name: '十分士大夫士大夫士大夫但是',
-          },
+            "id": 18,
+            "name": "对对对.docx",
+            "postfix": ".docx",
+            "fileUrl": "10.10.168.177:8080/file/download/19474349-b087-4d9e-8ff4-4a30cd30d206",
+            "key": "19474349-b087-4d9e-8ff4-4a30cd30d206"
+          }
         ],
+        "typeCode": "WORD",
+        "typeName": "文档",
+        "modifierId": 1,
+        "modifier": "eee",
+        "modifierName": "wuqianpeng",
+        "modifyTime": "2023-05-17 10:22:06"
       },
+      {
+        "id": 4,
+        "name": "啊啊啊",
+        "categoryId": 29,
+        "categoryName": "啊",
+        "fileDetailRespList": [
+          {
+            "id": 25,
+            "name": "对对对.docx",
+            "postfix": ".docx",
+            "fileUrl": "10.10.168.177:8080/file/download/001a916b-6370-463a-a0ff-2dfd88c09de9",
+            "key": "001a916b-6370-463a-a0ff-2dfd88c09de9"
+          }
+        ],
+        "typeCode": "WORD",
+        "typeName": "文档",
+        "modifierId": 1,
+        "modifier": "eee",
+        "modifierName": "admin",
+        "modifyTime": "2023-05-19 16:42:19"
+      },
+      {
+        "id": 5,
+        "name": "啊啊啊",
+        "categoryId": 30,
+        "categoryName": "哒哒哒哒哒哒多多多多多多多多的",
+        "fileDetailRespList": [
+          {
+            "id": 27,
+            "name": "001.jpg",
+            "postfix": ".jpg",
+            "fileUrl": "10.10.168.177:8080/file/download/9662fb62-94d7-4f4c-a066-2429920e7d39",
+            "key": "9662fb62-94d7-4f4c-a066-2429920e7d39"
+          },
+          {
+            "id": 26,
+            "name": "002.jpg",
+            "postfix": ".jpg",
+            "fileUrl": "10.10.168.177:8080/file/download/7283f589-df51-4a19-92c4-4a3094a37570",
+            "key": "7283f589-df51-4a19-92c4-4a3094a37570"
+          }
+        ],
+        "typeCode": "PIC",
+        "typeName": "图片",
+        "modifierId": 1,
+        "modifier": "eee",
+        "modifierName": "admin",
+        "modifyTime": "2023-05-19 16:43:20"
+      },
+      {
+        "id": 6,
+        "name": "add多",
+        "categoryId": 30,
+        "categoryName": "哒哒哒哒哒哒多多多多多多多多的",
+        "fileDetailRespList": [
+          {
+            "id": 28,
+            "name": "对对对.docx",
+            "postfix": ".docx",
+            "fileUrl": "10.10.168.177:8080/file/download/bd46f9d9-7160-421f-a497-a9e6dfc3863d",
+            "key": "bd46f9d9-7160-421f-a497-a9e6dfc3863d"
+          }
+        ],
+        "typeCode": "WORD",
+        "typeName": "文档",
+        "modifierId": 1,
+        "modifier": "eee",
+        "modifierName": "admin",
+        "modifyTime": "2023-05-19 16:50:51"
+      }
     ],
   });
 };

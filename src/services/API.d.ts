@@ -91,5 +91,6 @@ declare namespace MaterialType {
     name?: string;
     /** 文件类型 WORD:文档 PIC：图片 */
     typeCode?: string;
+    id?: string;
   }
 }
