@@ -29,146 +29,146 @@ const getTenderDirList = (req: Request, res: Response) => {
 
 const KMSDirList = [
   {
-    "t": {
-      "id": 1,
-      "name": "标书模板库",
-      "parentId": 0
+    t: {
+      id: 1,
+      name: '标书模板库',
+      parentId: 0,
     },
-    "children": [
+    children: [
       {
-        "t": {
-          "id": 29,
-          "name": "啊",
-          "parentId": 1
+        t: {
+          id: 29,
+          name: '啊',
+          parentId: 1,
         },
-        "children": []
-      }
-    ]
+        children: [],
+      },
+    ],
   },
   {
-    "t": {
-      "id": 2,
-      "name": "标书产品库",
-      "parentId": 0
+    t: {
+      id: 2,
+      name: '标书产品库',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 3,
-      "name": "标书商务库",
-      "parentId": 0
+    t: {
+      id: 3,
+      name: '标书商务库',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 4,
-      "name": "标书素材库",
-      "parentId": 0
+    t: {
+      id: 4,
+      name: '标书素材库',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 19,
-      "name": "1string",
-      "parentId": 0
+    t: {
+      id: 19,
+      name: '1string',
+      parentId: 0,
     },
-    "children": [
+    children: [
       {
-        "t": {
-          "id": 21,
-          "name": "19string",
-          "parentId": 19
+        t: {
+          id: 21,
+          name: '19string',
+          parentId: 19,
         },
-        "children": []
+        children: [],
       },
       {
-        "t": {
-          "id": 22,
-          "name": "191string",
-          "parentId": 19
+        t: {
+          id: 22,
+          name: '191string',
+          parentId: 19,
         },
-        "children": []
+        children: [],
       },
       {
-        "t": {
-          "id": 23,
-          "name": "192string",
-          "parentId": 19
+        t: {
+          id: 23,
+          name: '192string',
+          parentId: 19,
         },
-        "children": [
+        children: [
           {
-            "t": {
-              "id": 16,
-              "name": "string",
-              "parentId": 23
+            t: {
+              id: 16,
+              name: 'string',
+              parentId: 23,
             },
-            "children": [
+            children: [
               {
-                "t": {
-                  "id": 17,
-                  "name": "16string",
-                  "parentId": 16
+                t: {
+                  id: 17,
+                  name: '16string',
+                  parentId: 16,
                 },
-                "children": [
+                children: [
                   {
-                    "t": {
-                      "id": 18,
-                      "name": "17string",
-                      "parentId": 17
+                    t: {
+                      id: 18,
+                      name: '17string',
+                      parentId: 17,
                     },
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
-    "t": {
-      "id": 20,
-      "name": "2string",
-      "parentId": 0
+    t: {
+      id: 20,
+      name: '2string',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 25,
-      "name": "AAA",
-      "parentId": 0
+    t: {
+      id: 25,
+      name: 'AAA',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 26,
-      "name": "BBB",
-      "parentId": 0
+    t: {
+      id: 26,
+      name: 'BBB',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 27,
-      "name": "CCC",
-      "parentId": 0
+    t: {
+      id: 27,
+      name: 'CCC',
+      parentId: 0,
     },
-    "children": []
+    children: [],
   },
   {
-    "t": {
-      "id": 28,
-      "name": "DDDDDD",
-      "parentId": 0
+    t: {
+      id: 28,
+      name: 'DDDDDD',
+      parentId: 0,
     },
-    "children": []
-  }
+    children: [],
+  },
 ];
 
 const getTenderKMSDirList = (req: Request, res: Response) => {
@@ -210,32 +210,37 @@ const getMaterialList = (req: Request, res: Response) => {
     pageSize: 10,
     resultList: [
       {
-        name: '标书模板库',
-        id: '1',
-        parentId: '0',
-        children: [
-          {
-            name: '分类一',
-            id: '11',
-            parentId: '1',
-            children: [
-              { name: '分类1.1', id: '111', parentId: '11', children: [] },
-              { name: '分类1.2', id: '112', parentId: '11', children: [] },
-            ],
-          },
-          { name: '分类二', id: '12', parentId: '1', children: [] },
-        ],
+        categoryId: 1,
+        categoryName: 'aaa',
+        id: 1,
+        modifier: '111',
+        modifierId: 11,
+        modifierName: 'zhangsan',
+        name: 'aa',
+        typeCode: 'WORD',
+        fileDetailRespList: [{ fileUrl: '/download?file=docx/d1.docx', name: 'dsfsdfsd' }],
       },
       {
-        name: '标书产品库',
-        id: '2',
-        parentId: '0',
-        children: [{ name: '分类一', id: '21', parentId: '2', children: [] }],
+        categoryId: 1,
+        categoryName: 'aaa',
+        id: 2,
+        modifier: '111',
+        modifierId: 11,
+        modifierName: 'zhangsan',
+        name: 'aa',
+        typeCode: 'PIC',
+        fileDetailRespList: [
+          { fileUrl: '/download?file=docx/001.jpg', name: 'ssssss' },
+          {
+            fileUrl: '/download?file=docx/002.jpg',
+            name: '发射点发射点发射点的发射点发射点发射点',
+          },
+          {
+            fileUrl: '/download?file=docx/031.png',
+            name: '十分士大夫士大夫士大夫但是',
+          },
+        ],
       },
-      { name: '标书商务库', id: '3', parentId: '0', children: [] },
-      { name: '标书封面库', id: '4', parentId: '0', children: [] },
-      { name: '标书工业库', id: '5', parentId: '0', children: [] },
-      { name: '标书制造库', id: '6', parentId: '0', children: [] },
     ],
   });
 };

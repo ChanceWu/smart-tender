@@ -1,7 +1,9 @@
+import PreviewDrawer from '@/components/common/PreviewDrawer';
 import useModalForm from '@/hooks/useModalForm';
 import usePagination from '@/hooks/usePagination';
-import { useMount } from 'ahooks';
-import { Button, Cascader, Divider, Form, Input, Table, Tabs } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { useBoolean, useMount, useToggle } from 'ahooks';
+import { Button, Cascader, Divider, Form, Input, Popconfirm, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import { useMemo, useState } from 'react';
 import { useModel } from 'umi';
@@ -16,14 +18,20 @@ function MaterialManagement() {
     queryMaterialList,
     addMaterial,
     editMaterial,
+    delMaterial,
   } = useModel('useMaterialModel');
   const [activeKey, setActiveKey] = useState<string>('1');
   const [form] = Form.useForm();
   const { pagination } = usePagination();
+
+  const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
+  const [curSource, setCurSource] = useState<API.Pinyin_8>();
+
   const {
     openModal,
     modalProps,
     form: detailForm,
+    formData: detailFormData,
   } = useModalForm<MaterialType.MaterialInfo>({
     onOk: (d) => {
       console.log({ ...d });
@@ -36,6 +44,7 @@ function MaterialManagement() {
   });
 
   useMount(() => {
+    queryMaterialList({});
     queryCategoryTree();
   });
   const tabList = useMemo(
@@ -51,7 +60,7 @@ function MaterialManagement() {
     [activeKey, categoryTree],
   );
 
-  const columns: ColumnsType<API.Pinyin_7> = [
+  const columns: ColumnsType<API.Pinyin_8> = [
     {
       title: '素材分类',
       dataIndex: 'categoryName',
@@ -94,27 +103,33 @@ function MaterialManagement() {
           <Button
             type="link"
             onClick={() => {
-              console.log(record.id);
+              setCurSource(record);
+              openPreview();
             }}
           >
             预览
           </Button>
           <Button
             type="link"
-            onClick={() => {
-              console.log(record.id);
-            }}
+            onClick={() =>
+              openModal('编辑素材', {
+                categoryId: record.categoryId,
+                categoryName: record.categoryName,
+                fileIdList: record.fileDetailRespList as any,
+                name: record.name,
+                typeCode: record.typeCode,
+              })
+            }
           >
             编辑
           </Button>
-          <Button
-            type="link"
-            onClick={() => {
-              console.log(record.id);
-            }}
+          <Popconfirm
+            title="你确定要删除吗？"
+            onConfirm={() => delMaterial(record.id)}
+            icon={<ExclamationCircleFilled style={{ color: 'red' }} />}
           >
-            删除
-          </Button>
+            <Button type="link">删除</Button>
+          </Popconfirm>
         </>
       ),
     },
@@ -175,7 +190,18 @@ function MaterialManagement() {
           <Table columns={columns} dataSource={materialList} pagination={pagination} bordered />
         </div>
       </div>
-      <MaterialDetailModal modalProps={modalProps} form={detailForm} typeOption={TypeOption} />
+      <MaterialDetailModal
+        modalProps={modalProps}
+        form={detailForm}
+        formData={detailFormData}
+        typeOption={TypeOption}
+      />
+      <PreviewDrawer
+        open={preview}
+        onClose={closePreview}
+        data={curSource?.fileDetailRespList}
+        type={curSource?.typeCode}
+      />
     </div>
   );
 }
