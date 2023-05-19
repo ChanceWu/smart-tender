@@ -1,12 +1,10 @@
 import { extend, RequestOptionsInit } from 'umi-request';
 
 const request = extend({
-  prefix: process.env.NODE_ENV === 'production' ? '/api/' : '',
+  prefix: process.env.NODE_ENV === 'production' ? '/inter-api/tender' : '/inter-api/tender',
   timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
+console.log('process.env.PATH_PREFIX', process)
 
 request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
     try {
@@ -28,6 +26,7 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
         // companyCode: 'tech',
         // companyName: 'eee',
         // userId: '1',
+        Authorization: `Bearer ${loginMsg.ticket}`,
         userName: loginMsg.username,
         staffCode: '0120230934',
         staffName: 'eee',
@@ -35,6 +34,9 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
         companyName: encodeURI(loginMsg.currentCompany.name),
         userId: loginMsg.userId+'',
       };
+      if (!url.includes('/file/')) {
+        options.headers = { ...options.headers, 'Content-Type': 'application/json'}
+      }
       console.log('intercepter');
     } catch (error) {
       console.error(error);

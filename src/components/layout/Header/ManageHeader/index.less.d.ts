@@ -3,6 +3,7 @@
 interface CssExports {
   'customStyle': string;
   'headerItem': string;
+  'headerLabel': string;
   'headerMenu': string;
   'headerWrap': string;
   'logoTitle': string;

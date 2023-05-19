@@ -14,7 +14,7 @@ const RightContent: React.FunctionComponent = () => {
       <div>您好，admin</div>
       <div className={styles.split}></div>
       {/* <SettingOutlined onClick={() => routerTo('/settings')} /> */}
-      <a>退出</a>
+      <div>退出</div>
     </div>
   );
 };

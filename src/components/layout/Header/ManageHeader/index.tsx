@@ -35,7 +35,7 @@ const ManageHeader: React.FunctionComponent<
       <div className={styles.logoTitle}>
         <h1>中控·SUPCON</h1>
       </div>
-      <div>
+      <div className={styles.headerLabel}>
         <span>{props.module}</span>
       </div>
       <div className={styles.headerMenu}>

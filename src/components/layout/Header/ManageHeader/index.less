@@ -5,13 +5,30 @@
   background-color: #0f71e2;
   // background: url(../../../../assets/images/header/header2_bg.png);
   background-size: 100% 100%;
+  color: white;
+  .headerLabel {
+    font-weight: normal;
+    font-size: 16px;
+    font-family: PingFangSC-Medium;
+    line-height: 24px;
+    letter-spacing: 0em;
+    padding: 0 20px;
+  }
 }
 .customStyle {
   color: #3d3d3d;
   background-color: white;
-  .logoTitle:first-child {
+  .logoTitle {
     color: white;
     background-color: #001529;
+  }
+  .headerLabel {
+    color: #3d3d3d;
+  }
+  :global {
+    .rightContent .split {
+      background-color: #3d3d3d;
+    }
   }
 }
 

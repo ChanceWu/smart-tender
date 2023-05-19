@@ -96,7 +96,7 @@ const DirTree = () => {
             </Button>
           </div>
         </div>
-        <div>
+        <div className={styles.content}>
           {treeData.length && (
             <Tree
               className={styles.dirTree}

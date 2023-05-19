@@ -37,7 +37,7 @@ export async function getInitialState(): Promise<{
       //   userId: loginMsg.userId,
       // }
     } catch (error) {
-      location.href = 'https://portal.supcon.com/cas-web/login?service=http://10.30.60.130:8000';
+      location.href = 'https://portal.supcon.com/cas-web/login?service=http://localhost:8000';
       console.error(error);
     }
     return undefined;

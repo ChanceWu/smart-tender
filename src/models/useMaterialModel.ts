@@ -23,12 +23,12 @@ export default function useMaterialModel() {
   const [materialList, setMaterialList] = useState<API.Pinyin_7[]>([]);
 
   const queryCategoryTree = useCallback(async () => {
-    const { resultList } = await TenderApi.queryTenderKMSDirList();
-    const result = formatTreeData(resultList ?? []);
-    setCategoryTree(addLevelToTree(result));
-    // const { data } = await allUsingGET();
-    // const result = formatTreeData(data ?? []);
+    // const { resultList } = await TenderApi.queryTenderKMSDirList();
+    // const result = formatTreeData(resultList ?? []);
     // setCategoryTree(addLevelToTree(result));
+    const { data } = await allUsingGET();
+    const result = formatTreeData(data ?? []);
+    setCategoryTree(addLevelToTree(result));
   }, []);
 
   const queryCategoryTreeById = useCallback(async (id: number) => {
@@ -73,14 +73,23 @@ export default function useMaterialModel() {
   }, []);
 
   const queryMaterialList = useCallback(async (p: API.Pinyin_2) => {
-    const { resultList } = await MaterialApi.queryMaterialList();
-    setMaterialList(resultList);
-    // const { data, code, msg } = await pageUsingPOST1({ pageNumber: 1, pageSize: 10, ...p });
-    // if (code === 1) {
-    //   setMaterialList(data?.data || []);
-    // } else {
-    //   message.error(msg);
-    // }
+    // const { resultList } = await MaterialApi.queryMaterialList();
+    // setMaterialList(resultList);
+    const { data, code, msg } = await pageUsingPOST1({ pageNumber: 1, pageSize: 10, ...p });
+    if (code === 1) {
+      setMaterialList(data?.data || []);
+    } else {
+      message.error(msg);
+    }
+  }, []);
+
+  const uploadResource = useCallback(async (file: File) => {
+    const { data, code, msg } = await uploadUsingPOST({}, file);
+    if (code === 1) {
+      return data?.id;
+    } else {
+      message.error(msg);
+    }
   }, []);
 
   const uploadFile = async (p: any[] = []) => {

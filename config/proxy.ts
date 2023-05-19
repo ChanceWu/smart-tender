@@ -14,21 +14,21 @@ export default {
       changeOrigin: true, // 允许跨域
       pathRewrite: { '/': '/' },
     },
-    '/usercenter/': {
-      target: 'http://10.30.5.248:8080',
-      changeOrigin: true, // 允许跨域
-      pathRewrite: { '/usercenter/': '/' },
-    },
-    '/tender/': {
-      target: 'http://10.10.168.177:8080',
-      changeOrigin: true, // 允许跨域
-      pathRewrite: { '^/': '/' },
-    },
-    '/file/': {
-      target: 'http://10.10.168.177:8080',
+    // '/usercenter/': {
+    //   target: 'http://10.30.5.248:8080',
+    //   changeOrigin: true, // 允许跨域
+    //   pathRewrite: { '/usercenter/': '/' },
+    // },
+    '/inter-api/': {
+      target: 'http://10.40.0.244:8080',
       changeOrigin: true, // 允许跨域
       pathRewrite: { '^/': '/' },
     },
+    // '/file/': {
+    //   target: 'http://10.10.168.177:8080',
+    //   changeOrigin: true, // 允许跨域
+    //   pathRewrite: { '^/': '/' },
+    // },
     '/api/': {
       // 要代理的地址
       target: 'https://preview.pro.ant.design',

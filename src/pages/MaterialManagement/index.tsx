@@ -91,8 +91,8 @@ function MaterialManagement() {
     },
     {
       title: '上传时间',
-      dataIndex: 'modifierTime',
-      key: 'modifierTime',
+      dataIndex: 'modifyTime',
+      key: 'modifyTime',
     },
     {
       title: '操作',
@@ -153,11 +153,11 @@ function MaterialManagement() {
           <Form.Item
             label="素材分类"
             name={['req', 'categoryId']}
-            getValueFromEvent={(v) => v[v.length - 1]}
+            // getValueFromEvent={(v) => { console.log(v, v[v.length - 1]);return v[v.length - 1]}}
           >
             <Cascader
               options={TypeOption}
-              fieldNames={{ label: 'name', value: 'id' }}
+              fieldNames={{ label: 'name', value: 'id', children: 'children' }}
               placeholder="请选择"
               style={{ width: 200 }}
               changeOnSelect
