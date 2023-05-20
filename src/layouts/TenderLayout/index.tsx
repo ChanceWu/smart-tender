@@ -4,7 +4,7 @@ import { ProLayout } from '@ant-design/pro-layout';
 import React from 'react';
 import { Link } from 'umi';
 
-const ManageLayout: React.FC<BasicLayoutProps> = (props) => {
+const TenderLayout: React.FC<BasicLayoutProps> = (props) => {
   console.log('props', props);
   const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
     menus.map(({ children, ...item }) => ({
@@ -15,9 +15,9 @@ const ManageLayout: React.FC<BasicLayoutProps> = (props) => {
   return (
     <ProLayout
       logo={false}
-      layout="mix"
+      layout="top"
       headerRender={(p) => <Header {...p} />}
-      siderWidth={170}
+      // siderWidth={170}
       menuDataRender={() => loopMenuItem(props.route?.routes || [])}
       menuItemRender={(item, dom) => (
         <Link to={item.path ?? '/'}>
@@ -30,4 +30,4 @@ const ManageLayout: React.FC<BasicLayoutProps> = (props) => {
   );
 };
 
-export default ManageLayout;
+export default TenderLayout;
