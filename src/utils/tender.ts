@@ -22,16 +22,19 @@ export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
 };
 
 export const formatTreeData = (data: API.TreeNode2[]): MaterialType.CategoryTree[] => {
-  return data.map(v => {
+  return data.map((v) => {
     return {
       ...v.t,
       children: v.children?.length ? formatTreeData(v.children) : [],
-    }
-  })
-}
+    };
+  });
+};
 
-export const addLevelToTree = (treeData: MaterialType.CategoryTree[], level = 0): MaterialType.CategoryTree[] => {
-  return treeData.map(node => {
+export const addLevelToTree = (
+  treeData: MaterialType.CategoryTree[],
+  level = 0,
+): MaterialType.CategoryTree[] => {
+  return treeData.map((node) => {
     // 为当前节点添加 level 属性
     const currentNode = { ...node, level };
 
@@ -42,4 +45,47 @@ export const addLevelToTree = (treeData: MaterialType.CategoryTree[], level = 0)
 
     return currentNode;
   });
-}
+};
+
+export const getListFromTree = (
+  nodes: TenderType.TenderDirTreeNode[],
+  level: number,
+): TenderType.TenderDir[] => {
+  const list: TenderType.TenderDir[] = [];
+
+  nodes.forEach((node) => {
+    const item: TenderType.TenderDir = {
+      name: node.name,
+      id: node.id,
+      isMaterial: node.isMaterial,
+      parentId: node.parentId,
+      level: level,
+    };
+
+    list.push(item);
+
+    if (node.children.length > 0) {
+      const childrenList = getListFromTree(node.children, level + 1);
+      list.push(...childrenList);
+    }
+  });
+
+  return list;
+};
+
+export const deleteTreeNode = (
+  tree: TenderType.TenderDirTreeNode[],
+  id: string,
+): TenderType.TenderDirTreeNode[] => {
+  return tree.filter((node) => {
+    if (node.id === id) {
+      // 当前节点匹配到要删除的节点，返回空数组表示删除
+      return false;
+    } else if (node.children) {
+      // 递归删除子节点
+      node.children = deleteTreeNode(node.children, id);
+      return true;
+    }
+    return true;
+  });
+};
