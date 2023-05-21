@@ -188,7 +188,13 @@ function MaterialManagement() {
           <Button className={styles.createBtn} type="primary" onClick={() => openModal('新增素材')}>
             新增素材
           </Button>
-          <Table columns={columns} dataSource={materialList} pagination={pagination} bordered />
+          <Table
+            rowKey="id"
+            columns={columns}
+            dataSource={materialList}
+            pagination={pagination}
+            bordered
+          />
         </div>
       </div>
       <MaterialDetailModal

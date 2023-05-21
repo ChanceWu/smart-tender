@@ -118,7 +118,7 @@ const TenderList = () => {
         </Form>
       </div>
       <div className={styles.content}>
-        <Table columns={columns} dataSource={tenderList} pagination={pagination} />
+        <Table rowKey="id" columns={columns} dataSource={tenderList} pagination={pagination} />
       </div>
       {/* <MaterialDetailModal
         modalProps={modalProps}
