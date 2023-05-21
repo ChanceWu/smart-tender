@@ -1,3 +1,4 @@
+import { validateName } from '@/utils/regexp';
 import { Form, FormInstance, Input, Modal, ModalProps } from 'antd';
 import React from 'react';
 
@@ -19,7 +20,7 @@ const DirNameModal: React.FC<IProps> = ({ modalProps, form }) => {
         <Form.Item
           label="名称"
           name="name"
-          rules={[{ required: true, message: '目录名称不能为空' }]}
+          rules={[{ required: true, message: '目录名称不能为空' }, { validator: validateName }]}
         >
           <Input placeholder="请输入目录名称" maxLength={15} />
         </Form.Item>

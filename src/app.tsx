@@ -4,6 +4,7 @@ import { RequestMethod, RunTimeLayoutConfig, RequestOptionsInit } from 'umi';
 // import { extend } from 'umi-request';
 import { history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
+import Loading from './components/common/Loading';
 import Header from './components/layout/Header';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -11,7 +12,7 @@ const loginPath = '/user/login';
 
 /** 获取用户信息比较慢的时候会展示一个 loading */
 export const initialStateConfig = {
-  loading: <PageLoading />,
+  loading: <Loading />,
 };
 
 /**

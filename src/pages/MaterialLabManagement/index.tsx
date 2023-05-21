@@ -68,6 +68,7 @@ function MaterialLabManagement() {
             defaultExpandAll
             treeData={treeData}
             selectable={false}
+            blockNode
           />
         )}
       </div>
