@@ -53,3 +53,11 @@ export async function createTender() {
     method: 'post',
   });
 }
+
+// 标书列表
+export async function queryTenderList(params: TenderType.TenderQueryParams) {
+  return request<PaginationResult<TenderType.TenderItem>>(`/api/mock/tender/List`, {
+    method: 'get',
+    params,
+  });
+}

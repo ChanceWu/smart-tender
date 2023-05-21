@@ -16,7 +16,6 @@ declare namespace API {
     username: string;
     ticket: string;
   }
-  
 }
 declare namespace TenderType {
   export interface TenderDir {
@@ -25,6 +24,7 @@ declare namespace TenderType {
     isMaterial: boolean;
     file?: string;
     parentId: string;
+    level?: number;
   }
   export interface TenderDirTreeNode {
     id: string;
@@ -68,6 +68,21 @@ declare namespace TenderType {
   export interface KMSListQueryParams {
     type?: string;
     keyword?: string;
+  }
+  export interface TenderItem {
+    name: string;
+    id: number;
+    status: string;
+    createTime: string;
+    creator: string;
+    creatorId: string;
+    fileKey: string;
+  }
+  export interface TenderQueryParams {
+    name?: string;
+    status?: string;
+    createTimeStart?: string;
+    createTimeEnd?: string;
   }
 }
 
