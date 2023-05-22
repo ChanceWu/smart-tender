@@ -1,6 +1,6 @@
 import useModalForm from '@/hooks/useModalForm';
 import { useMount } from 'ahooks';
-import { Tree } from 'antd';
+import { Empty, Tree } from 'antd';
 import type { DataNode } from 'antd/lib/tree';
 import { useEffect, useMemo } from 'react';
 import { useModel } from 'umi';
@@ -61,16 +61,15 @@ function MaterialLabManagement() {
     <div className={styles.container}>
       <div className={styles.header}>素材库名称</div>
       <div className={styles.content}>
-        {treeData.length > 0 && (
+        {treeData.length > 0 ? (
           <Tree
             className={styles.dirTree}
-            multiple
-            defaultExpandAll
+            // defaultExpandAll
             treeData={treeData}
             selectable={false}
             blockNode
           />
-        )}
+        ) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
       </div>
       <DirNameModal modalProps={dirNameModalProps} form={categoryForm} />
     </div>
