@@ -61,7 +61,7 @@ function MaterialLabManagement() {
     <div className={styles.container}>
       <div className={styles.header}>素材库名称</div>
       <div className={styles.content}>
-        {treeData.length && (
+        {treeData.length > 0 && (
           <Tree
             className={styles.dirTree}
             multiple

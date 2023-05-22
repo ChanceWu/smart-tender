@@ -16,6 +16,7 @@ const ManageLayout: React.FC<BasicLayoutProps> = (props) => {
     <ProLayout
       logo={false}
       layout="mix"
+      location={props.location}
       headerRender={(p) => <Header {...p} />}
       siderWidth={170}
       menuDataRender={() => loopMenuItem(props.route?.routes || [])}

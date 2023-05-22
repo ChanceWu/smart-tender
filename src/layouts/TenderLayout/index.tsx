@@ -16,6 +16,7 @@ const TenderLayout: React.FC<BasicLayoutProps> = (props) => {
     <ProLayout
       logo={false}
       layout="top"
+      location={props.location}
       headerRender={(p) => <Header {...p} />}
       // siderWidth={170}
       menuDataRender={() => loopMenuItem(props.route?.routes || [])}
