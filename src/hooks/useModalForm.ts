@@ -51,6 +51,7 @@ export default <VO>(options: Options<VO>) => {
   return {
     modalProps: {
       visible,
+      open: visible,
       title,
       onOk: onModalOk,
       onCancel: closeModal,

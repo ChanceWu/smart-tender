@@ -1,11 +1,12 @@
+import ComInput from '@/components/common/ComInput';
 import PreviewDrawer from '@/components/common/PreviewDrawer';
 import useModalForm from '@/hooks/useModalForm';
 import usePagination from '@/hooks/usePagination';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { useBoolean, useMount, useToggle } from 'ahooks';
-import { Button, Cascader, Divider, Form, Input, Popconfirm, Table, Tabs } from 'antd';
+import { useBoolean, useMount } from 'ahooks';
+import { Button, Cascader, Form, Popconfirm, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import MaterialDetailModal from './components/MaterialDetailModal';
 import styles from './index.less';
@@ -15,12 +16,13 @@ function MaterialManagement() {
     categoryTree,
     queryCategoryTree,
     materialList,
+    tabActiveKey,
+    setTabActiveKey,
     queryMaterialList,
     addMaterial,
     editMaterial,
     delMaterial,
   } = useModel('useMaterialModel');
-  const [activeKey, setActiveKey] = useState<string>('1');
   const [form] = Form.useForm();
   const { pagination } = usePagination();
 
@@ -35,6 +37,8 @@ function MaterialManagement() {
   } = useModalForm<MaterialType.MaterialInfo>({
     onOk: (d) => {
       console.log({ ...d });
+      const categoryIdList = (d.categoryId || []) as number[];
+      d.categoryId = categoryIdList[categoryIdList.length - 1];
       if (d.id) {
         editMaterial(d);
       } else {
@@ -44,9 +48,14 @@ function MaterialManagement() {
   });
 
   useMount(() => {
-    queryMaterialList({});
     queryCategoryTree();
   });
+
+  useEffect(() => {
+    if (tabActiveKey) {
+      queryMaterialList({});
+    }
+  }, [tabActiveKey]);
   const tabList = useMemo(
     () =>
       categoryTree.map((v) => ({
@@ -56,8 +65,8 @@ function MaterialManagement() {
     [categoryTree],
   );
   const TypeOption = useMemo(
-    () => categoryTree.find((v) => v.id === Number(activeKey))?.children ?? [],
-    [activeKey, categoryTree],
+    () => categoryTree.find((v) => v.id === Number(tabActiveKey))?.children ?? [],
+    [tabActiveKey, categoryTree],
   );
 
   const columns: ColumnsType<API.Pinyin_8> = [
@@ -65,6 +74,8 @@ function MaterialManagement() {
       title: '素材分类',
       dataIndex: 'categoryName',
       key: 'categoryName',
+      ellipsis: true,
+      width: '20%',
     },
     {
       title: '素材名称',
@@ -72,16 +83,6 @@ function MaterialManagement() {
       key: 'name',
       ellipsis: true,
       width: '20%',
-      render: (text) => (
-        <Button
-          type="link"
-          onClick={() => {
-            console.log(text);
-          }}
-        >
-          {text}
-        </Button>
-      ),
     },
     {
       title: '上传人',
@@ -126,7 +127,7 @@ function MaterialManagement() {
           </Button>
           <Popconfirm
             title="你确定要删除吗？"
-            onConfirm={() => delMaterial(record.id)}
+            onConfirm={() => delMaterial({ id: record.id })}
             icon={<ExclamationCircleFilled style={{ color: 'red' }} />}
           >
             <Button type="link">删除</Button>
@@ -139,9 +140,12 @@ function MaterialManagement() {
     <div className={styles.container}>
       <Tabs
         className={styles.tabs}
-        activeKey={activeKey}
+        activeKey={tabActiveKey + ''}
         items={tabList}
-        onChange={(k) => setActiveKey(k)}
+        onChange={(k) => {
+          setTabActiveKey(Number(k));
+          form.resetFields();
+        }}
       />
       <div className={styles.content}>
         <Form
@@ -153,7 +157,7 @@ function MaterialManagement() {
         >
           <Form.Item
             label="素材分类"
-            name={['req', 'categoryId']}
+            name="categoryId"
             // getValueFromEvent={(v) => { console.log(v, v[v.length - 1]);return v[v.length - 1]}}
           >
             <Cascader
@@ -164,8 +168,8 @@ function MaterialManagement() {
               changeOnSelect
             />
           </Form.Item>
-          <Form.Item label="素材名称" name={['req', 'name']}>
-            <Input placeholder="请输入素材名称" />
+          <Form.Item label="素材名称" name="name">
+            <ComInput placeholder="请输入素材名称" />
           </Form.Item>
           <Form.Item style={{ marginLeft: 'auto' }}>
             <Button type="primary" htmlType="submit">
@@ -194,6 +198,7 @@ function MaterialManagement() {
             dataSource={materialList}
             pagination={pagination}
             bordered
+            scroll={{ y: 'calc(100vh - 88px - 278px)' }}
           />
         </div>
       </div>

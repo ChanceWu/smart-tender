@@ -1,7 +1,8 @@
+import ComInput from '@/components/common/ComInput';
 import { uploadUsingPOST } from '@/services/smart-tender-api/fileController';
+import { generatePath } from '@/utils/common';
 import { validateName } from '@/utils/regexp';
 import { UploadOutlined } from '@ant-design/icons';
-import { useMount } from 'ahooks';
 import {
   Button,
   Cascader,
@@ -12,10 +13,10 @@ import {
   ModalProps,
   Radio,
   Upload,
-  UploadFile,
   UploadProps,
   message,
 } from 'antd';
+import { RcFile } from 'antd/lib/upload';
 import React, { useCallback, useEffect, useState } from 'react';
 
 interface IProps {
@@ -25,11 +26,40 @@ interface IProps {
   typeOption: MaterialType.CategoryTree[];
 }
 
+const beforeUploadImage = (file: RcFile) => {
+  const isJpgOrPng = ['image/jpg', 'image/jpeg', 'image/png'].includes(file.type);
+  if (!isJpgOrPng) {
+    message.error('支持扩展名：jpg/jpeg/png文件');
+  }
+  const isLt10M = file.size / 1024 / 1024 < 10;
+  if (!isLt10M) {
+    message.error('图片大小不超过10M');
+  }
+  return isJpgOrPng && isLt10M;
+};
+const beforeUploadFile = (file: RcFile) => {
+  const isLt10M = file.size / 1024 / 1024 < 100;
+  if (!isLt10M) {
+    message.error('文件大小不超过100M');
+  }
+  return isLt10M;
+};
+
 const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typeOption }) => {
-  const [typeCode, setTypeCode] = useState<'WORD' | 'PIC'>('WORD');
+  const [typeCode, setTypeCode] = useState<string>('WORD');
+  console.log(typeCode);
+  useEffect(() => {
+    if (modalProps.open === false) setTypeCode('WORD');
+  }, [modalProps.open]);
   useEffect(() => {
     if (formData) {
-      form.setFieldsValue(formData);
+      const categoryId: any = generatePath(formData.categoryId!, typeOption);
+      if (categoryId) {
+        form.setFieldsValue({ ...formData, categoryId });
+      } else {
+        form.setFieldsValue(formData);
+      }
+      if (formData.typeCode) setTypeCode(formData.typeCode);
     }
   }, [form, formData]);
   const customUpload: UploadProps['customRequest'] = useCallback(
@@ -42,8 +72,10 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
       const { data, code, msg } = await uploadUsingPOST({}, option.file as File);
       // 拿到调取接口返回的数据
       if (code === 1) {
-        const fileIds = form.getFieldValue('fileIdList');
-        form.setFieldValue('fileIdList', [...fileIds, data?.id!]);
+        option.onSuccess(data);
+        // const fileIds = form.getFieldValue('fileIdList');
+        // console.log('fileIds', fileIds)
+        // form.setFieldValue('fileIdList', [...fileIds, data?.id!]);
       } else {
         message.error(msg);
       }
@@ -71,7 +103,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
           name="name"
           rules={[{ required: true, message: '素材名称不能为空' }, { validator: validateName }]}
         >
-          <Input placeholder="请输入" maxLength={30} />
+          <ComInput placeholder="请输入" maxLength={30} />
         </Form.Item>
         <Form.Item
           label="素材分类"
@@ -115,9 +147,12 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
               name="logo"
               action="/file/upload"
               listType="picture-card"
-              beforeUpload={() => false}
-              multiple
+              accept=".jpg,.jpeg,.png"
+              beforeUpload={beforeUploadImage}
+              customRequest={customUpload}
+              // multiple
               maxCount={10}
+              showUploadList={{ showPreviewIcon: false }}
             >
               {'点击上传'}
             </Upload>
@@ -129,7 +164,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
             label="上传附件"
             valuePropName="fileList"
             rules={[{ required: true, message: '附件不能为空' }]}
-            extra=""
+            extra="支持扩展名：.docx文件，大小不超过100M"
             getValueFromEvent={(e: any) => {
               console.log('Upload event:', e);
               if (Array.isArray(e)) {
@@ -142,8 +177,10 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
               name="logo"
               action="/file/upload"
               listType="text"
-              beforeUpload={() => false}
-              // customRequest={customUpload}
+              accept=".docx"
+              beforeUpload={beforeUploadFile}
+              customRequest={customUpload}
+              // previewFile={previewHandle}
               // multiple
             >
               <Button icon={<UploadOutlined />}>上传文件</Button>
