@@ -1,21 +1,19 @@
-import React, { RefObject, useEffect, useMemo, useRef } from 'react';
-import { Button, Form, Input, Modal, Spin, Tree } from 'antd';
-import type { DataNode } from 'antd/es/tree';
-import DirTreeTitle from '../DirTreeTitle';
-import styles from './index.less';
-import useModal from '@/hooks/useModal';
-import { useModel } from 'umi';
-import { useMount, useRequest } from 'ahooks';
-import { TenderApi } from '@/services';
-import { getTreeFromList } from '@/utils/tender';
 import useModalForm from '@/hooks/useModalForm';
+import { PlusOutlined } from '@ant-design/icons';
+import type { TreeProps } from 'antd';
+import { Button, Modal, Spin, Tree } from 'antd';
+import type { DataNode } from 'antd/es/tree';
+import { useEffect, useMemo } from 'react';
+import { useModel } from 'umi';
 import DirNameModal from '../DirNameModal';
+import DirTreeTitle from '../DirTreeTitle';
 import PreFormat from '../PreFormat';
+import styles from './index.less';
 
 type TenderDirTreeNode = TenderType.TenderDirTreeNode[];
 
 const DirTree = () => {
-  const { dirTree, dirList, setDirList, updateDir, delDir, setPreFormat, createTender } =
+  const { dirTree, addDir, updateDir, delDir, setPreFormat, createTender, setSelectedDirId } =
     useModel('useTenderModel');
   const {
     openModal,
@@ -24,14 +22,11 @@ const DirTree = () => {
     formData: dirFormData,
   } = useModalForm<TenderType.TenderDir>({
     onOk: (d) => {
-      console.log({ ...d });
+      console.log('tender dir ', d);
       if (d.id) {
         updateDir(d);
       } else {
-        setDirList([
-          ...dirList,
-          { name: d.name, id: Date.now().toString(), isMaterial: false, parentId: d.parentId },
-        ]);
+        addDir({ ...d, id: Date.now().toString(), isMaterial: false });
       }
     },
   });
@@ -45,19 +40,6 @@ const DirTree = () => {
     },
   });
 
-  const { loading, run } = useRequest(() => TenderApi.queryTenderDirList(), {
-    onSuccess: ({ resultList }) => {
-      const list = [
-        { name: '我的标书', id: '0', isMaterial: false, parentId: '-1' },
-        ...resultList,
-      ];
-      setDirList(list);
-    },
-  });
-  useMount(() => {
-    run();
-  });
-
   useEffect(() => {
     if (dirFormData) dirForm.setFieldsValue(dirFormData);
   }, [dirForm, dirFormData]);
@@ -68,25 +50,24 @@ const DirTree = () => {
         let child: DataNode['children'] = [];
         if (v.children.length) child = dp(v.children);
         return {
-          title: (
-            <DirTreeTitle
-              data={v}
-              isRoot={v.id === '0'}
-              openModal={openModal}
-              onDel={() => delDir(v.id)}
-            />
-          ),
+          title: <DirTreeTitle data={v} openModal={openModal} onDel={() => delDir(v.id)} />,
           key: v.id,
           isLeaf: !v.children.length,
           children: child,
+          selectable: !v.isMaterial,
         };
       });
     };
     return dp(dirTree);
   }, [delDir, dirTree, openModal]);
+
+  const onSelect: TreeProps['onSelect'] = (selectedKeys) => {
+    console.log('selected', selectedKeys);
+    setSelectedDirId(selectedKeys[0] as string);
+  };
   return (
     <div className={styles.dirTreeContainer}>
-      <Spin spinning={loading}>
+      <Spin spinning={dirNameModalProps.confirmLoading}>
         <div className={styles.header}>
           <div>投标书内容</div>
           <div>
@@ -97,13 +78,30 @@ const DirTree = () => {
           </div>
         </div>
         <div className={styles.content}>
-          {treeData.length && (
+          <div className={styles.contentHeader}>
+            <div>我的标书</div>
+            <div>
+              <PlusOutlined
+                title="新增子目录"
+                onClick={() =>
+                  openModal('新建子目录', {
+                    id: '',
+                    name: '',
+                    isMaterial: false,
+                    parentId: '0',
+                    level: 1,
+                  })
+                }
+              />
+            </div>
+          </div>
+          {!dirNameModalProps.confirmLoading && treeData.length > 0 && (
             <Tree
               className={styles.dirTree}
-              multiple
               defaultExpandAll
-              treeData={treeData}
-              selectable={false}
+              blockNode
+              treeData={[...treeData]}
+              onSelect={onSelect}
             />
           )}
         </div>

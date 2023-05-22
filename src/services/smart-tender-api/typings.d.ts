@@ -130,6 +130,7 @@ declare namespace API {
     name?: string;
     /** 父类id */
     parentId?: number;
+    file?: string;
   };
 
   type Pinyin_8 = {

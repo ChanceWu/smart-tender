@@ -1,40 +1,64 @@
 import usePagination from '@/hooks/usePagination';
 import { TenderApi } from '@/services';
 import { useMount, useRequest } from 'ahooks';
-import { Button, Cascader, Form, Input, Space, Table, Tabs, Tag } from 'antd';
+import { Button, Cascader, Form, Input, message, Space, Table, Tabs, Tag } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
 import styles from './index.less';
 const { Search } = Input;
 
 const MaterialList = () => {
-  const { kmsDirList, queryTenderKMSDirList, queryTenderKMSList, kmsList } =
-    useModel('useTenderModel');
-  const [activeKey, setActiveKey] = useState<string>();
+  const { categoryTree, queryCategoryTree, materialList, queryMaterialList } =
+    useModel('useMaterialModel');
+  const { selectedDirId, addMaterial2DirList } = useModel('useTenderModel');
+  const [activeKey, setActiveKey] = useState<number>();
   const [form] = Form.useForm();
   const { pagination } = usePagination();
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRow, setSelectedRow] = useState<API.Pinyin_7[]>([]);
+
+  const canBultAdd = useMemo(
+    () => !!selectedDirId && !!selectedRowKeys.length,
+    [selectedDirId, selectedRowKeys],
+  );
+
   useMount(() => {
-    queryTenderKMSDirList();
+    queryCategoryTree();
+    queryMaterialList({});
   });
+
+  useEffect(() => {
+    if (categoryTree?.[0]) setActiveKey(categoryTree[0].id);
+  }, [categoryTree]);
   const tabList = useMemo(
     () =>
-      kmsDirList.map((v) => ({
+      categoryTree.map((v) => ({
         label: v.name,
         key: v.id! + '',
       })),
-    [kmsDirList],
+    [categoryTree],
   );
   const onSearch = () => {
     console.log(form.getFieldsValue());
-    queryTenderKMSList(form.getFieldsValue());
+    queryMaterialList(form.getFieldsValue());
   };
-  const TypeOption = useMemo(
-    () => kmsDirList.find((v) => v.id === activeKey)?.children ?? [],
-    [activeKey, kmsDirList],
-  );
+  const TypeOption = useMemo(() => {
+    console.log(activeKey, categoryTree);
+    return categoryTree.find((v) => v.id === activeKey)?.children ?? [];
+  }, [activeKey, categoryTree]);
 
-  const columns: ColumnsType<TenderType.KMSList> = [
+  const bultAdd = () => {
+    if (!canBultAdd) {
+      message.warn('请先在左侧目录树选择目录层级');
+      return;
+    }
+    addMaterial2DirList(selectedRow);
+    setSelectedRowKeys([]);
+  };
+
+  const columns: ColumnsType<API.Pinyin_7> = [
     {
       title: '素材名称',
       dataIndex: 'name',
@@ -54,13 +78,14 @@ const MaterialList = () => {
     },
     {
       title: '素材分类',
-      dataIndex: 'type',
-      key: 'type',
+      dataIndex: 'categoryName',
+      key: 'categoryName',
     },
     {
       title: '素材状态',
       dataIndex: 'status',
       key: 'status',
+      render: () => '公开',
     },
     {
       title: '操作',
@@ -70,7 +95,12 @@ const MaterialList = () => {
         <Button
           type="link"
           onClick={() => {
-            console.log(record.id);
+            if (!selectedDirId) {
+              message.warn('请先在左侧目录树选择目录层级');
+              return;
+            }
+            addMaterial2DirList([record]);
+            setSelectedRowKeys((keys) => keys.filter((k) => k !== record.id));
           }}
         >
           添加素材
@@ -78,13 +108,29 @@ const MaterialList = () => {
       ),
     },
   ];
+  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: API.Pinyin_7[]) => {
+    console.log('newSelectedRow changed: ', selectedRows);
+    setSelectedRow(selectedRows);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
   return (
     <div className={styles.materialListContainer}>
-      <Tabs activeKey={activeKey} items={tabList} onChange={(k) => setActiveKey(k)} />
-      <div>
-        <Form form={form} layout="inline">
+      <Tabs
+        className={styles.tabs}
+        activeKey={activeKey?.toString()}
+        items={tabList}
+        onChange={(k) => setActiveKey(k)}
+      />
+      <div className={styles.content}>
+        <Form className={styles.search} form={form} layout="inline">
           <Form.Item>
-            <Button type="primary">批量添加</Button>
+            <Button type="primary" onClick={bultAdd}>
+              批量添加
+            </Button>
           </Form.Item>
           <Form.Item label="素材分类" name="type" getValueFromEvent={(v) => v[v.length - 1]}>
             <Cascader
@@ -100,7 +146,13 @@ const MaterialList = () => {
           </Form.Item>
         </Form>
         <div>
-          <Table columns={columns} dataSource={kmsList} pagination={pagination} />
+          <Table
+            rowKey={'id'}
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={materialList}
+            pagination={pagination}
+          />
         </div>
       </div>
     </div>

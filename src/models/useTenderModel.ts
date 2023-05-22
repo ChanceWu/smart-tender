@@ -1,6 +1,6 @@
 import { TenderApi } from '@/services';
 import { allUsingGET } from '@/services/smart-tender-api/tenderSourceCategoryController';
-import { formatTreeData, getTreeFromList } from '@/utils/tender';
+import { deleteTreeNode, formatTreeData, getListFromTree, getTreeFromList } from '@/utils/tender';
 import { useState, useCallback, useEffect } from 'react';
 
 export default function useTenderModel() {
@@ -11,6 +11,12 @@ export default function useTenderModel() {
 
   const [kmsDirList, setKMSDirList] = useState<TenderType.KMSDirList[]>([]);
   const [kmsList, setKMSList] = useState<TenderType.KMSList[]>([]);
+
+  // 当前被选中的目录id
+  const [selectedDirId, setSelectedDirId] = useState<string>();
+
+  // 标书列表
+  const [tenderList, setTenderList] = useState<TenderType.TenderItem[]>([]);
 
   const queryTenderKMSDirList = useCallback(async () => {
     // const { resultList } = await TenderApi.queryTenderKMSDirList();
@@ -38,8 +44,17 @@ export default function useTenderModel() {
 
   const delDir = useCallback(
     (id: string) => {
-      const newDirList = dirList.filter((v) => v.id !== id);
+      const newDirTree = deleteTreeNode(dirTree, id);
+      const newDirList = getListFromTree(newDirTree, 0);
+      console.log(getListFromTree(newDirTree, 0));
       setDirList(newDirList);
+    },
+    [dirTree],
+  );
+
+  const addDir = useCallback(
+    (d: TenderType.TenderDir) => {
+      setDirList([...dirList, d]);
     },
     [dirList],
   );
@@ -55,10 +70,32 @@ export default function useTenderModel() {
     [dirList],
   );
 
+  const addMaterial2DirList = useCallback(
+    (materials: API.Pinyin_7[]) => {
+      const newLists = materials.map((v) => ({
+        ...v,
+        name: v.name!,
+        isMaterial: true,
+        file: v.file,
+        id: Date.now() + '' + v.id!,
+        parentId: selectedDirId!,
+      }));
+      setDirList((v) => [...v, ...newLists]);
+    },
+    [selectedDirId],
+  );
+
+  const queryTenderList = useCallback(async (p: TenderType.KMSListQueryParams) => {
+    console.log(p);
+    const { resultList } = await TenderApi.queryTenderList({});
+    setTenderList(resultList);
+  }, []);
+
   return {
     dirList,
     setDirList,
     delDir,
+    addDir,
     updateDir,
     dirTree,
     setDirTree,
@@ -67,7 +104,15 @@ export default function useTenderModel() {
     kmsDirList,
     queryTenderKMSDirList,
     kmsList,
+
     queryTenderKMSList,
     createTender,
+
+    selectedDirId,
+    setSelectedDirId,
+    addMaterial2DirList,
+
+    tenderList,
+    queryTenderList,
   };
 }

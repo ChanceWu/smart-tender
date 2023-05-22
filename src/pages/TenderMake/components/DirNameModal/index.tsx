@@ -1,5 +1,6 @@
 import { validateName } from '@/utils/regexp';
-import { Form, FormInstance, Input, Modal, ModalProps } from 'antd';
+import type { FormInstance, ModalProps } from 'antd';
+import { Form, Input, Modal } from 'antd';
 import React from 'react';
 
 interface IProps {
@@ -15,6 +16,9 @@ const DirNameModal: React.FC<IProps> = ({ modalProps, form }) => {
           <Input />
         </Form.Item>
         <Form.Item name="parentId" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="level" hidden>
           <Input />
         </Form.Item>
         <Form.Item

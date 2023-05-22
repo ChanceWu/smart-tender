@@ -32,22 +32,25 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
       form.setFieldsValue(formData);
     }
   }, [form, formData]);
-  const customUpload: UploadProps['customRequest'] = useCallback(async (option) => {
-    console.log(option.file)
-    //   const form = new FormData();
-    //   form.append('file', file.file);
-    //   // form 对象 就是我们上传接口需要的参数 
-    //  // 调用api接口进行请求 , uploadFile 是走我们封装的 请求的 , 请求头 token 都包含
-    const { data, code, msg } = await uploadUsingPOST({}, option.file as File);
-    // 拿到调取接口返回的数据
-    if (code === 1) {
-      const fileIds = form.getFieldValue('fileIdList');
-      form.setFieldValue('fileIdList', [...fileIds, data?.id!]);
-    } else {
-      message.error(msg);
-    }
-    // option.onSuccess = (...v) => {}
-  }, [form])
+  const customUpload: UploadProps['customRequest'] = useCallback(
+    async (option) => {
+      console.log(option.file);
+      //   const form = new FormData();
+      //   form.append('file', file.file);
+      //   // form 对象 就是我们上传接口需要的参数
+      //  // 调用api接口进行请求 , uploadFile 是走我们封装的 请求的 , 请求头 token 都包含
+      const { data, code, msg } = await uploadUsingPOST({}, option.file as File);
+      // 拿到调取接口返回的数据
+      if (code === 1) {
+        const fileIds = form.getFieldValue('fileIdList');
+        form.setFieldValue('fileIdList', [...fileIds, data?.id!]);
+      } else {
+        message.error(msg);
+      }
+      // option.onSuccess = (...v) => {}
+    },
+    [form],
+  );
   return (
     <Modal {...modalProps} width={500} destroyOnClose>
       <Form
@@ -74,7 +77,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
           label="素材分类"
           name="categoryId"
           rules={[{ required: true, message: '素材分类不能为空' }]}
-          getValueFromEvent={(v) => v[v.length - 1]}
+          // getValueFromEvent={(v) => v[v.length - 1]}
         >
           <Cascader
             options={typeOption}

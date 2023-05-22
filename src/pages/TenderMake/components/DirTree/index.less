@@ -1,7 +1,7 @@
 .dirTreeContainer {
-  background-color: white;
-  font-family: PingFangSC-Semibold;
   color: #333333;
+  font-family: PingFangSC-Semibold;
+  background-color: white;
   .header {
     display: inline-flex;
     align-items: center;
@@ -10,14 +10,20 @@
     padding: 12px 20px;
     border-bottom: 1px solid #ccc;
     div:first-child {
-      font-size: 16px;
       font-weight: normal;
+      font-size: 16px;
       line-height: 24px;
       letter-spacing: 0em;
     }
   }
   .content {
     padding: 24px 20px;
+    .contentHeader {
+      display: flex;
+      justify-content: space-between;
+      padding-right: 4px;
+      padding-bottom: 6px;
+    }
   }
 }
 

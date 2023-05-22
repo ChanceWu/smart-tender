@@ -32,6 +32,7 @@ declare namespace TenderType {
     isMaterial: boolean;
     file?: string;
     parentId: string;
+    level: number;
     children: TenderDirTreeNode[];
   }
   export interface MarginSet {
