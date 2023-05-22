@@ -21,14 +21,16 @@ export default function useMaterialModel() {
   const [categoryTree, setCategoryTree] = useState<MaterialType.CategoryTree[]>([]);
 
   const [materialList, setMaterialList] = useState<API.Pinyin_7[]>([]);
+  const [tabActiveKey, setTabActiveKey] = useState<number>();
 
   const queryCategoryTree = useCallback(async () => {
-    const { resultList } = await TenderApi.queryTenderKMSDirList();
-    const result = formatTreeData(resultList ?? []);
-    setCategoryTree(addLevelToTree(result));
-    // const { data } = await allUsingGET();
-    // const result = formatTreeData(data ?? []);
+    // const { resultList } = await TenderApi.queryTenderKMSDirList();
+    // const result = formatTreeData(resultList ?? []);
     // setCategoryTree(addLevelToTree(result));
+    const { data } = await allUsingGET();
+    const result = formatTreeData(data ?? []);
+    setCategoryTree(addLevelToTree(result));
+    setTabActiveKey(result?.[0]?.id);
   }, []);
 
   const queryCategoryTreeById = useCallback(async (id: number) => {
@@ -72,16 +74,42 @@ export default function useMaterialModel() {
     }
   }, []);
 
-  const queryMaterialList = useCallback(async (p: API.Pinyin_2) => {
-    const { resultList } = await MaterialApi.queryMaterialList();
-    setMaterialList(resultList);
-    // const { data, code, msg } = await pageUsingPOST1({ pageNumber: 1, pageSize: 10, ...p });
-    // if (code === 1) {
-    //   setMaterialList(data?.data || []);
-    // } else {
-    //   message.error(msg);
-    // }
-  }, []);
+  const queryMaterialList = useCallback(async ({
+    pageNumber = 1,
+    pageSize = 10,
+    categoryId,
+    name,
+  }: {
+    pageNumber?: number;
+    pageSize?: number;
+    queryId?: number;
+    categoryId?: number[];
+    name?: string;
+  }) => {
+    // const { resultList } = await MaterialApi.queryMaterialList();
+    // setMaterialList(resultList);
+    let cateId;
+    if (categoryId) {
+      cateId =  categoryId?.[categoryId.length - 1];
+    } else {
+      cateId = tabActiveKey;
+    }
+    console.log('cateId', cateId)
+    const res = await pageUsingPOST1({
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      req: {
+        categoryId: cateId,
+        name,
+      }
+    });
+    const { data, code, msg } = res || {};
+    if (code === 1) {
+      setMaterialList(data?.data || []);
+    } else {
+      message.error(msg);
+    }
+  }, [tabActiveKey]);
 
   const uploadResource = useCallback(async (file: File) => {
     const { data, code, msg } = await uploadUsingPOST({}, file);
@@ -111,12 +139,17 @@ export default function useMaterialModel() {
     // }
   };
 
-  const addMaterial = useCallback(async (p: API.Pinyin_5) => {
+  const addMaterial = useCallback(async (p: {
+    categoryId: number;
+    fileIdList?: File[];
+    name?: string;
+    typeCode?: string;
+  }) => {
     try {
       const { fileIdList, ...rest } = p;
-      const res = await uploadFile(fileIdList);
-      if (!res) return;
-      const { code, msg } = await createUsingPOST2({ ...rest, fileIdList: res });
+      const ids = fileIdList?.map((v: any) => v.response.id);
+      if (!ids) return;
+      const { code, msg } = await createUsingPOST2({ ...rest, fileIdList: ids });
       if (code === 1) {
         message.success('创建成功！');
         queryMaterialList({});
@@ -126,7 +159,7 @@ export default function useMaterialModel() {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [tabActiveKey]);
 
   const editMaterial = useCallback(async (p: API.Pinyin__) => {
     try {
@@ -143,7 +176,7 @@ export default function useMaterialModel() {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [tabActiveKey]);
 
   const delMaterial = useCallback(async (p: API.Id_) => {
     try {
@@ -157,7 +190,7 @@ export default function useMaterialModel() {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [tabActiveKey]);
 
   return {
     categoryTree,
@@ -167,6 +200,8 @@ export default function useMaterialModel() {
     editCategory,
     queryCategoryTreeById,
 
+    tabActiveKey,
+    setTabActiveKey,
     materialList,
     queryMaterialList,
     addMaterial,
