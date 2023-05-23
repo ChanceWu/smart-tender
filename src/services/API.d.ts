@@ -15,6 +15,8 @@ declare namespace API {
     userType: number;
     username: string;
     ticket: string;
+    staffCode: string;
+    staffName: string;
   }
 }
 declare namespace TenderType {

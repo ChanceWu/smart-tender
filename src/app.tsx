@@ -28,7 +28,8 @@ export async function getInitialState(): Promise<{
   const fetchUserInfo = async () => {
     try {
       const loginMsg: API.CurrentUser = JSON.parse(localStorage.getItem('loginMsg') || '');
-      return loginMsg;
+      const personInfo: API.CurrentUser = JSON.parse(localStorage.getItem('personInfo') || '');
+      return { ...loginMsg, staffName: personInfo.staffName, staffCode: personInfo.staffCode };
       // {
       //   userName: loginMsg.username,
       //   // staffCode: '0120230934',
@@ -38,7 +39,8 @@ export async function getInitialState(): Promise<{
       //   userId: loginMsg.userId,
       // }
     } catch (error) {
-      location.href = 'https://portal.supcon.com/cas-web/login?service=http://localhost:8000';
+      // location.href = `https://portal.supcon.com/cas-web/login?service=${location.href}`;
+      location.href = `${location.origin}/login/#/login?redirect_uri=${location.href}`;
       console.error(error);
     }
     return undefined;

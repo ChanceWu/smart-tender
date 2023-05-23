@@ -48,15 +48,7 @@ console.log('process.env.PATH_PREFIX', process.env.PATH_PREFIX);
 request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
   try {
     const loginMsg: API.CurrentUser = JSON.parse(localStorage.getItem('loginMsg') || '');
-    // {
-    //   userName: loginMsg.username,
-    //   // staffCode: '0120230934',
-    //   // staffName: 'eee',
-    //   companyCode: loginMsg.currentCompany.code,
-    //   companyName: encodeURI(loginMsg.currentCompany.name),
-    //   userId: loginMsg.userId,
-    // }
-    console.log('options', options);
+    const personInfo: API.CurrentUser = JSON.parse(localStorage.getItem('personInfo') || '');
     options.headers = {
       ...options.headers,
       // userName: 'wuqianpeng',
@@ -66,17 +58,16 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
       // companyName: 'eee',
       // userId: '1',
       Authorization: `Bearer ${loginMsg.ticket}`,
-      userName: loginMsg.username,
-      staffCode: '0120230934',
-      staffName: 'eee',
-      companyCode: loginMsg.currentCompany.code,
+      userName: encodeURI(loginMsg.username),
+      staffCode: encodeURI(personInfo.staffCode) || '',
+      staffName: encodeURI(personInfo.staffName) || '',
+      companyCode: encodeURI(loginMsg.currentCompany.code),
       companyName: encodeURI(loginMsg.currentCompany.name),
-      userId: loginMsg.userId + '',
+      userId: encodeURI(loginMsg.userId + ''),
     };
     if (!url.includes('/file/')) {
       options.headers = { ...options.headers, 'Content-Type': 'application/json' };
     }
-    console.log('intercepter');
   } catch (error) {
     console.error(error);
   }
