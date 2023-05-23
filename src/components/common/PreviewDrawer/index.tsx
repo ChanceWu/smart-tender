@@ -6,13 +6,13 @@ import SourceViewer from '../SourceViewer';
 interface IProps extends SourceViewerProps {
   open: boolean;
   onClose: () => void;
-  title?: string;
+  modalTitle?: string;
 }
-const PreviewDrawer: React.FC<IProps> = ({ open, onClose, title = '预览', ...props }) => {
+const PreviewDrawer: React.FC<IProps> = ({ open, onClose, modalTitle = '预览', ...props }) => {
   return (
     <Drawer
       width={'50vw'}
-      title={title}
+      title={modalTitle}
       placement="right"
       onClose={onClose}
       open={open}
