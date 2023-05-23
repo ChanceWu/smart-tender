@@ -1,3 +1,4 @@
+import usePagination from '@/hooks/usePagination';
 import { MaterialApi, TenderApi } from '@/services';
 import { uploadUsingPOST } from '@/services/smart-tender-api/fileController';
 import {
@@ -23,14 +24,23 @@ export default function useMaterialModel() {
   const [materialList, setMaterialList] = useState<API.Pinyin_7[]>([]);
   const [tabActiveKey, setTabActiveKey] = useState<number>();
 
+  const { current, pageSize: psize, setCurrentPage, setTotal, pagination } = usePagination();
+  const resetPagination = () => {
+    setCurrentPage(1);
+  }
+
   const queryCategoryTree = useCallback(async () => {
     // const { resultList } = await TenderApi.queryTenderKMSDirList();
     // const result = formatTreeData(resultList ?? []);
     // setCategoryTree(addLevelToTree(result));
-    const { data } = await allUsingGET();
-    const result = formatTreeData(data ?? []);
-    setCategoryTree(addLevelToTree(result));
-    setTabActiveKey(result?.[0]?.id);
+    // try {
+      const { data } = await allUsingGET();
+      const result = formatTreeData(data ?? []);
+      setCategoryTree(addLevelToTree(result));
+      setTabActiveKey(result?.[0]?.id);
+    // } catch (error) {
+    //   console.error(error)
+    // }
   }, []);
 
   const queryCategoryTreeById = useCallback(async (id: number) => {
@@ -90,7 +100,7 @@ export default function useMaterialModel() {
     // setMaterialList(resultList);
     let cateId;
     if (categoryId) {
-      cateId =  categoryId?.[categoryId.length - 1];
+      cateId = categoryId?.[categoryId.length - 1];
     } else {
       cateId = tabActiveKey;
     }
@@ -106,6 +116,7 @@ export default function useMaterialModel() {
     const { data, code, msg } = res || {};
     if (code === 1) {
       setMaterialList(data?.data || []);
+      setTotal(data?.totalSize || 0);
     } else {
       message.error(msg);
     }
@@ -119,6 +130,10 @@ export default function useMaterialModel() {
       message.error(msg);
     }
   }, []);
+
+  useEffect(() => {
+    queryMaterialList({ pageNumber: current, pageSize: psize });
+  }, [current, psize])
 
   const uploadFile = async (p: any[] = []) => {
     // const { resultList } = await MaterialApi.queryMaterialList();
@@ -159,7 +174,7 @@ export default function useMaterialModel() {
     } catch (error) {
       console.error(error);
     }
-  }, [tabActiveKey]);
+  }, [queryMaterialList]);
 
   const editMaterial = useCallback(async (p: API.Pinyin__) => {
     try {
@@ -176,7 +191,7 @@ export default function useMaterialModel() {
     } catch (error) {
       console.error(error);
     }
-  }, [tabActiveKey]);
+  }, [queryMaterialList]);
 
   const delMaterial = useCallback(async (p: API.Id_) => {
     try {
@@ -190,7 +205,7 @@ export default function useMaterialModel() {
     } catch (error) {
       console.error(error);
     }
-  }, [tabActiveKey]);
+  }, [queryMaterialList]);
 
   return {
     categoryTree,
@@ -207,6 +222,7 @@ export default function useMaterialModel() {
     addMaterial,
     editMaterial,
     delMaterial,
-    uploadFile,
+    pagination,
+    resetPagination,
   };
 }

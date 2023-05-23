@@ -22,10 +22,11 @@ function MaterialManagement() {
     addMaterial,
     editMaterial,
     delMaterial,
+    pagination,
+    resetPagination,
   } = useModel('useMaterialModel');
   const [form] = Form.useForm();
-  const { pagination } = usePagination();
-
+  // const { current, pageSize, setTotal, pagination } = usePagination();
   const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
   const [curSource, setCurSource] = useState<API.Pinyin_8>();
 
@@ -144,6 +145,7 @@ function MaterialManagement() {
         items={tabList}
         onChange={(k) => {
           setTabActiveKey(Number(k));
+          resetPagination();
           form.resetFields();
         }}
       />
@@ -181,6 +183,7 @@ function MaterialManagement() {
               htmlType="button"
               onClick={() => {
                 form.resetFields();
+                resetPagination();
                 queryMaterialList({});
               }}
             >
@@ -196,7 +199,7 @@ function MaterialManagement() {
             rowKey="id"
             columns={columns}
             dataSource={materialList}
-            pagination={pagination}
+            pagination={{...pagination}}
             bordered
             scroll={{ y: 'calc(100vh - 88px - 278px)' }}
           />
@@ -212,6 +215,7 @@ function MaterialManagement() {
         open={preview}
         onClose={closePreview}
         data={curSource?.fileDetailRespList}
+        title={curSource?.name}
         type={curSource?.typeCode}
       />
     </div>
