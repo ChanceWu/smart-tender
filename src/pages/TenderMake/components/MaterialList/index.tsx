@@ -17,7 +17,7 @@ const MaterialList = () => {
   const { pagination } = usePagination();
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [selectedRow, setSelectedRow] = useState<API.Pinyin_7[]>([]);
+  const [selectedRow, setSelectedRow] = useState<API.Pinyin_12[]>([]);
 
   const canBultAdd = useMemo(
     () => !!selectedDirId && !!selectedRowKeys.length,
@@ -58,7 +58,7 @@ const MaterialList = () => {
     setSelectedRowKeys([]);
   };
 
-  const columns: ColumnsType<API.Pinyin_7> = [
+  const columns: ColumnsType<API.Pinyin_12> = [
     {
       title: '素材名称',
       dataIndex: 'name',
@@ -108,7 +108,7 @@ const MaterialList = () => {
       ),
     },
   ];
-  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: API.Pinyin_7[]) => {
+  const onSelectChange = (newSelectedRowKeys: React.Key[], selectedRows: API.Pinyin_12[]) => {
     console.log('newSelectedRow changed: ', selectedRows);
     setSelectedRow(selectedRows);
     setSelectedRowKeys(newSelectedRowKeys);

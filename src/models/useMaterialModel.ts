@@ -4,15 +4,15 @@ import { uploadUsingPOST } from '@/services/smart-tender-api/fileController';
 import {
   allUsingGET,
   createUsingPOST1,
-  deleteUsingPOST1,
+  deleteUsingPOST,
   listByPidUsingPOST,
-  updateUsingPOST1,
+  updateUsingPOST,
 } from '@/services/smart-tender-api/tenderSourceCategoryController';
 import {
   createUsingPOST2,
-  deleteUsingPOST2,
+  deleteUsingPOST1,
   pageUsingPOST1,
-  updateUsingPOST2,
+  updateUsingPOST1,
 } from '@/services/smart-tender-api/tenderSourceController';
 import { addLevelToTree, formatTreeData, getTreeFromList } from '@/utils/tender';
 import { message } from 'antd';
@@ -21,7 +21,7 @@ import { useState, useCallback, useEffect } from 'react';
 export default function useMaterialModel() {
   const [categoryTree, setCategoryTree] = useState<MaterialType.CategoryTree[]>([]);
 
-  const [materialList, setMaterialList] = useState<API.Pinyin_7[]>([]);
+  const [materialList, setMaterialList] = useState<API.Pinyin_12[]>([]);
   const [tabActiveKey, setTabActiveKey] = useState<number>();
 
   const { current, pageSize: psize, setCurrentPage, setTotal, pagination } = usePagination();
@@ -65,7 +65,7 @@ export default function useMaterialModel() {
   }, []);
 
   const editCategory = useCallback(async (p: API.Pinyin_6) => {
-    const { code, msg } = await updateUsingPOST1(p);
+    const { code, msg } = await updateUsingPOST(p);
     if (code === 1) {
       message.success('修改成功！');
       queryCategoryTree();
@@ -75,7 +75,7 @@ export default function useMaterialModel() {
   }, []);
 
   const delCategory = useCallback(async (id: number) => {
-    const { code, msg } = await deleteUsingPOST1({ id });
+    const { code, msg } = await deleteUsingPOST({ id });
     if (code === 1) {
       message.success('删除成功！');
       queryCategoryTree();
@@ -180,8 +180,8 @@ export default function useMaterialModel() {
     try {
       const { fileIdList, ...rest } = p;
       const res = (fileIdList as any[]).map((v) => v.id);
-      const { code, msg } = await updateUsingPOST2({ ...rest, fileIdList: res });
-      // const { code, msg } = await updateUsingPOST2(p);
+      const { code, msg } = await updateUsingPOST1({ ...rest, fileIdList: res });
+      // const { code, msg } = await updateUsingPOST1(p);
       if (code === 1) {
         message.success('修改成功！');
         queryMaterialList({});
@@ -195,7 +195,7 @@ export default function useMaterialModel() {
 
   const delMaterial = useCallback(async (p: API.Id_) => {
     try {
-      const { code, msg } = await deleteUsingPOST2(p);
+      const { code, msg } = await deleteUsingPOST1(p);
       if (code === 1) {
         message.success('删除成功！');
         queryMaterialList({});

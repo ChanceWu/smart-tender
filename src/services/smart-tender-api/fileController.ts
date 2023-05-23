@@ -2,21 +2,21 @@
 /* eslint-disable */
 import request from '@/utils/request';
 
-/** 下载 GET /file/download/${param0} */
+/** 下载 GET /inter-api/tender/file/download/${param0} */
 export async function createUsingGET(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.createUsingGETParams,
   options?: { [key: string]: any },
 ) {
   const { key: param0, ...queryParams } = params;
-  return request<API.BaseResultBoolean_>(`/file/download/${param0}`, {
+  return request<any>(`/inter-api/tender/file/download/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });
 }
 
-/** 上传 POST /file/upload */
+/** 上传 POST /inter-api/tender/file/upload */
 export async function uploadUsingPOST(body: {}, file?: File, options?: { [key: string]: any }) {
   const formData = new FormData();
 
@@ -35,7 +35,7 @@ export async function uploadUsingPOST(body: {}, file?: File, options?: { [key: s
     }
   });
 
-  return request<API.BaseResult2>('/file/upload', {
+  return request<API.BaseResult3>('/inter-api/tender/file/upload', {
     method: 'POST',
     data: formData,
     requestType: 'form',

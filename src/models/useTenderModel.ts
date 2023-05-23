@@ -68,7 +68,7 @@ export default function useTenderModel() {
   );
 
   const addMaterial2DirList = useCallback(
-    (materials: API.Pinyin_7[]) => {
+    (materials: API.Pinyin_12[]) => {
       const newLists = materials.map((v) => ({
         ...v,
         name: v.name!,
