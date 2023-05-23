@@ -27,22 +27,18 @@ interface IProps {
 }
 
 const beforeUploadImage = (file: RcFile) => {
-  const isJpgOrPng = ['image/jpg', 'image/jpeg', 'image/png'].includes(file.type);
-  if (!isJpgOrPng) {
-    message.error('支持扩展名：jpg/jpeg/png文件');
-  }
   const isLt10M = file.size / 1024 / 1024 < 10;
   if (!isLt10M) {
     message.error('图片大小不超过10M');
   }
-  return isJpgOrPng && isLt10M;
+  return isLt10M || Upload.LIST_IGNORE;
 };
 const beforeUploadFile = (file: RcFile) => {
   const isLt10M = file.size / 1024 / 1024 < 100;
   if (!isLt10M) {
     message.error('文件大小不超过100M');
   }
-  return isLt10M;
+  return isLt10M || Upload.LIST_IGNORE;
 };
 
 const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typeOption }) => {
