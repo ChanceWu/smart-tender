@@ -64,7 +64,7 @@ export default function useMaterialModel() {
     }
   }, []);
 
-  const editCategory = useCallback(async (p: API.Pinyin_6) => {
+  const editCategory = useCallback(async (p: API.Pinyin_11) => {
     const { code, msg } = await updateUsingPOST(p);
     if (code === 1) {
       message.success('修改成功！');

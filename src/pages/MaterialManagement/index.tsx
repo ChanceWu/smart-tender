@@ -28,7 +28,7 @@ function MaterialManagement() {
   const [form] = Form.useForm();
   // const { current, pageSize, setTotal, pagination } = usePagination();
   const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
-  const [curSource, setCurSource] = useState<API.Pinyin_8>();
+  const [curSource, setCurSource] = useState<API.Pinyin_13>();
 
   const {
     openModal,
@@ -70,7 +70,7 @@ function MaterialManagement() {
     [tabActiveKey, categoryTree],
   );
 
-  const columns: ColumnsType<API.Pinyin_8> = [
+  const columns: ColumnsType<API.Pinyin_13> = [
     {
       title: '素材分类',
       dataIndex: 'categoryName',

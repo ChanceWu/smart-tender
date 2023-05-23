@@ -47,7 +47,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
   const [typeCode, setTypeCode] = useState<string>('WORD');
 
   const { modalProps: modalPropsPreview, openModal: openPreviewModal } = useModal({});
-  const [previewFile, setPreviewFile] = useState<API.Pinyin_6[]>();
+  const [previewFile, setPreviewFile] = useState<API.Pinyin_11[]>();
 
   console.log(typeCode);
   useEffect(() => {
@@ -86,7 +86,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
     },
     [form],
   );
-  const previewHandle = (file: API.Pinyin_6) => {
+  const previewHandle = (file: API.Pinyin_11) => {
     console.log(file);
     setPreviewFile([file]);
     openPreviewModal('预览');
