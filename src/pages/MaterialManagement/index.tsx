@@ -117,7 +117,10 @@ function MaterialManagement() {
               openModal('编辑素材', {
                 categoryId: record.categoryId,
                 categoryName: record.categoryName,
-                fileIdList: record.fileDetailRespList as any,
+                fileIdList: record.fileDetailRespList?.map((v) => ({
+                  ...v,
+                  url: 'picture',
+                })) as any,
                 name: record.name,
                 typeCode: record.typeCode,
                 id: record.id,
@@ -199,7 +202,7 @@ function MaterialManagement() {
             rowKey="id"
             columns={columns}
             dataSource={materialList}
-            pagination={{...pagination}}
+            pagination={{ ...pagination }}
             bordered
             scroll={{ y: 'calc(100vh - 88px - 278px)' }}
           />

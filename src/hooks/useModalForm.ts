@@ -56,6 +56,7 @@ export default <VO>(options: Options<VO>) => {
       onOk: onModalOk,
       onCancel: closeModal,
       confirmLoading,
+      maskClosable: false,
     },
     form,
     formData,

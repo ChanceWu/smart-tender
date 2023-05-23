@@ -16,8 +16,10 @@ import {
   UploadProps,
   message,
 } from 'antd';
-import { RcFile } from 'antd/lib/upload';
+import { RcFile, UploadFile } from 'antd/lib/upload';
 import React, { useCallback, useEffect, useState } from 'react';
+import PreviewModal from '../PreviewModal';
+import useModal from '@/hooks/useModal';
 
 interface IProps {
   modalProps: ModalProps;
@@ -43,6 +45,10 @@ const beforeUploadFile = (file: RcFile) => {
 
 const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typeOption }) => {
   const [typeCode, setTypeCode] = useState<string>('WORD');
+
+  const { modalProps: modalPropsPreview, openModal: openPreviewModal } = useModal({});
+  const [previewFile, setPreviewFile] = useState<API.Pinyin_6[]>();
+
   console.log(typeCode);
   useEffect(() => {
     if (modalProps.open === false) setTypeCode('WORD');
@@ -68,7 +74,8 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
       const { data, code, msg } = await uploadUsingPOST({}, option.file as File);
       // 拿到调取接口返回的数据
       if (code === 1) {
-        option.onSuccess(data);
+        option.onSuccess({ ...data, url: data?.fileUrl });
+        option.url = data?.fileUrl;
         // const fileIds = form.getFieldValue('fileIdList');
         // console.log('fileIds', fileIds)
         // form.setFieldValue('fileIdList', [...fileIds, data?.id!]);
@@ -79,6 +86,11 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
     },
     [form],
   );
+  const previewHandle = (file: API.Pinyin_6) => {
+    console.log(file);
+    setPreviewFile([file]);
+    openPreviewModal('预览');
+  };
   return (
     <Modal {...modalProps} width={500} destroyOnClose>
       <Form
@@ -148,7 +160,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
               customRequest={customUpload}
               // multiple
               maxCount={10}
-              showUploadList={{ showPreviewIcon: false }}
+              onPreview={previewHandle}
             >
               {'点击上传'}
             </Upload>
@@ -177,6 +189,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
               beforeUpload={beforeUploadFile}
               customRequest={customUpload}
               // previewFile={previewHandle}
+              onPreview={previewHandle}
               // multiple
             >
               <Button icon={<UploadOutlined />}>上传文件</Button>
@@ -184,6 +197,13 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
           </Form.Item>
         )}
       </Form>
+      <PreviewModal
+        modalProps={modalPropsPreview}
+        data={previewFile}
+        type={typeCode}
+        boxStyle={{ height: '60vh' }}
+        simpleMode
+      />
     </Modal>
   );
 };
