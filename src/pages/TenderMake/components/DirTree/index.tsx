@@ -5,6 +5,7 @@ import { Button, Modal, Spin, Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useEffect, useMemo } from 'react';
 import { useModel } from 'umi';
+import CreateTenderModal from '../CreateTenderModal';
 import DirNameModal from '../DirNameModal';
 import DirTreeTitle from '../DirTreeTitle';
 import PreFormat from '../PreFormat';
@@ -37,6 +38,15 @@ const DirTree = () => {
   } = useModalForm<TenderType.PreFormat>({
     onOk: (d) => {
       setPreFormat(d);
+    },
+  });
+  const {
+    modalProps: createModalProps,
+    openModal: openCreateModal,
+    form: createForm,
+  } = useModalForm<TenderType.CreateTender>({
+    onOk: (d) => {
+      createTender(d);
     },
   });
 
@@ -72,7 +82,7 @@ const DirTree = () => {
           <div>投标书内容</div>
           <div>
             <Button onClick={() => openPreFormatModal('预设格式')}>预设格式</Button>
-            <Button type="primary" onClick={createTender}>
+            <Button type="primary" onClick={() => openCreateModal('生成标书')}>
               生成标书
             </Button>
           </div>
@@ -110,6 +120,7 @@ const DirTree = () => {
       <Modal {...preFormatModalProps} width={'80vw'}>
         <PreFormat form={preFormatForm} />
       </Modal>
+      <CreateTenderModal modalProps={createModalProps} form={createForm} />
     </div>
   );
 };

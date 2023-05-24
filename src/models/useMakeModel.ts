@@ -27,20 +27,20 @@ export default function useMakeModel() {
   const { current, pageSize: psize, setCurrentPage, setTotal, pagination } = usePagination();
   const resetPagination = () => {
     setCurrentPage(1);
-  }
+  };
 
   const queryCategoryTree = useCallback(async () => {
     // const { resultList } = await TenderApi.queryTenderKMSDirList();
     // const result = formatTreeData(resultList ?? []);
     // setCategoryTree(addLevelToTree(result));
-    // try {
+    try {
       const { data } = await allUsingGET();
       const result = formatTreeData(data ?? []);
       setCategoryTree(addLevelToTree(result));
       setTabActiveKey(result?.[0]?.id);
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const queryCategoryTreeById = useCallback(async (id: number) => {
@@ -84,43 +84,46 @@ export default function useMakeModel() {
     }
   }, []);
 
-  const queryMaterialList = useCallback(async ({
-    pageNumber = 1,
-    pageSize = 10,
-    categoryId,
-    name,
-  }: {
-    pageNumber?: number;
-    pageSize?: number;
-    queryId?: number;
-    categoryId?: number[];
-    name?: string;
-  }) => {
-    // const { resultList } = await MaterialApi.queryMaterialList();
-    // setMaterialList(resultList);
-    let cateId;
-    if (categoryId) {
-      cateId = categoryId?.[categoryId.length - 1];
-    } else {
-      cateId = tabActiveKey;
-    }
-    console.log('cateId', cateId)
-    const res = await pageUsingPOST1({
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      req: {
-        categoryId: cateId,
-        name,
+  const queryMaterialList = useCallback(
+    async ({
+      pageNumber = 1,
+      pageSize = 10,
+      categoryId,
+      name,
+    }: {
+      pageNumber?: number;
+      pageSize?: number;
+      queryId?: number;
+      categoryId?: number[];
+      name?: string;
+    }) => {
+      // const { resultList } = await MaterialApi.queryMaterialList();
+      // setMaterialList(resultList);
+      let cateId;
+      if (categoryId) {
+        cateId = categoryId?.[categoryId.length - 1];
+      } else {
+        cateId = tabActiveKey;
       }
-    });
-    const { data, code, msg } = res || {};
-    if (code === 1) {
-      setMaterialList(data?.data || []);
-      setTotal(data?.totalSize || 0);
-    } else {
-      message.error(msg);
-    }
-  }, [tabActiveKey]);
+      console.log('cateId', cateId);
+      const res = await pageUsingPOST1({
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        req: {
+          categoryId: cateId,
+          name,
+        },
+      });
+      const { data, code, msg } = res || {};
+      if (code === 1) {
+        setMaterialList(data?.data || []);
+        setTotal(data?.totalSize || 0);
+      } else {
+        message.error(msg);
+      }
+    },
+    [tabActiveKey],
+  );
 
   const uploadResource = useCallback(async (file: File) => {
     const { data, code, msg } = await uploadUsingPOST({}, file);
@@ -133,7 +136,7 @@ export default function useMakeModel() {
 
   useEffect(() => {
     queryMaterialList({ pageNumber: current, pageSize: psize });
-  }, [current, psize])
+  }, [current, psize]);
 
   const uploadFile = async (p: any[] = []) => {
     // const { resultList } = await MaterialApi.queryMaterialList();
@@ -154,58 +157,62 @@ export default function useMakeModel() {
     // }
   };
 
-  const addMaterial = useCallback(async (p: {
-    categoryId: number;
-    fileIdList?: File[];
-    name?: string;
-    typeCode?: string;
-  }) => {
-    try {
-      const { fileIdList, ...rest } = p;
-      const ids = fileIdList?.map((v: any) => v.response.id);
-      if (!ids) return;
-      const { code, msg } = await createUsingPOST2({ ...rest, fileIdList: ids });
-      if (code === 1) {
-        message.success('创建成功！');
-        queryMaterialList({});
-      } else {
-        message.error(msg);
+  const addMaterial = useCallback(
+    async (p: { categoryId: number; fileIdList?: File[]; name?: string; typeCode?: string }) => {
+      try {
+        const { fileIdList, ...rest } = p;
+        const ids = fileIdList?.map((v: any) => v.response.id);
+        if (!ids) return;
+        const { code, msg } = await createUsingPOST2({ ...rest, fileIdList: ids });
+        if (code === 1) {
+          message.success('创建成功！');
+          queryMaterialList({});
+        } else {
+          message.error(msg);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [queryMaterialList]);
+    },
+    [queryMaterialList],
+  );
 
-  const editMaterial = useCallback(async (p: API.Pinyin__) => {
-    try {
-      const { fileIdList, ...rest } = p;
-      const res = (fileIdList as any[]).map((v) => v.id);
-      const { code, msg } = await updateUsingPOST1({ ...rest, fileIdList: res });
-      // const { code, msg } = await updateUsingPOST1(p);
-      if (code === 1) {
-        message.success('修改成功！');
-        queryMaterialList({});
-      } else {
-        message.error(msg);
+  const editMaterial = useCallback(
+    async (p: API.Pinyin__) => {
+      try {
+        const { fileIdList, ...rest } = p;
+        const res = (fileIdList as any[]).map((v) => v.id);
+        const { code, msg } = await updateUsingPOST1({ ...rest, fileIdList: res });
+        // const { code, msg } = await updateUsingPOST1(p);
+        if (code === 1) {
+          message.success('修改成功！');
+          queryMaterialList({});
+        } else {
+          message.error(msg);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [queryMaterialList]);
+    },
+    [queryMaterialList],
+  );
 
-  const delMaterial = useCallback(async (p: API.Id_) => {
-    try {
-      const { code, msg } = await deleteUsingPOST1(p);
-      if (code === 1) {
-        message.success('删除成功！');
-        queryMaterialList({});
-      } else {
-        message.error(msg);
+  const delMaterial = useCallback(
+    async (p: API.Id_) => {
+      try {
+        const { code, msg } = await deleteUsingPOST1(p);
+        if (code === 1) {
+          message.success('删除成功！');
+          queryMaterialList({});
+        } else {
+          message.error(msg);
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [queryMaterialList]);
+    },
+    [queryMaterialList],
+  );
 
   return {
     categoryTree,

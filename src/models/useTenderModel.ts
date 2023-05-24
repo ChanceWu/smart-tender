@@ -30,10 +30,13 @@ export default function useTenderModel() {
     setKMSList(resultList);
   }, []);
 
-  const createTender = useCallback(async () => {
-    console.log(dirTree);
-    const { resultList } = await TenderApi.createTender(dirTree);
-  }, [dirTree]);
+  const createTender = useCallback(
+    async (p: TenderType.CreateTender) => {
+      console.log(p, dirTree);
+      const { resultList } = await TenderApi.createTender(dirTree);
+    },
+    [dirTree],
+  );
 
   useEffect(() => {
     setDirTree(getTreeFromList(dirList));

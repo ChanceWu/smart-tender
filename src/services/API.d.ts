@@ -87,6 +87,9 @@ declare namespace TenderType {
     createTimeStart?: string;
     createTimeEnd?: string;
   }
+  export interface CreateTender {
+    name: string;
+  }
 }
 
 declare namespace MaterialType {
