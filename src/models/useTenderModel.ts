@@ -1,6 +1,8 @@
 import { TenderApi } from '@/services';
+import { createUsingGET } from '@/services/smart-tender-api/fileController';
+import { createUsingPOST } from '@/services/smart-tender-api/tenderController';
 import { allUsingGET } from '@/services/smart-tender-api/tenderSourceCategoryController';
-import { deleteTreeNode, formatTreeData, getListFromTree, getTreeFromList } from '@/utils/tender';
+import { deleteTreeNode, formatParamTenderToc, formatTreeData, getListFromTree, getTreeFromList } from '@/utils/tender';
 import { useState, useCallback, useEffect } from 'react';
 
 export default function useTenderModel() {
@@ -30,10 +32,15 @@ export default function useTenderModel() {
     setKMSList(resultList);
   }, []);
 
-  const createTender = useCallback(async () => {
-    console.log(dirTree);
-    const { resultList } = await TenderApi.createTender(dirTree);
-  }, [dirTree]);
+  const createTender = useCallback(
+    async (p: TenderType.CreateTender) => {
+      const formatData = formatParamTenderToc(dirTree);
+      console.log(p, dirTree, formatData);
+      const { resultList } = await TenderApi.createTender({ ...p, dirTree: formatData });
+      // const { } = await createUsingPOST({ ...p, tenderToc: formatData })
+    },
+    [dirTree],
+  );
 
   useEffect(() => {
     setDirTree(getTreeFromList(dirList));
@@ -68,15 +75,14 @@ export default function useTenderModel() {
   );
 
   const addMaterial2DirList = useCallback(
-    (materials: API.Pinyin_7[]) => {
+    (materials: API.Pinyin_13[]) => {
       const newLists = materials.map((v) => ({
-        ...v,
+        tenderSourceDto: v,
         name: v.name!,
-        isMaterial: true,
-        file: v.file,
+        tocFlag: true,
         id: Date.now() + '' + v.id!,
         parentId: selectedDirId!,
-      }));
+      }) as TenderType.TenderDir);
       setDirList((v) => [...v, ...newLists]);
     },
     [selectedDirId],
@@ -86,6 +92,10 @@ export default function useTenderModel() {
     console.log(p);
     const { resultList } = await TenderApi.queryTenderList({});
     setTenderList(resultList);
+  }, []);
+
+  const downloadSource = useCallback((key: string) => {
+      createUsingGET({ key });
   }, []);
 
   return {
@@ -111,5 +121,6 @@ export default function useTenderModel() {
 
     tenderList,
     queryTenderList,
+    downloadSource,
   };
 }

@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 
 export interface SourceViewerProps {
   type?: string;
-  data?: API.Pinyin_6[];
+  data?: API.Pinyin_11[];
   title?: string;
   boxStyle?: React.CSSProperties;
   simpleMode?: boolean;

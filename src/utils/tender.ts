@@ -21,7 +21,7 @@ export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
   return roots;
 };
 
-export const formatTreeData = (data: API.TreeNode2[]): MaterialType.CategoryTree[] => {
+export const formatTreeData = (data: API.TreeNodeTenderSourceCategoryDetailResp_[]): MaterialType.CategoryTree[] => {
   return data.map((v) => {
     return {
       ...v.t,
@@ -57,7 +57,7 @@ export const getListFromTree = (
     const item: TenderType.TenderDir = {
       name: node.name,
       id: node.id,
-      isMaterial: node.isMaterial,
+      tocFlag: node.tocFlag,
       parentId: node.parentId,
       level: level,
     };
@@ -87,5 +87,19 @@ export const deleteTreeNode = (
       return true;
     }
     return true;
+  });
+};
+
+export const formatParamTenderToc = (data: TenderType.TenderDirTreeNode[]): API.TreeNode_G[] => {
+  return data.map((v) => {
+    const t = {
+      tocName: v.name,
+      tocFlag: v.tocFlag,
+    }
+    if (v.tenderSourceDto) { t['tenderSourceDto'] = v.tenderSourceDto }
+    return {
+      t,
+      children: v.children?.length ? formatParamTenderToc(v.children) : [],
+    };
   });
 };
