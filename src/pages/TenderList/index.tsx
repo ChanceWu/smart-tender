@@ -92,10 +92,10 @@ const TenderList = () => {
       dataIndex: 'option',
       render: (_, record) => (
         <span className={styles.groupBtn}>
-          {record.status === 'SUCCESS' /* && record.madeFileKey*/ && (
+          {record.status === 'SUCCESS' && (
             <a
               onClick={() => {
-                openDownloadConfirm(record.madeFileKey || '0a6e8368-556e-49d7-9b4d-d96d8c110b24');
+                openDownloadConfirm(record.madeFileKey!);
               }}
             >
               下载
@@ -171,7 +171,12 @@ const TenderList = () => {
         formData={detailFormData}
         typeOption={TypeOption}
       /> */}
-      <PreviewDrawer open={preview} onClose={closePreview} data={curSource as any} type={'WORD'} />
+      <PreviewDrawer
+        open={preview}
+        onClose={closePreview}
+        data={[{ key: curSource?.madeFileKey }]}
+        type={'WORD'}
+      />
     </div>
   );
 };
