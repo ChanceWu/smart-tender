@@ -1,36 +1,69 @@
+import PreviewDrawer from '@/components/common/PreviewDrawer';
 import usePagination from '@/hooks/usePagination';
-import { useMount } from 'ahooks';
-import { Badge, Button, DatePicker, Form, Input, Select, Table } from 'antd';
+import { myPageUsingPOST } from '@/services/smart-tender-api/tenderController';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useBoolean, useRequest } from 'ahooks';
+import { Badge, Button, DatePicker, Form, Input, Modal, Select, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
+import moment from 'moment';
+import { useState } from 'react';
 import { useModel } from 'umi';
+import { BadgeEnum, SearchParamsType, SelectOption } from '../TenderManagement';
 import styles from './index.less';
 
 const { RangePicker } = DatePicker;
-const SelectOption = [
-  { label: '素材审批中', value: 'audit' },
-  { label: '取消制作', value: 'cancel' },
-  { label: '制作失败', value: 'error' },
-  { label: '制作成功', value: 'success' },
-  { label: '生成中', value: 'create' },
-];
-const BadgeEnum = {
-  audit: { text: '素材审批中', color: 'blue' },
-  cancel: { text: '取消制作', color: 'grey' },
-  error: { text: '制作失败', color: 'red' },
-  success: { text: '制作成功', color: 'green' },
-  create: { text: '生成中', color: 'cyan' },
-};
 
 const TenderList = () => {
+  const { downloadSource } = useModel('useTenderModel');
   const [form] = Form.useForm();
-  const { pagination } = usePagination();
-  const { tenderList, queryTenderList } = useModel('useTenderModel');
+  const { current, pageSize, pagination, setTotal, setCurrentPage } = usePagination();
+  const [searchParams, setSearchParams] = useState<SearchParamsType>();
+  const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
+  const [curSource, setCurSource] = useState<API.Pinyin_16>();
 
-  useMount(() => {
-    queryTenderList({});
-  });
+  const { data: dataSource } = useRequest(
+    async () => {
+      const { createTime, ...rest } = searchParams || {};
+      const req: API.Pinyin_14 = rest;
+      if (createTime) {
+        req.createStartTime = moment(createTime[0]).format('YYYY-MM-DD 00:00:00');
+        req.createEndTime = moment(createTime[1]).format('YYYY-MM-DD 23:59:59');
+      }
+      const { code, data, msg } = await myPageUsingPOST({ pageNumber: current, pageSize, req });
+      if (code === 1) {
+        setTotal(data?.totalSize || 0);
+        return data?.data;
+      } else {
+        message.error(msg);
+        return [];
+      }
+    },
+    {
+      refreshDeps: [current, pageSize, searchParams],
+    },
+  );
 
-  const columns: ColumnsType<TenderType.TenderItem> = [
+  const openDownloadConfirm = (key: string) => {
+    Modal.confirm({
+      title: '是否确认下载该标书（word格式）?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        downloadSource(key);
+      },
+    });
+  };
+
+  const openReCreateConfirm = (id: number) => {
+    Modal.confirm({
+      title: '是否确认重新生成该标书?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        // downloadSource(key);
+      },
+    });
+  };
+
+  const columns: ColumnsType<API.Pinyin_16> = [
     {
       title: '标书名称',
       dataIndex: 'name',
@@ -57,18 +90,36 @@ const TenderList = () => {
       key: 'option',
       dataIndex: 'option',
       render: (_, record) => (
-        <>
-          <Button
-            type="link"
-            onClick={() => {
-              // setCurSource(record);
-              // openPreview();
-            }}
-          >
-            预览
-          </Button>
-          <Button type="link">重新生成</Button>
-        </>
+        <span className={styles.groupBtn}>
+          {record.status === 'SUCCESS' /* && record.madeFileKey*/ && (
+            <a
+              onClick={() => {
+                openDownloadConfirm(record.madeFileKey || '0a6e8368-556e-49d7-9b4d-d96d8c110b24');
+              }}
+            >
+              下载
+            </a>
+          )}
+          {record.status === 'SUCCESS' && (
+            <a
+              onClick={() => {
+                setCurSource(record);
+                openPreview();
+              }}
+            >
+              预览
+            </a>
+          )}
+          {record.status === 'MAKING' && (
+            <a
+              onClick={() => {
+                openReCreateConfirm(record.id!);
+              }}
+            >
+              重新生成
+            </a>
+          )}
+        </span>
       ),
     },
   ];
@@ -79,22 +130,14 @@ const TenderList = () => {
           form={form}
           layout="inline"
           onFinish={(values) => {
-            queryTenderList(values);
+            setSearchParams(values);
           }}
         >
-          <Form.Item
-            label="制作时间"
-            name="makeTime"
-            // getValueFromEvent={(v) => { console.log(v, v[v.length - 1]);return v[v.length - 1]}}
-          >
+          <Form.Item label="制作时间" name="makeTime">
             <RangePicker placeholder={['开始时间', '结束时间']} />
           </Form.Item>
-          <Form.Item
-            label="标书状态"
-            name="status"
-            // getValueFromEvent={(v) => { console.log(v, v[v.length - 1]);return v[v.length - 1]}}
-          >
-            <Select options={SelectOption} placeholder="请选择" style={{ width: 200 }} />
+          <Form.Item label="标书状态" name="status">
+            <Select options={SelectOption} placeholder="请选择" allowClear style={{ width: 200 }} />
           </Form.Item>
           <Form.Item label="标书名称" name="name">
             <Input placeholder="请输入" />
@@ -109,7 +152,8 @@ const TenderList = () => {
               htmlType="button"
               onClick={() => {
                 form.resetFields();
-                queryTenderList({});
+                setCurrentPage(1);
+                setSearchParams(undefined);
               }}
             >
               重置
@@ -118,7 +162,7 @@ const TenderList = () => {
         </Form>
       </div>
       <div className={styles.content}>
-        <Table rowKey="id" columns={columns} dataSource={tenderList} pagination={pagination} />
+        <Table rowKey="id" columns={columns} dataSource={dataSource} pagination={pagination} />
       </div>
       {/* <MaterialDetailModal
         modalProps={modalProps}
@@ -126,12 +170,7 @@ const TenderList = () => {
         formData={detailFormData}
         typeOption={TypeOption}
       /> */}
-      {/* <PreviewDrawer
-        open={preview}
-        onClose={closePreview}
-        data={curSource?.fileDetailRespList}
-        type={curSource?.typeCode}
-      /> */}
+      <PreviewDrawer open={preview} onClose={closePreview} data={curSource as any} type={'WORD'} />
     </div>
   );
 };

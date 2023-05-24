@@ -1,7 +1,7 @@
 import ComInput from '@/components/common/ComInput';
 import { validateName } from '@/utils/regexp';
-import { Alert, FormInstance, ModalProps } from 'antd';
-import { Form, Input, Modal } from 'antd';
+import type { FormInstance, ModalProps } from 'antd';
+import { Alert, Form, Modal } from 'antd';
 import React from 'react';
 
 interface IProps {
@@ -13,7 +13,9 @@ const CreateTenderModal: React.FC<IProps> = ({ modalProps, form }) => {
   return (
     <Modal {...modalProps}>
       <Form form={form}>
-        <Alert message="标书生成后，可在我的标书中进行下载" type="info" showIcon />
+        <Form.Item>
+          <Alert message="标书生成后，可在我的标书中进行下载" type="info" showIcon />
+        </Form.Item>
         <Form.Item
           label="我的标书名称"
           name="name"

@@ -243,13 +243,17 @@ declare namespace API {
   type Pinyin_7 = {
     /** 标书名称 */
     name: string;
-    /** 标书素材id */
-    tenderSourceId?: number;
-    tenderToc: TreeNode_;
-    /** 是否创建目录 */
-    tocCreateFlag: boolean;
+    tenderToc: API.TreeNode_G[];
   };
-
+  type TreeNode_G = {
+    children?: TreeNode_G[];
+    t?: API.Pinyin_71;
+  }
+  type Pinyin_71 = {
+    tocName?: string;
+    tocFlag?: boolean;
+    tenderSourceDto?: API.Pinyin_13[];
+  }
   type Pinyin_8 = {
     /** 标书素材分类id */
     categoryId?: number;

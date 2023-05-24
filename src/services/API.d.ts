@@ -23,16 +23,16 @@ declare namespace TenderType {
   export interface TenderDir {
     id: string;
     name: string;
-    isMaterial: boolean;
-    file?: string;
+    tocFlag: boolean;
+    tenderSourceDto?: API.Pinyin_13[];
     parentId: string;
     level?: number;
   }
   export interface TenderDirTreeNode {
     id: string;
     name: string;
-    isMaterial: boolean;
-    file?: string;
+    tocFlag: boolean;
+    tenderSourceDto?: API.Pinyin_13[];
     parentId: string;
     level: number;
     children: TenderDirTreeNode[];

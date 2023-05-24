@@ -27,7 +27,7 @@ const DirTree = () => {
       if (d.id) {
         updateDir(d);
       } else {
-        addDir({ ...d, id: Date.now().toString(), isMaterial: false });
+        addDir({ ...d, id: Date.now().toString(), tocFlag: false });
       }
     },
   });
@@ -64,7 +64,7 @@ const DirTree = () => {
           key: v.id,
           isLeaf: !v.children.length,
           children: child,
-          selectable: !v.isMaterial,
+          selectable: !v.tocFlag,
         };
       });
     };
@@ -81,7 +81,9 @@ const DirTree = () => {
         <div className={styles.header}>
           <div>投标书内容</div>
           <div>
-            <Button onClick={() => openPreFormatModal('预设格式')}>预设格式</Button>
+            <Button onClick={() => openPreFormatModal('预设格式')} style={{ marginRight: 10 }}>
+              预设格式
+            </Button>
             <Button type="primary" onClick={() => openCreateModal('生成标书')}>
               生成标书
             </Button>
@@ -97,7 +99,7 @@ const DirTree = () => {
                   openModal('新建子目录', {
                     id: '',
                     name: '',
-                    isMaterial: false,
+                    tocFlag: false,
                     parentId: '0',
                     level: 1,
                   })

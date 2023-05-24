@@ -21,21 +21,21 @@ const DirTreeTitle: React.FC<IProps> = ({ data, openModal, onDel }) => {
         {data.name}
       </span>
       <span className={styles.btn}>
-        {data.level < 6 && !data.isMaterial && (
+        {data.level < 6 && !data.tocFlag && (
           <PlusCircleOutlined
             title="新增子目录"
             onClick={() =>
               openModal('新建子目录', {
                 id: '',
                 name: '',
-                isMaterial: false,
+                tocFlag: false,
                 parentId: data.id,
                 level: data.level + 1,
               })
             }
           />
         )}
-        {!data.isMaterial && (
+        {!data.tocFlag && (
           <FormOutlined title="编辑" onClick={() => openModal('编辑目录', data, true)} />
         )}
         <Popconfirm
