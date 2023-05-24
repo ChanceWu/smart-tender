@@ -19,10 +19,10 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
- 
+
 const errorHandler = (error: any) => {
   const { response } = error;
-  if (response && response.status) {
+  if (response && response.status !== 200) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
     notification.error({
@@ -75,6 +75,31 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
     url,
     options,
   };
+});
+
+request.interceptors.response.use(async (response: Response, options: RequestOptionsInit) => {
+  if (response.url.includes('/file/download/')) {
+    const contentDisposition = response.headers.get('Content-Disposition');
+    if (contentDisposition) {
+      const filename = contentDisposition
+        .split(';')
+        .find((part) => part.trim().startsWith('filename='))
+        ?.split('=')[1]
+        ?.replace(/["']/g, '')
+        .trim();
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename || 'file');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+  return response;
 });
 
 export default request;
