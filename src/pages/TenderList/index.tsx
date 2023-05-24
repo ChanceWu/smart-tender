@@ -1,9 +1,10 @@
+import ComInput from '@/components/common/ComInput';
 import PreviewDrawer from '@/components/common/PreviewDrawer';
 import usePagination from '@/hooks/usePagination';
 import { myPageUsingPOST } from '@/services/smart-tender-api/tenderController';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useBoolean, useRequest } from 'ahooks';
-import { Badge, Button, DatePicker, Form, Input, Modal, Select, Table, message } from 'antd';
+import { Badge, Button, DatePicker, Form, Modal, Select, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
 import { useState } from 'react';
@@ -140,7 +141,7 @@ const TenderList = () => {
             <Select options={SelectOption} placeholder="请选择" allowClear style={{ width: 200 }} />
           </Form.Item>
           <Form.Item label="标书名称" name="name">
-            <Input placeholder="请输入" />
+            <ComInput placeholder="请输入" />
           </Form.Item>
           <Form.Item style={{ marginLeft: 'auto' }}>
             <Button type="primary" htmlType="submit">

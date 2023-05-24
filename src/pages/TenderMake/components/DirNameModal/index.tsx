@@ -1,3 +1,4 @@
+import ComInput from '@/components/common/ComInput';
 import { validateName } from '@/utils/regexp';
 import type { FormInstance, ModalProps } from 'antd';
 import { Form, Input, Modal } from 'antd';
@@ -26,7 +27,7 @@ const DirNameModal: React.FC<IProps> = ({ modalProps, form }) => {
           name="name"
           rules={[{ required: true, message: '目录名称不能为空' }, { validator: validateName }]}
         >
-          <Input placeholder="请输入目录名称" maxLength={15} />
+          <ComInput placeholder="请输入目录名称" maxLength={15} />
         </Form.Item>
       </Form>
     </Modal>
