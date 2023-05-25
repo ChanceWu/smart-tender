@@ -33,21 +33,25 @@ export default function useMaterialModel() {
     // const { resultList } = await TenderApi.queryTenderKMSDirList();
     // const result = formatTreeData(resultList ?? []);
     // setCategoryTree(addLevelToTree(result));
-    // try {
+    try {
       const { data } = await allUsingGET();
       const result = formatTreeData(data ?? []);
       setCategoryTree(addLevelToTree(result));
       setTabActiveKey(result?.[0]?.id);
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    } catch (error) {
+      console.error(error)
+    }
   }, []);
 
   const queryCategoryTreeById = useCallback(async (id: number) => {
-    // const { resultList } = await MaterialApi.queryMaterialList();
-    const { data = [] } = await listByPidUsingPOST({ id });
-    const result = formatTreeData(data);
-    setCategoryTree(addLevelToTree(result));
+    try {
+      // const { resultList } = await MaterialApi.queryMaterialList();
+      const { data = [] } = await listByPidUsingPOST({ id });
+      const result = formatTreeData(data);
+      setCategoryTree(addLevelToTree(result));
+    } catch (error) {
+      console.error(error)
+    }
   }, []);
 
   const addCategory = useCallback(async (p: API.TenderSourceCategoryCreateReq) => {
@@ -65,22 +69,30 @@ export default function useMaterialModel() {
   }, []);
 
   const editCategory = useCallback(async (p: API.Pinyin_11) => {
-    const { code, msg } = await updateUsingPOST(p);
-    if (code === 1) {
-      message.success('修改成功！');
-      queryCategoryTree();
-    } else {
-      message.error(msg);
+    try {
+      const { code, msg } = await updateUsingPOST(p);
+      if (code === 1) {
+        message.success('修改成功！');
+        queryCategoryTree();
+      } else {
+        message.error(msg);
+      }
+    } catch (error) {
+      console.error(error)
     }
   }, []);
 
   const delCategory = useCallback(async (id: number) => {
-    const { code, msg } = await deleteUsingPOST({ id });
-    if (code === 1) {
-      message.success('删除成功！');
-      queryCategoryTree();
-    } else {
-      message.error(msg);
+    try {
+      const { code, msg } = await deleteUsingPOST({ id });
+      if (code === 1) {
+        message.success('删除成功！');
+        queryCategoryTree();
+      } else {
+        message.error(msg);
+      }
+    } catch (error) {
+      console.error(error)
     }
   }, []);
 
@@ -96,29 +108,33 @@ export default function useMaterialModel() {
     categoryId?: number[];
     name?: string;
   }) => {
-    // const { resultList } = await MaterialApi.queryMaterialList();
-    // setMaterialList(resultList);
-    let cateId;
-    if (categoryId) {
-      cateId = categoryId?.[categoryId.length - 1];
-    } else {
-      cateId = tabActiveKey;
-    }
-    console.log('cateId', cateId)
-    const res = await pageUsingPOST1({
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      req: {
-        categoryId: cateId,
-        name,
+    try {
+      // const { resultList } = await MaterialApi.queryMaterialList();
+      // setMaterialList(resultList);
+      let cateId;
+      if (categoryId) {
+        cateId = categoryId?.[categoryId.length - 1];
+      } else {
+        cateId = tabActiveKey;
       }
-    });
-    const { data, code, msg } = res || {};
-    if (code === 1) {
-      setMaterialList(data?.data || []);
-      setTotal(data?.totalSize || 0);
-    } else {
-      message.error(msg);
+      console.log('cateId', cateId)
+      const res = await pageUsingPOST1({
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        req: {
+          categoryId: cateId,
+          name,
+        }
+      });
+      const { data, code, msg } = res || {};
+      if (code === 1) {
+        setMaterialList(data?.data || []);
+        setTotal(data?.totalSize || 0);
+      } else {
+        message.error(msg);
+      }
+    } catch (error) {
+      console.error(error)
     }
   }, [tabActiveKey]);
 

@@ -3,6 +3,7 @@ import { createUsingGET } from '@/services/smart-tender-api/fileController';
 import { createUsingPOST } from '@/services/smart-tender-api/tenderController';
 import { allUsingGET } from '@/services/smart-tender-api/tenderSourceCategoryController';
 import { deleteTreeNode, formatParamTenderToc, formatTreeData, getListFromTree, getTreeFromList } from '@/utils/tender';
+import { message } from 'antd';
 import { useState, useCallback, useEffect } from 'react';
 
 export default function useTenderModel() {
@@ -34,10 +35,15 @@ export default function useTenderModel() {
 
   const createTender = useCallback(
     async (p: TenderType.CreateTender) => {
-      const formatData = formatParamTenderToc(dirTree);
-      console.log(p, dirTree, formatData);
-      const { resultList } = await TenderApi.createTender({ ...p, dirTree: formatData });
-      // const { } = await createUsingPOST({ ...p, tenderToc: formatData })
+      try {
+        const formatData = formatParamTenderToc(dirTree);
+        console.log(p, dirTree, formatData);
+        // const { resultList } = await TenderApi.createTender({ ...p, tenderToc: formatData });
+        const { msg } = await createUsingPOST({ ...p, tenderToc: formatData });
+        message.success(msg)
+      } catch (error) {
+        console.error(error)
+      }
     },
     [dirTree],
   );
@@ -79,7 +85,7 @@ export default function useTenderModel() {
       const newLists = materials.map((v) => ({
         tenderSourceDto: v,
         name: v.name!,
-        tocFlag: true,
+        sourceFlag: true,
         id: Date.now() + '' + v.id!,
         parentId: selectedDirId!,
       }) as TenderType.TenderDir);
@@ -95,7 +101,7 @@ export default function useTenderModel() {
   }, []);
 
   const downloadSource = useCallback((key: string) => {
-      createUsingGET({ key });
+    createUsingGET({ key });
   }, []);
 
   return {
