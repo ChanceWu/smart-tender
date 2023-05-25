@@ -25,7 +25,7 @@ const DirNameModal: React.FC<IProps> = ({ modalProps, form }) => {
         <Form.Item
           label="名称"
           name="name"
-          rules={[{ required: true, message: '目录名称不能为空' }, { validator: validateName }]}
+          rules={[{ required: true, message: '目录名称不能为空' }]}
         >
           <ComInput placeholder="请输入目录名称" maxLength={15} />
         </Form.Item>

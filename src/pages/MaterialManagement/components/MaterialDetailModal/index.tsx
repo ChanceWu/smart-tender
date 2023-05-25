@@ -109,7 +109,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
         <Form.Item
           label="素材名称"
           name="name"
-          rules={[{ required: true, message: '素材名称不能为空' }, { validator: validateName }]}
+          rules={[{ required: true, message: '素材名称不能为空' }]}
         >
           <ComInput placeholder="请输入" maxLength={30} />
         </Form.Item>
