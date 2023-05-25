@@ -251,7 +251,7 @@ declare namespace API {
   }
   type Pinyin_71 = {
     tocName?: string;
-    tocFlag?: boolean;
+    sourceFlag?: boolean;
     tenderSourceDto?: API.Pinyin_13[];
   }
   type Pinyin_8 = {

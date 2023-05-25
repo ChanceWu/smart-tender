@@ -27,7 +27,7 @@ const DirTree = () => {
       if (d.id) {
         updateDir(d);
       } else {
-        addDir({ ...d, id: Date.now().toString(), tocFlag: false });
+        addDir({ ...d, id: Date.now().toString(), sourceFlag: false });
       }
     },
   });
@@ -64,7 +64,7 @@ const DirTree = () => {
           key: v.id,
           isLeaf: !v.children.length,
           children: child,
-          selectable: !v.tocFlag,
+          selectable: !v.sourceFlag,
         };
       });
     };
@@ -99,7 +99,7 @@ const DirTree = () => {
                   openModal('新建子目录', {
                     id: '',
                     name: '',
-                    tocFlag: false,
+                    sourceFlag: false,
                     parentId: '0',
                     level: 1,
                   })

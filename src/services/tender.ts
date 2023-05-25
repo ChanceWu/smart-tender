@@ -48,8 +48,8 @@ export async function queryTenderKMSList(params: TenderType.KMSListQueryParams) 
 }
 
 // 标书制作 生成标书
-export async function createTender(data: { name: string; dirTree: API.TreeNode_G[] }) {
-  return request<PaginationResult<TenderType.TenderDir>>(`/docx-merger`, {
+export async function createTender(data: { name: string; tenderToc: API.TreeNode_G[] }) {
+  return request<PaginationResult<TenderType.TenderDir>>(`/inter-api/tender-node/docx-merger`, {
     method: 'post',
     data,
   });

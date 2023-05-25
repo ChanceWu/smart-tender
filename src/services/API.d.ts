@@ -23,7 +23,7 @@ declare namespace TenderType {
   export interface TenderDir {
     id: string;
     name: string;
-    tocFlag: boolean;
+    sourceFlag: boolean;
     tenderSourceDto?: API.Pinyin_13[];
     parentId: string;
     level?: number;
@@ -31,7 +31,7 @@ declare namespace TenderType {
   export interface TenderDirTreeNode {
     id: string;
     name: string;
-    tocFlag: boolean;
+    sourceFlag: boolean;
     tenderSourceDto?: API.Pinyin_13[];
     parentId: string;
     level: number;

@@ -57,7 +57,7 @@ export const getListFromTree = (
     const item: TenderType.TenderDir = {
       name: node.name,
       id: node.id,
-      tocFlag: node.tocFlag,
+      sourceFlag: node.sourceFlag,
       parentId: node.parentId,
       level: level,
     };
@@ -94,9 +94,9 @@ export const formatParamTenderToc = (data: TenderType.TenderDirTreeNode[]): API.
   return data.map((v) => {
     const t = {
       tocName: v.name,
-      tocFlag: v.tocFlag,
+      sourceFlag: v.sourceFlag,
     }
-    if (v.tenderSourceDto) { t['tenderSourceDto'] = v.tenderSourceDto }
+    if (v.tenderSourceDto) { t['tenderSourceId'] = (v.tenderSourceDto as any).id }
     return {
       t,
       children: v.children?.length ? formatParamTenderToc(v.children) : [],
