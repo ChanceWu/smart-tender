@@ -1,6 +1,6 @@
 import { TenderApi } from '@/services';
 import { createUsingGET } from '@/services/smart-tender-api/fileController';
-import { createUsingPOST } from '@/services/smart-tender-api/tenderController';
+import { reCreateUsingPOST, createUsingPOST } from '@/services/smart-tender-api/tenderController';
 import { allUsingGET } from '@/services/smart-tender-api/tenderSourceCategoryController';
 import { deleteTreeNode, formatParamTenderToc, formatTreeData, getListFromTree, getTreeFromList } from '@/utils/tender';
 import { message } from 'antd';
@@ -104,6 +104,10 @@ export default function useTenderModel() {
     createUsingGET({ key });
   }, []);
 
+  const reDownloadSource = useCallback((id: number) => {
+    reCreateUsingPOST({ id });
+  }, []);
+
   return {
     dirList,
     setDirList,
@@ -128,5 +132,6 @@ export default function useTenderModel() {
     tenderList,
     queryTenderList,
     downloadSource,
+    reDownloadSource,
   };
 }

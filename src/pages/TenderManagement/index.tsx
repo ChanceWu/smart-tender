@@ -34,7 +34,7 @@ export interface SearchParamsType {
 }
 
 const TenderManagement = () => {
-  const { downloadSource } = useModel('useTenderModel');
+  const { downloadSource, reDownloadSource } = useModel('useTenderModel');
   const [form] = Form.useForm();
   const { current, pageSize, pagination, setTotal, setCurrentPage } = usePagination({
     pageSize: 5,
@@ -78,7 +78,7 @@ const TenderManagement = () => {
       title: '是否确认重新生成该标书?',
       icon: <ExclamationCircleOutlined />,
       onOk() {
-        // downloadSource(key);
+        reDownloadSource(id);
       },
     });
   };

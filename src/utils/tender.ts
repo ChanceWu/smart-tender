@@ -90,7 +90,7 @@ export const deleteTreeNode = (
   });
 };
 
-export const formatParamTenderToc = (data: TenderType.TenderDirTreeNode[]): API.TreeNode_G[] => {
+export const formatParamTenderToc = (data: TenderType.TenderDirTreeNode[]): API.TreeNodeTenderTocCreateDto_[] => {
   return data.map((v) => {
     const t = {
       tocName: v.name,

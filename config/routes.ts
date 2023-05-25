@@ -27,16 +27,16 @@
         redirect: '/tender-center/list',
       },
       {
-        name: '我的标书',
-        path: '/tender-center/list',
-        header: '标书制作中心',
-        component: './TenderList',
-      },
-      {
         name: '制作标书',
         path: '/tender-center/make',
         header: '标书制作中心',
         component: './TenderMake',
+      },
+      {
+        name: '我的标书',
+        path: '/tender-center/list',
+        header: '标书制作中心',
+        component: './TenderList',
       },
     ],
   },

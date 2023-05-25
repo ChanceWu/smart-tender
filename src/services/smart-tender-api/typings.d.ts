@@ -35,12 +35,6 @@ declare namespace API {
     msg?: string;
   };
 
-  type BaseResultString_ = {
-    code?: number;
-    data?: string;
-    msg?: string;
-  };
-
   type BaseResultTenderSourceCategoryDetailResp_ = {
     code?: number;
     data?: tenderSourceCategoryDetailResp;
@@ -123,7 +117,7 @@ declare namespace API {
     modifierName?: string;
     /** 修改时间 */
     modifyTime?: string;
-    /** 分类名称 */
+    /** 素材名称 */
     name?: string;
     /** 文件类型 WORD:文档 PIC：图片 */
     typeCode?: string;
@@ -243,17 +237,10 @@ declare namespace API {
   type Pinyin_7 = {
     /** 标书名称 */
     name: string;
-    tenderToc: API.TreeNode_G[];
+    /** 标书目录 */
+    tenderToc: TreeNodeTenderTocCreateDto_[];
   };
-  type TreeNode_G = {
-    children?: TreeNode_G[];
-    t?: API.Pinyin_71;
-  }
-  type Pinyin_71 = {
-    tocName?: string;
-    sourceFlag?: boolean;
-    tenderSourceDto?: API.Pinyin_13[];
-  }
+
   type Pinyin_8 = {
     /** 标书素材分类id */
     categoryId?: number;
@@ -290,13 +277,22 @@ declare namespace API {
     parentId?: number;
   };
 
-  type TreeNode_ = {
-    children?: TreeNode_[];
-    t?: Pinyin_7;
+  type TenderTocCreateDto = {
+    /** 是否为素材 */
+    sourceFlag: boolean;
+    /** 标书素材对象 */
+    tenderSourceId?: number;
+    /** 标书目录名称 */
+    tocName?: string;
   };
 
   type TreeNodeTenderSourceCategoryDetailResp_ = {
     children?: TreeNodeTenderSourceCategoryDetailResp_[];
     t?: tenderSourceCategoryDetailResp;
+  };
+
+  type TreeNodeTenderTocCreateDto_ = {
+    children?: TreeNodeTenderTocCreateDto_[];
+    t?: TenderTocCreateDto;
   };
 }

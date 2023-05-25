@@ -15,7 +15,7 @@ import styles from './index.less';
 const { RangePicker } = DatePicker;
 
 const TenderList = () => {
-  const { downloadSource } = useModel('useTenderModel');
+  const { downloadSource, reDownloadSource } = useModel('useTenderModel');
   const [form] = Form.useForm();
   const { current, pageSize, pagination, setTotal, setCurrentPage } = usePagination();
   const [searchParams, setSearchParams] = useState<SearchParamsType>();
@@ -59,7 +59,7 @@ const TenderList = () => {
       title: '是否确认重新生成该标书?',
       icon: <ExclamationCircleOutlined />,
       onOk() {
-        // downloadSource(key);
+        reDownloadSource(id);
       },
     });
   };
