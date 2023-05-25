@@ -39,7 +39,7 @@ export async function getInitialState(): Promise<{
       //   userId: loginMsg.userId,
       // }
     } catch (error) {
-      // location.href = `https://portal.supcon.com/cas-web/login?service=${location.href}`;
+      // location.href = `https://portal.supcon.com/cas-web/login?service=http%3A%2F%2Fsupportal.supcon.com%3A80%2Finter-api%2Fauth%2Fv1%2Fthird%2Fauthorize`;
       location.href = `${location.origin}/login/#/login?redirect_uri=${location.href}`;
       console.error(error);
     }
