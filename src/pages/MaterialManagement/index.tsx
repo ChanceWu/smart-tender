@@ -73,10 +73,11 @@ function MaterialManagement() {
   const columns: ColumnsType<API.Pinyin_13> = [
     {
       title: '素材分类',
-      dataIndex: 'categoryName',
-      key: 'categoryName',
+      dataIndex: 'categoryNameList',
+      key: 'categoryNameList',
       ellipsis: true,
       width: '20%',
+      render: (v) => v.join('/'),
     },
     {
       title: '素材名称',

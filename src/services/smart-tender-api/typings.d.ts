@@ -105,6 +105,7 @@ declare namespace API {
     categoryId?: number;
     /** 分类名称 */
     categoryName?: string;
+    categoryNameList?: string[];
     /** 文件详情对象 */
     fileDetailRespList?: Pinyin_11[];
     /** 主键id */
