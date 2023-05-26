@@ -10,11 +10,12 @@ import DirNameModal from '../DirNameModal';
 import DirTreeTitle from '../DirTreeTitle';
 import PreFormat from '../PreFormat';
 import styles from './index.less';
+import { useUnmount } from 'ahooks';
 
 type TenderDirTreeNode = TenderType.TenderDirTreeNode[];
 
 const DirTree = () => {
-  const { dirTree, addDir, updateDir, delDir, setPreFormat, createTender, setSelectedDirId } =
+  const { dirTree, setDirList, addDir, updateDir, delDir, setPreFormat, createTender, setSelectedDirId } =
     useModel('useTenderModel');
   const {
     openModal,
@@ -53,6 +54,10 @@ const DirTree = () => {
   useEffect(() => {
     if (dirFormData) dirForm.setFieldsValue(dirFormData);
   }, [dirForm, dirFormData]);
+
+  useUnmount(() => {
+    setDirList([]);
+  })
 
   const treeData: DataNode[] = useMemo(() => {
     const dp = (d: TenderDirTreeNode): DataNode[] => {
