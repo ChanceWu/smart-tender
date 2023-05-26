@@ -24,7 +24,7 @@
     routes: [
       {
         path: '/tender-center',
-        redirect: '/tender-center/list',
+        redirect: '/tender-center/make',
       },
       {
         name: '制作标书',

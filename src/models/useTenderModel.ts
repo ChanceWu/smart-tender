@@ -104,8 +104,17 @@ export default function useTenderModel() {
     createUsingGET({ key });
   }, []);
 
-  const reDownloadSource = useCallback((id: number) => {
-    reCreateUsingPOST({ id });
+  const reCreateTender = useCallback(async (id: number) => {
+    try {
+      const { code, msg } = await reCreateUsingPOST({ id });
+      if (code === 1) {
+        message.success(msg);
+      } else {
+        message.error(msg);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }, []);
 
   return {
@@ -132,6 +141,6 @@ export default function useTenderModel() {
     tenderList,
     queryTenderList,
     downloadSource,
-    reDownloadSource,
+    reCreateTender,
   };
 }

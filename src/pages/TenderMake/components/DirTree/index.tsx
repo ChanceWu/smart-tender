@@ -4,7 +4,7 @@ import type { TreeProps } from 'antd';
 import { Button, Modal, Spin, Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useEffect, useMemo } from 'react';
-import { useModel } from 'umi';
+import { useHistory, useModel } from 'umi';
 import CreateTenderModal from '../CreateTenderModal';
 import DirNameModal from '../DirNameModal';
 import DirTreeTitle from '../DirTreeTitle';
@@ -15,6 +15,7 @@ import { useUnmount } from 'ahooks';
 type TenderDirTreeNode = TenderType.TenderDirTreeNode[];
 
 const DirTree = () => {
+  const history = useHistory();
   const { dirTree, setDirList, addDir, updateDir, delDir, setPreFormat, createTender, setSelectedDirId } =
     useModel('useTenderModel');
   const {
@@ -47,7 +48,9 @@ const DirTree = () => {
     form: createForm,
   } = useModalForm<TenderType.CreateTender>({
     onOk: (d) => {
-      createTender(d);
+      createTender(d).then(() => {
+        history.push('/tender-center/list');
+      });
     },
   });
 
