@@ -20,6 +20,7 @@ import { RcFile, UploadFile } from 'antd/lib/upload';
 import React, { useCallback, useEffect, useState } from 'react';
 import PreviewModal from '../PreviewModal';
 import useModal from '@/hooks/useModal';
+import styles from './index.less';
 
 interface IProps {
   modalProps: ModalProps;
@@ -142,7 +143,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
             label="上传图片"
             valuePropName="fileList"
             rules={[{ required: true, message: '附件不能为空' }]}
-            extra="支持扩展名：jpg/jpeg/png文件，大小不超过10M"
+            extra="支持扩展名：jpg/jpeg/png文件，大小不超过10M，数量不超过10张"
             getValueFromEvent={(e: any) => {
               console.log('Upload event:', e);
               if (Array.isArray(e)) {
@@ -158,6 +159,7 @@ const MaterialDetailModal: React.FC<IProps> = ({ modalProps, form, formData, typ
               accept=".jpg,.jpeg,.png"
               beforeUpload={beforeUploadImage}
               customRequest={customUpload}
+              className={styles.upload}
               // multiple
               maxCount={10}
               onPreview={previewHandle}

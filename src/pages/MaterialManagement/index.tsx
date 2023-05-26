@@ -120,7 +120,7 @@ function MaterialManagement() {
                 categoryName: record.categoryName,
                 fileIdList: record.fileDetailRespList?.map((v) => ({
                   ...v,
-                  url: 'picture',
+                  // url: 'picture',
                 })) as any,
                 name: record.name,
                 typeCode: record.typeCode,
