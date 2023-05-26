@@ -36,9 +36,7 @@ export interface SearchParamsType {
 const TenderManagement = () => {
   const { downloadSource, reDownloadSource } = useModel('useTenderModel');
   const [form] = Form.useForm();
-  const { current, pageSize, pagination, setTotal, setCurrentPage } = usePagination({
-    pageSize: 5,
-  });
+  const { current, pageSize, pagination, setTotal, setCurrentPage } = usePagination();
   const [searchParams, setSearchParams] = useState<SearchParamsType>();
 
   const { data: dataSource } = useRequest(
@@ -95,6 +93,8 @@ const TenderManagement = () => {
       title: '制作人',
       dataIndex: 'creator',
       key: 'creator',
+      ellipsis: true,
+      width: '20%',
       render: (value, record) => `${value}(${record.creatorId})`,
     },
     {
@@ -117,10 +117,10 @@ const TenderManagement = () => {
       dataIndex: 'option',
       render: (_, record) => (
         <span className={styles.groupBtn}>
-          {record.status === 'SUCCESS' /* && record.madeFileKey*/ && (
+          {record.status === 'SUCCESS' && (
             <a
               onClick={() => {
-                openDownloadConfirm(record.madeFileKey || '0a6e8368-556e-49d7-9b4d-d96d8c110b24');
+                openDownloadConfirm(record.madeFileKey!);
               }}
             >
               下载
