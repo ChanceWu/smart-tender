@@ -79,25 +79,31 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
 });
 
 request.interceptors.response.use(async (response: Response, options: RequestOptionsInit) => {
-  if (response.url.includes('/file/download/')) {
-    const contentDisposition = response.headers.get('Content-Disposition');
-    if (contentDisposition) {
-      const filename = contentDisposition
-        .split(';')
-        .find((part) => part.trim().startsWith('filename='))
-        ?.split('=')[1]
-        ?.replace(/["']/g, '')
-        .trim();
+  if (response.status === 200) {
+    if (response.url.includes('/file/download/')) {
+      const contentDisposition = response.headers.get('Content-Disposition');
+      if (contentDisposition) {
+        const filename = contentDisposition
+          .split(';')
+          .find((part) => part.trim().startsWith('filename='))
+          ?.split('=')[1]
+          ?.replace(/["']/g, '')
+          .trim();
 
-      const blob = await response.blob();
+        const blob = await response.blob();
 
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', filename || 'file');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename || 'file');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  } else {
+    if (response.status === 401) {
+      location.href = `${location.origin}/login/#/login?redirect_uri=${location.href}`;
     }
   }
   return response;
