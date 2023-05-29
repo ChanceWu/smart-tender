@@ -21,7 +21,7 @@ const CreateTenderModal: React.FC<IProps> = ({ modalProps, form }) => {
           name="name"
           rules={[{ required: true, message: '标书名称不能为空' }]}
         >
-          <ComInput placeholder="请输入目录名称" maxLength={15} />
+          <ComInput placeholder="请输入标书名称" maxLength={30} />
         </Form.Item>
       </Form>
     </Modal>
