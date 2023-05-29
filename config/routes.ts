@@ -38,6 +38,12 @@
         header: '标书制作中心',
         component: './TenderList',
       },
+      {
+        name: '数据采集中心',
+        path: '/manage-center/materialLab',
+        header: '标书制作中心',
+        component: './MaterialLabManagement',
+      }
     ],
   },
   {
@@ -57,6 +63,7 @@
         header: '数据采集中心',
         path: '/manage-center/tender',
         component: './TenderManagement',
+        icon: 'tender',
       },
       // {
       //   name: '审核管理',
@@ -68,12 +75,14 @@
         header: '数据采集中心',
         path: '/manage-center/material',
         component: './MaterialManagement',
+        icon: 'material',
       },
       {
         name: '素材库管理',
         header: '数据采集中心',
         path: '/manage-center/materialLab',
         component: './MaterialLabManagement',
+        icon: 'materialLab',
       },
     ],
   },
