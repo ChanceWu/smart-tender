@@ -39,7 +39,11 @@ const DirTreeTitle: React.FC<IProps> = ({ data, openModal, onDel }) => {
           <FormOutlined title="编辑" onClick={() => openModal('编辑目录', data, true)} />
         )}
         <Popconfirm
-          title="该操作会连同子层级一起删除，你确定要删除吗？"
+          title={
+            !!data.children?.length
+              ? '该操作会连同子层级一起删除，你确定要删除吗？'
+              : '是否确认移除该投标内容？'
+          }
           onConfirm={onDel}
           icon={<ExclamationCircleFilled style={{ color: 'red' }} />}
         >
