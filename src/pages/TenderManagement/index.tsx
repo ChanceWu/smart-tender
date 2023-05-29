@@ -148,6 +148,7 @@ const TenderManagement = () => {
           onFinish={(values) => {
             setSearchParams(values);
           }}
+          className={styles.form}
         >
           <Form.Item
             label="制作时间"

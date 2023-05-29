@@ -186,6 +186,17 @@ const MaterialList = () => {
         data={curSource?.fileDetailRespList}
         title={curSource?.name}
         type={curSource?.typeCode}
+        addHandle={() => {
+          if (!selectedDirId) {
+            message.warn('请先在左侧目录树选择目录层级');
+            return;
+          }
+          if (curSource) {
+            addMaterial2DirList([curSource]);
+            setSelectedRowKeys((keys) => keys.filter((k) => k !== curSource.id));
+            closePreview();
+          }
+        }}
       />
     </div>
   );

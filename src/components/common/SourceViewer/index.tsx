@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+import { Button, Pagination } from 'antd';
 import React, { useMemo, useState } from 'react';
 import FileViewer from 'react-file-viewer';
 import styles from './index.less';
@@ -10,6 +10,7 @@ export interface SourceViewerProps {
   title?: string;
   boxStyle?: React.CSSProperties;
   simpleMode?: boolean;
+  addHandle?: () => void;
 }
 
 enum SOURCE_TYPE {
@@ -23,6 +24,7 @@ const SourceViewer: React.FC<SourceViewerProps> = ({
   title,
   boxStyle,
   simpleMode = false,
+  addHandle,
 }) => {
   const { initialState } = useModel('@@initialState');
   const [index, setIndex] = useState<number>(1);
@@ -60,6 +62,11 @@ const SourceViewer: React.FC<SourceViewerProps> = ({
               }, 10);
             }}
           />
+          {addHandle && (
+            <Button type="primary" onClick={addHandle}>
+              添加素材
+            </Button>
+          )}
         </div>
       )}
     </div>

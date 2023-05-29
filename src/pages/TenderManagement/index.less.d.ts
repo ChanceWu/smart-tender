@@ -4,6 +4,7 @@ interface CssExports {
   'container': string;
   'content': string;
   'createBtn': string;
+  'form': string;
   'groupBtn': string;
   'header': string;
 }
