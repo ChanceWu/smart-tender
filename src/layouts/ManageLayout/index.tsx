@@ -2,11 +2,16 @@ import Header from '@/components/layout/Header';
 import type { BasicLayoutProps, MenuDataItem } from '@ant-design/pro-layout';
 import { ProLayout } from '@ant-design/pro-layout';
 import React from 'react';
-import { Link } from 'umi';
+import { Link, useModel } from 'umi';
 import MenuIcon from './components/MenuIcon';
+import { useMount } from 'ahooks';
 
 const ManageLayout: React.FC<BasicLayoutProps> = (props) => {
   console.log('props', props);
+  const { queryCategoryTree } = useModel('useMaterialModel');
+  useMount(() => {
+    queryCategoryTree();
+  });
   const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
     menus.map(({ children, icon, ...item }) => ({
       ...item,

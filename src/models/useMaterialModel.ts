@@ -1,5 +1,6 @@
 import usePagination from '@/hooks/usePagination';
 import { MaterialApi, TenderApi } from '@/services';
+import { findUserOperate } from '@/services/auth';
 import { uploadUsingPOST } from '@/services/smart-tender-api/fileController';
 import {
   allUsingGET,
@@ -18,6 +19,15 @@ import { addLevelToTree, formatTreeData, getTreeFromList } from '@/utils/tender'
 import { message } from 'antd';
 import { useState, useCallback, useEffect } from 'react';
 
+enum UserOperateEnum {
+  "tender_lib_fengmian" = "标书封面库",
+  "tender_lib_chanpin" = "标书产品库",
+  "tender_lib_shangwu" = "标书商务库",
+  "tender_lib_hangye" = "行业标书库",
+  "tender_lib_xiangmu" = "项目信息库",
+  "tender_lib_jingji" = "经济应答库",
+}
+
 export default function useMaterialModel() {
   const [categoryTree, setCategoryTree] = useState<MaterialType.CategoryTree[]>([]);
 
@@ -34,10 +44,13 @@ export default function useMaterialModel() {
     // const result = formatTreeData(resultList ?? []);
     // setCategoryTree(addLevelToTree(result));
     try {
+      const { list: labPermission = [] } = await findUserOperate();
+      const filterList = labPermission.map(v => UserOperateEnum[v]);
       const { data } = await allUsingGET();
       const result = formatTreeData(data ?? []);
-      setCategoryTree(addLevelToTree(result));
-      setTabActiveKey(result?.[0]?.id);
+      const filterResult = result?.filter(v => filterList.includes(v.name))
+      setCategoryTree(addLevelToTree(filterResult));
+      setTabActiveKey(filterResult?.[0]?.id);
     } catch (error) {
       console.error(error)
     }
@@ -58,7 +71,7 @@ export default function useMaterialModel() {
     try {
       const { code, msg } = await createUsingPOST1(p);
       if (code === 1) {
-        message.success('修改成功！');
+        message.success('创建成功！');
         queryCategoryTree();
       } else {
         message.error(msg);

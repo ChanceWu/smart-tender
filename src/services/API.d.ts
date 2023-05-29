@@ -18,6 +18,9 @@ declare namespace API {
     staffCode: string;
     staffName: string;
   }
+  export interface FindUserOperateResult {
+    list: string[];
+  }
 }
 declare namespace TenderType {
   export interface TenderDir {
@@ -107,11 +110,11 @@ declare namespace MaterialType {
     /** 标书素材分类名称 */
     categoryName?: string;
     /** 标书素材文件id */
-    fileIdList?: number[];
+    fileIdList?: API.Pinyin_11[];
     /** 标书素材名称 */
     name?: string;
     /** 文件类型 WORD:文档 PIC：图片 */
     typeCode?: string;
-    id?: string;
+    id?: number;
   }
 }

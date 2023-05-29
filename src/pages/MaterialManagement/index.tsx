@@ -1,9 +1,8 @@
 import ComInput from '@/components/common/ComInput';
 import PreviewDrawer from '@/components/common/PreviewDrawer';
 import useModalForm from '@/hooks/useModalForm';
-import usePagination from '@/hooks/usePagination';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { useBoolean, useMount } from 'ahooks';
+import { useBoolean } from 'ahooks';
 import { Button, Cascader, Form, Popconfirm, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,7 +13,6 @@ import styles from './index.less';
 function MaterialManagement() {
   const {
     categoryTree,
-    queryCategoryTree,
     materialList,
     tabActiveKey,
     setTabActiveKey,
@@ -46,10 +44,6 @@ function MaterialManagement() {
         addMaterial(d);
       }
     },
-  });
-
-  useMount(() => {
-    queryCategoryTree();
   });
 
   useEffect(() => {

@@ -9,8 +9,7 @@ import DirTreeTitle from './components/DirTreeTitle';
 import styles from './index.less';
 
 function MaterialLabManagement() {
-  const { categoryTree, queryCategoryTree, delCategory, addCategory, editCategory } =
-    useModel('useMaterialModel');
+  const { categoryTree, delCategory, addCategory, editCategory } = useModel('useMaterialModel');
   const {
     openModal,
     modalProps: dirNameModalProps,
@@ -25,9 +24,6 @@ function MaterialLabManagement() {
         addCategory(d);
       }
     },
-  });
-  useMount(() => {
-    queryCategoryTree();
   });
 
   useEffect(() => {
@@ -69,7 +65,9 @@ function MaterialLabManagement() {
             selectable={false}
             blockNode
           />
-        ) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />}
+        ) : (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+        )}
       </div>
       <DirNameModal modalProps={dirNameModalProps} form={categoryForm} />
     </div>
