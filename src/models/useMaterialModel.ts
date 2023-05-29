@@ -172,8 +172,8 @@ export default function useMaterialModel() {
   };
 
   const addMaterial = useCallback(async (p: {
-    categoryId: number;
-    fileIdList?: File[];
+    categoryId?: number;
+    fileIdList?: (API.Pinyin_11 | File)[];
     name?: string;
     typeCode?: string;
   }) => {
@@ -193,7 +193,7 @@ export default function useMaterialModel() {
     }
   }, [queryMaterialList]);
 
-  const editMaterial = useCallback(async (p: API.Pinyin__) => {
+  const editMaterial = useCallback(async (p: MaterialType.MaterialInfo) => {
     try {
       const { fileIdList, ...rest } = p;
       const res = (fileIdList as any[]).map((v) => {
