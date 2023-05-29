@@ -58,6 +58,7 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
       // companyName: 'eee',
       // userId: '1',
       Authorization: `Bearer ${loginMsg.ticket}`,
+      supToken: `Bearer ${loginMsg.ticket}`,
       userName: encodeURI(loginMsg.username),
       staffCode: encodeURI(personInfo.staffCode) || '',
       staffName: encodeURI(personInfo.staffName) || '',

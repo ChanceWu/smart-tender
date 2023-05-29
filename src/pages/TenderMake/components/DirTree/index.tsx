@@ -16,8 +16,16 @@ type TenderDirTreeNode = TenderType.TenderDirTreeNode[];
 
 const DirTree = () => {
   const history = useHistory();
-  const { dirTree, setDirList, addDir, updateDir, delDir, setPreFormat, createTender, setSelectedDirId } =
-    useModel('useTenderModel');
+  const {
+    dirTree,
+    setDirList,
+    addDir,
+    updateDir,
+    delDir,
+    setPreFormat,
+    createTender,
+    setSelectedDirId,
+  } = useModel('useTenderModel');
   const {
     openModal,
     modalProps: dirNameModalProps,
@@ -60,7 +68,7 @@ const DirTree = () => {
 
   useUnmount(() => {
     setDirList([]);
-  })
+  });
 
   const treeData: DataNode[] = useMemo(() => {
     const dp = (d: TenderDirTreeNode): DataNode[] => {

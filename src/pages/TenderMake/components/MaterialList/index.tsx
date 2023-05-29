@@ -106,8 +106,7 @@ const MaterialList = () => {
       key: 'option',
       dataIndex: 'option',
       render: (_, record) => (
-        <Button
-          type="link"
+        <a
           onClick={() => {
             if (!selectedDirId) {
               message.warn('请先在左侧目录树选择目录层级');
@@ -118,7 +117,7 @@ const MaterialList = () => {
           }}
         >
           添加素材
-        </Button>
+        </a>
       ),
     },
   ];
