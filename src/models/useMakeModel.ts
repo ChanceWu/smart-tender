@@ -106,6 +106,7 @@ export default function useMakeModel() {
         cateId = tabActiveKey;
       }
       console.log('cateId', cateId);
+      if (!cateId) return;
       const res = await pageUsingPOST1({
         pageNumber: pageNumber,
         pageSize: pageSize,

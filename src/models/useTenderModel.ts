@@ -39,10 +39,11 @@ export default function useTenderModel() {
         const formatData = formatParamTenderToc(dirTree);
         console.log(p, dirTree, formatData);
         // const { resultList } = await TenderApi.createTender({ ...p, tenderToc: formatData });
-        const { msg } = await createUsingPOST({ ...p, tenderToc: formatData });
-        message.success(msg)
+        const res = await createUsingPOST({ ...p, tenderToc: formatData });
+        return res;
       } catch (error) {
-        console.error(error)
+        console.error(error);
+        throw new Error(JSON.stringify(error));
       }
     },
     [dirTree],

@@ -1,6 +1,6 @@
 import useModalForm from '@/hooks/useModalForm';
 import { PlusOutlined } from '@ant-design/icons';
-import type { TreeProps } from 'antd';
+import { TreeProps, message } from 'antd';
 import { Button, Modal, Spin, Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useEffect, useMemo } from 'react';
@@ -56,8 +56,13 @@ const DirTree = () => {
     form: createForm,
   } = useModalForm<TenderType.CreateTender>({
     onOk: (d) => {
-      createTender(d).then(() => {
-        history.push('/tender-center/list');
+      createTender(d).then(({ code, msg }) => {
+        if (code === 1) {
+          message.success(msg);
+          history.push('/tender-center/list');
+        } else {
+          message.error(msg);
+        }
       });
     },
   });
@@ -100,7 +105,13 @@ const DirTree = () => {
             <Button onClick={() => openPreFormatModal('预设格式')} style={{ marginRight: 10 }}>
               预设格式
             </Button>
-            <Button type="primary" onClick={() => openCreateModal('生成标书')}>
+            <Button type="primary" onClick={() => {
+              if (dirTree.length === 0) {
+                message.warn('请先创建目录！');
+                return;
+              }
+              openCreateModal('生成标书')
+            }}>
               生成标书
             </Button>
           </div>

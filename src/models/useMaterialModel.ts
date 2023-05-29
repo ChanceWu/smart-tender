@@ -118,6 +118,7 @@ export default function useMaterialModel() {
         cateId = tabActiveKey;
       }
       console.log('cateId', cateId)
+      if (!cateId) return;
       const res = await pageUsingPOST1({
         pageNumber: pageNumber,
         pageSize: pageSize,
@@ -195,7 +196,13 @@ export default function useMaterialModel() {
   const editMaterial = useCallback(async (p: API.Pinyin__) => {
     try {
       const { fileIdList, ...rest } = p;
-      const res = (fileIdList as any[]).map((v) => v.id);
+      const res = (fileIdList as any[]).map((v) => {
+        if (v.response) {
+          return v.response.id;
+        } else {
+          return v.id;
+        }
+      });
       const { code, msg } = await updateUsingPOST1({ ...rest, fileIdList: res });
       // const { code, msg } = await updateUsingPOST1(p);
       if (code === 1) {
