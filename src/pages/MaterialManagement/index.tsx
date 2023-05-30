@@ -4,7 +4,7 @@ import useModalForm from '@/hooks/useModalForm';
 import usePagination from '@/hooks/usePagination';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { useBoolean, useMount } from 'ahooks';
-import { Button, Cascader, Form, Popconfirm, Table, Tabs } from 'antd';
+import { Button, Cascader, Divider, Form, Popconfirm, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import { useEffect, useMemo, useState } from 'react';
 import { useModel } from 'umi';
@@ -103,17 +103,16 @@ function MaterialManagement() {
       dataIndex: 'option',
       render: (_, record) => (
         <>
-          <Button
-            type="link"
+          <a
             onClick={() => {
               setCurSource(record);
               openPreview();
             }}
           >
             预览
-          </Button>
-          <Button
-            type="link"
+          </a>
+          <Divider type="vertical" />
+          <a
             onClick={() =>
               openModal('编辑素材', {
                 categoryId: record.categoryId,
@@ -129,13 +128,14 @@ function MaterialManagement() {
             }
           >
             编辑
-          </Button>
+          </a>
+          <Divider type="vertical" />
           <Popconfirm
             title="你确定要删除吗？"
             onConfirm={() => delMaterial({ id: record.id })}
             icon={<ExclamationCircleFilled style={{ color: 'red' }} />}
           >
-            <Button type="link">删除</Button>
+            <a>删除</a>
           </Popconfirm>
         </>
       ),
@@ -175,9 +175,9 @@ function MaterialManagement() {
             />
           </Form.Item>
           <Form.Item label="素材名称" name="name">
-            <ComInput placeholder="请输入素材名称" />
+            <ComInput placeholder="请输入素材名称" style={{ width: 200 }} />
           </Form.Item>
-          <Form.Item style={{ marginLeft: 'auto' }}>
+          <Form.Item style={{ marginLeft: 'auto', marginRight: 16 }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
@@ -206,6 +206,7 @@ function MaterialManagement() {
             pagination={{ ...pagination }}
             bordered
             scroll={{ y: 'calc(100vh - 88px - 278px)' }}
+            size='middle'
           />
         </div>
       </div>

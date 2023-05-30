@@ -165,12 +165,12 @@ const TenderManagement = () => {
             <Select options={SelectOption} placeholder="请选择" style={{ width: 200 }} allowClear />
           </Form.Item>
           <Form.Item label="制作人" name="creatorSearch">
-            <ComInput placeholder="请输入" />
+            <ComInput placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
           <Form.Item label="标书名称" name="nameSearch">
-            <ComInput placeholder="请输入" />
+            <ComInput placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
-          <Form.Item style={{ marginLeft: 'auto' }}>
+          <Form.Item style={{ marginLeft: 'auto', marginRight: 16 }}>
             <Button type="primary" htmlType="submit">
               查询
             </Button>
@@ -190,7 +190,14 @@ const TenderManagement = () => {
         </Form>
       </div>
       <div className={styles.content}>
-        <Table rowKey="id" columns={columns} dataSource={dataSource} pagination={pagination} />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={dataSource}
+          pagination={pagination}
+          scroll={{ y: 'calc(100vh - 88px - 278px)' }}
+          size="middle"
+        />
       </div>
       {/* <MaterialDetailModal
         modalProps={modalProps}
