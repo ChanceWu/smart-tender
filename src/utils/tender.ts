@@ -55,10 +55,7 @@ export const getListFromTree = (
 
   nodes.forEach((node) => {
     const item: TenderType.TenderDir = {
-      name: node.name,
-      id: node.id,
-      sourceFlag: node.sourceFlag,
-      parentId: node.parentId,
+      ...node,
       level: level,
     };
 
