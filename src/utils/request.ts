@@ -95,7 +95,7 @@ request.interceptors.response.use(async (response: Response, options: RequestOpt
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', filename || 'file');
+        link.setAttribute('download', decodeURI(filename || 'file'));
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
