@@ -141,7 +141,7 @@ const TenderList = () => {
           <Form.Item label="标书状态" name="status">
             <Select options={SelectOption} placeholder="请选择" allowClear style={{ width: 200 }} />
           </Form.Item>
-          <Form.Item label="标书名称" name="name">
+          <Form.Item label="标书名称" name="nameSearch">
             <ComInput placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
           <Form.Item style={{ marginLeft: 'auto' }}>
