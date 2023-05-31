@@ -6,6 +6,7 @@ import { history } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import Loading from './components/common/Loading';
 import Header from './components/layout/Header';
+import { getMenusPermission } from './services/auth';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -21,6 +22,7 @@ export const initialStateConfig = {
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
+  menuPermission?: string[];
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
@@ -45,12 +47,18 @@ export async function getInitialState(): Promise<{
     }
     return undefined;
   };
+  const fetchMenusPermission = async () => {
+    const { list = [] } = await getMenusPermission();
+    return list.find((v) => v.code === 'ibr')?.children.map((v) => v.code);
+  };
   // 如果不是登录页面，执行
   if (history.location.pathname !== loginPath) {
     const currentUser = await fetchUserInfo();
+    const menuPermission = await fetchMenusPermission();
     return {
       fetchUserInfo,
       currentUser,
+      menuPermission,
       settings: defaultSettings,
     };
   }

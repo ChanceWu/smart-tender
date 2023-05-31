@@ -21,6 +21,13 @@ declare namespace API {
   export interface FindUserOperateResult {
     list: string[];
   }
+  export interface MenusPermissionItem {
+    code: string;
+    children: MenusPermissionItem[];
+  }
+  export interface GetMenusPermission {
+    list: MenusPermissionItem[];
+  }
 }
 declare namespace TenderType {
   export interface TenderDir {

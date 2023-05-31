@@ -9,3 +9,11 @@ export async function findUserOperate() {
         }
     });
 }
+
+// 菜单 权限
+export async function getMenusPermission() {
+    return request<API.GetMenusPermission>(`/inter-api/rbac/v1/menus/runtime/currentUser`, {
+        method: 'get',
+    });
+}
+

@@ -43,6 +43,7 @@
         path: '/manage-center/materialLab',
         header: '标书制作中心',
         component: './MaterialLabManagement',
+        access: 'manageCenter',
       }
     ],
   },
