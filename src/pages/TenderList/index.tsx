@@ -142,7 +142,7 @@ const TenderList = () => {
             <Select options={SelectOption} placeholder="请选择" allowClear style={{ width: 200 }} />
           </Form.Item>
           <Form.Item label="标书名称" name="name">
-            <ComInput placeholder="请输入" />
+            <ComInput placeholder="请输入" style={{ width: 200 }} />
           </Form.Item>
           <Form.Item style={{ marginLeft: 'auto' }}>
             <Button type="primary" htmlType="submit">
@@ -164,7 +164,13 @@ const TenderList = () => {
         </Form>
       </div>
       <div className={styles.content}>
-        <Table rowKey="id" columns={columns} dataSource={dataSource} pagination={pagination} />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={dataSource}
+          pagination={pagination}
+          size="middle"
+        />
       </div>
       {/* <MaterialDetailModal
         modalProps={modalProps}

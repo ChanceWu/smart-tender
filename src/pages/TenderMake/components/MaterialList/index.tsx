@@ -177,6 +177,7 @@ const MaterialList = () => {
             dataSource={materialList}
             pagination={{ ...pagination }}
             scroll={{ y: 'calc(100vh - 300px)' }}
+            size='middle'
           />
         </div>
       </div>
