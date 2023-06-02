@@ -53,17 +53,17 @@ declare namespace TenderType {
     top: string;
     bottom: string;
   }
-  export interface TitleSet {
-    id: string;
+  export interface HeaderSet {
+    id: number;
     level: string;
-    fontFamily: string;
+    font: string;
     fontSize: string;
-    lineHeight: string;
     align: string;
+    spacing: string;
   }
   export interface PreFormat {
     margin: MarginSet;
-    title: TitleSet[];
+    header: HeaderSet[];
   }
   export interface KMSDirList {
     name?: string;
