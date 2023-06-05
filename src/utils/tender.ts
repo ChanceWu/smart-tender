@@ -1,3 +1,5 @@
+import { DataNode } from "@/pages/TenderMake/components/DirTree";
+
 type TreeNode = TenderType.TenderDirTreeNode;
 export const getTreeFromList = (nodes: TenderType.TenderDir[]) => {
   const map: { [id: string]: TreeNode } = {};
@@ -97,6 +99,16 @@ export const formatParamTenderToc = (data: TenderType.TenderDirTreeNode[]): API.
     return {
       t,
       children: v.children?.length ? formatParamTenderToc(v.children) : [],
+    };
+  });
+};
+
+export const getTreeFromDragTree = (data: DataNode[], pid = '0', unchange = false): TenderType.TenderDirTreeNode[] => {
+  return data.map((v) => {
+    return {
+      ...(v.data!),
+      parentId: unchange ? v.data?.parentId! : pid,
+      children: v.children?.length ? getTreeFromDragTree(v.children, v.data?.id, v.data?.sourceFlag) : [],
     };
   });
 };
