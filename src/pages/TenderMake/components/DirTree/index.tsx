@@ -8,7 +8,7 @@ import { useHistory, useModel } from 'umi';
 import CreateTenderModal from '../CreateTenderModal';
 import DirNameModal from '../DirNameModal';
 import DirTreeTitle from '../DirTreeTitle';
-import PreFormat from '../PreFormat';
+import PreStyle from '../PreStyle';
 import styles from './index.less';
 import { useUnmount } from 'ahooks';
 
@@ -22,7 +22,8 @@ const DirTree = () => {
     addDir,
     updateDir,
     delDir,
-    setPreFormat,
+    preStyle,
+    setPreStyle,
     createTender,
     setSelectedDirId,
   } = useModel('useTenderModel');
@@ -42,12 +43,14 @@ const DirTree = () => {
     },
   });
   const {
-    modalProps: preFormatModalProps,
-    openModal: openPreFormatModal,
-    form: preFormatForm,
-  } = useModalForm<TenderType.PreFormat>({
+    modalProps: preStyleModalProps,
+    openModal: openPreStyleModal,
+    form: preStyleForm,
+    formData: preStyleFormData,
+  } = useModalForm<TenderType.PreStyle>({
     onOk: (d) => {
-      setPreFormat(d);
+      console.log('preStyle ', d)
+      setPreStyle(d);
     },
   });
   const {
@@ -102,7 +105,7 @@ const DirTree = () => {
         <div className={styles.header}>
           <div>投标书内容</div>
           <div>
-            <Button onClick={() => openPreFormatModal('预设格式')} style={{ marginRight: 10 }}>
+            <Button onClick={() => openPreStyleModal('预设格式', preStyle)} style={{ marginRight: 10 }}>
               预设格式
             </Button>
             <Button type="primary" onClick={() => {
@@ -146,8 +149,8 @@ const DirTree = () => {
         </div>
       </Spin>
       <DirNameModal modalProps={dirNameModalProps} form={dirForm} />
-      <Modal {...preFormatModalProps} width={'80vw'}>
-        <PreFormat form={preFormatForm} />
+      <Modal {...preStyleModalProps} width={880}>
+        <PreStyle form={preStyleForm} data={preStyleFormData} />
       </Modal>
       <CreateTenderModal modalProps={createModalProps} form={createForm} />
     </div>

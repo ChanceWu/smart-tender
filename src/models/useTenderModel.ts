@@ -10,7 +10,7 @@ export default function useTenderModel() {
   const [dirList, setDirList] = useState<TenderType.TenderDir[]>([]);
   const [dirTree, setDirTree] = useState<TenderType.TenderDirTreeNode[]>([]);
 
-  const [preFormat, setPreFormat] = useState<TenderType.PreFormat>();
+  const [preStyle, setPreStyle] = useState<TenderType.PreStyle>();
 
   const [kmsDirList, setKMSDirList] = useState<TenderType.KMSDirList[]>([]);
   const [kmsList, setKMSList] = useState<TenderType.KMSList[]>([]);
@@ -37,16 +37,17 @@ export default function useTenderModel() {
     async (p: TenderType.CreateTender) => {
       try {
         const formatData = formatParamTenderToc(dirTree);
-        console.log(p, dirTree, formatData);
-        // const { resultList } = await TenderApi.createTender({ ...p, tenderToc: formatData });
-        const res = await createUsingPOST({ ...p, tenderToc: formatData });
-        return res;
+        console.log(p, dirTree, formatData, preStyle);
+        const { resultList } = await TenderApi.createTender({ ...p, tenderToc: formatData, preStyle });
+        // const res = await createUsingPOST({ ...p, tenderToc: formatData });
+        // return res;
+        return { code: 0, msg: 'ss' }
       } catch (error) {
         console.error(error);
         throw new Error(JSON.stringify(error));
       }
     },
-    [dirTree],
+    [dirTree, preStyle],
   );
 
   useEffect(() => {
@@ -126,8 +127,8 @@ export default function useTenderModel() {
     updateDir,
     dirTree,
     setDirTree,
-    preFormat,
-    setPreFormat,
+    preStyle,
+    setPreStyle,
     kmsDirList,
     queryTenderKMSDirList,
     kmsList,

@@ -48,22 +48,22 @@ declare namespace TenderType {
     children: TenderDirTreeNode[];
   }
   export interface MarginSet {
-    left: string;
-    right: string;
-    top: string;
-    bottom: string;
+    left?: string;
+    right?: string;
+    top?: string;
+    bottom?: string;
   }
   export interface HeaderSet {
     id: number;
-    level: string;
-    font: string;
-    fontSize: string;
-    align: string;
-    spacing: string;
+    level?: string;
+    fontFamily?: string;
+    fontSize?: string;
+    alignment?: string;
+    lineHeight?: string;
   }
-  export interface PreFormat {
-    margin: MarginSet;
-    header: HeaderSet[];
+  export interface PreStyle {
+    margin?: MarginSet;
+    header?: HeaderSet[];
   }
   export interface KMSDirList {
     name?: string;
