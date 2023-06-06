@@ -5,6 +5,7 @@ interface CssExports {
   'content': string;
   'createBtn': string;
   'header': string;
+  'pagination': string;
   'tabs': string;
 }
 export const cssExports: CssExports;

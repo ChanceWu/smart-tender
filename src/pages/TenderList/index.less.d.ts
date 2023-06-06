@@ -4,8 +4,10 @@ interface CssExports {
   'container': string;
   'content': string;
   'createBtn': string;
+  'form': string;
   'groupBtn': string;
   'header': string;
+  'pagination': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

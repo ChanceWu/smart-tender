@@ -4,10 +4,10 @@ import usePagination from '@/hooks/usePagination';
 import { myPageUsingPOST } from '@/services/smart-tender-api/tenderController';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useBoolean, useRequest } from 'ahooks';
-import { Badge, Button, DatePicker, Form, Modal, Select, Table, message } from 'antd';
+import { Badge, Button, DatePicker, Form, Modal, Pagination, Select, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import moment from 'moment';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import { BadgeEnum, SearchParamsType, SelectOption } from '../TenderManagement';
 import styles from './index.less';
@@ -21,6 +21,9 @@ const TenderList = () => {
   const [searchParams, setSearchParams] = useState<SearchParamsType>();
   const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
   const [curSource, setCurSource] = useState<API.Pinyin_16>();
+
+  const tableRef = useRef<HTMLDivElement>(null);
+  const [offsetTop, setOffsetTop] = useState<number>(0);
 
   const { data: dataSource } = useRequest(
     async () => {
@@ -44,6 +47,21 @@ const TenderList = () => {
       pollingInterval: 3000,
     },
   );
+
+  const resizeUpdate = () => {
+    if (tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeUpdate);
+    return () => {
+      window.removeEventListener('resize', resizeUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (dataSource && tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  }, [dataSource, tableRef]);
 
   const openDownloadConfirm = (key: string) => {
     Modal.confirm({
@@ -131,6 +149,7 @@ const TenderList = () => {
         <Form
           form={form}
           layout="inline"
+          className={styles.form}
           onFinish={(values) => {
             setSearchParams(values);
           }}
@@ -165,12 +184,16 @@ const TenderList = () => {
       </div>
       <div className={styles.content}>
         <Table
+          ref={tableRef}
           rowKey="id"
           columns={columns}
           dataSource={dataSource}
-          pagination={pagination}
+          pagination={false}
+          scroll={{ y: `calc(100vh - 170px - ${offsetTop}px)` }}
+          style={{ height: `calc(100vh - 124px - ${offsetTop}px)` }}
           size="middle"
         />
+        <Pagination className={styles.pagination} size="small" {...pagination} />
       </div>
       {/* <MaterialDetailModal
         modalProps={modalProps}
