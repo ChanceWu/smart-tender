@@ -2,7 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'customStyle': string;
-  'headerItem': string;
   'headerLabel': string;
   'headerMenu': string;
   'headerWrap': string;

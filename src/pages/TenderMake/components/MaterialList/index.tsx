@@ -1,12 +1,10 @@
-import usePagination from '@/hooks/usePagination';
-import { TenderApi } from '@/services';
-import { useBoolean, useMount, useRequest } from 'ahooks';
-import { Button, Cascader, Form, Input, message, Space, Table, Tabs, Tag } from 'antd';
+import PreviewDrawer from '@/components/common/PreviewDrawer';
+import { useBoolean, useMount } from 'ahooks';
+import { Button, Cascader, Form, Input, Pagination, Table, Tabs, message } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import styles from './index.less';
-import PreviewDrawer from '@/components/common/PreviewDrawer';
 const { Search } = Input;
 
 const MaterialList = () => {
@@ -17,9 +15,6 @@ const MaterialList = () => {
     queryMaterialList,
     tabActiveKey,
     setTabActiveKey,
-    addMaterial,
-    editMaterial,
-    delMaterial,
     pagination,
     resetPagination,
   } = useModel('useMakeModel');
@@ -31,10 +26,28 @@ const MaterialList = () => {
   const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
   const [curSource, setCurSource] = useState<API.Pinyin_13>();
 
+  const tableRef = useRef<HTMLDivElement>(null);
+  const [offsetTop, setOffsetTop] = useState<number>(0);
+
   const canBultAdd = useMemo(
     () => !!selectedDirId && !!selectedRowKeys.length,
     [selectedDirId, selectedRowKeys],
   );
+
+  const resizeUpdate = () => {
+    if (tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeUpdate);
+    return () => {
+      window.removeEventListener('resize', resizeUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (materialList && tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  }, [materialList, tableRef]);
 
   useMount(() => {
     queryCategoryTree();
@@ -172,13 +185,16 @@ const MaterialList = () => {
         <div>
           <Table
             rowKey={'id'}
+            ref={tableRef}
             rowSelection={rowSelection}
             columns={columns}
             dataSource={materialList}
-            pagination={{ ...pagination }}
-            scroll={{ y: 'calc(100vh - 300px)' }}
-            size='middle'
+            pagination={false}
+            scroll={{ y: `calc(100vh - 150px - ${offsetTop}px)` }}
+            style={{ height: `calc(100vh - 104px - ${offsetTop}px)` }}
+            size="middle"
           />
+          <Pagination className={styles.pagination} size="small" {...pagination} />
         </div>
       </div>
       <PreviewDrawer

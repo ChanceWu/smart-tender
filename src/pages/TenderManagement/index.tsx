@@ -3,10 +3,10 @@ import usePagination from '@/hooks/usePagination';
 import { pageUsingPOST } from '@/services/smart-tender-api/tenderController';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
-import { Badge, Button, DatePicker, Form, Modal, Select, Table, message } from 'antd';
+import { Badge, Button, DatePicker, Form, Modal, Pagination, Select, Table, message } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
 import moment, { Moment } from 'moment';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import styles from './index.less';
 
@@ -38,6 +38,8 @@ const TenderManagement = () => {
   const [form] = Form.useForm();
   const { current, pageSize, pagination, setTotal, setCurrentPage } = usePagination();
   const [searchParams, setSearchParams] = useState<SearchParamsType>();
+  const tableRef = useRef<HTMLDivElement>(null);
+  const [offsetTop, setOffsetTop] = useState<number>(0);
 
   const { data: dataSource } = useRequest(
     async () => {
@@ -60,6 +62,21 @@ const TenderManagement = () => {
       refreshDeps: [current, pageSize, searchParams],
     },
   );
+
+  const resizeUpdate = () => {
+    if (tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeUpdate);
+    return () => {
+      window.removeEventListener('resize', resizeUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (dataSource && tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  }, [dataSource, tableRef]);
 
   const openDownloadConfirm = (key: string) => {
     Modal.confirm({
@@ -189,15 +206,17 @@ const TenderManagement = () => {
           </Form.Item>
         </Form>
       </div>
-      <div className={styles.content}>
+      <div className={styles.content} ref={tableRef}>
         <Table
           rowKey="id"
           columns={columns}
           dataSource={dataSource}
-          pagination={pagination}
-          scroll={{ y: 'calc(100vh - 88px - 278px)' }}
+          pagination={false}
+          scroll={{ y: `calc(100vh - 170px - ${offsetTop}px)` }}
+          style={{ height: `calc(100vh - 124px - ${offsetTop}px)` }}
           size="middle"
         />
+        <Pagination className={styles.pagination} size="small" {...pagination} />
       </div>
       {/* <MaterialDetailModal
         modalProps={modalProps}
