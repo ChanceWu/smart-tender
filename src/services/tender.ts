@@ -62,3 +62,10 @@ export async function queryTenderList(params: TenderType.TenderQueryParams) {
     params,
   });
 }
+
+// 标书模板列表
+export async function queryTemplateList() {
+  return request<API.BaseResult2>(`/api/mock/template`, {
+    method: 'get',
+  });
+}

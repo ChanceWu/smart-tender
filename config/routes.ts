@@ -79,11 +79,32 @@
         icon: 'material',
       },
       {
-        name: '素材库管理',
-        header: '数据采集中心',
-        path: '/manage-center/materialLab',
-        component: './MaterialLabManagement',
+        name: '基础配置',
+        path: '/',
         icon: 'materialLab',
+        routes: [
+          {
+            name: '标书模板配置',
+            header: '数据采集中心',
+            path: '/manage-center/tenderTemplate',
+            component: './TenderTemplateManagement',
+            icon: 'materialLab',
+          },
+          {
+            name: '标书模板配置',
+            header: '数据采集中心',
+            path: '/manage-center/template',
+            component: './TenderTemplate',
+            icon: 'materialLab',
+          },
+          {
+            name: '素材库配置',
+            header: '数据采集中心',
+            path: '/manage-center/materialLab',
+            component: './MaterialLabManagement',
+            icon: 'materialLab',
+          }
+        ]
       },
     ],
   },
