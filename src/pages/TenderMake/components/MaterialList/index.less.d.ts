@@ -3,6 +3,7 @@
 interface CssExports {
   'content': string;
   'materialListContainer': string;
+  'pagination': string;
   'search': string;
   'tabs': string;
 }

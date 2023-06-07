@@ -2,17 +2,17 @@
   position: relative;
   display: flex;
   align-items: center;
+  color: white;
   background-color: #0f71e2;
   // background: url(../../../../assets/images/header/header2_bg.png);
   background-size: 100% 100%;
-  color: white;
   .headerLabel {
+    padding: 0 20px;
     font-weight: normal;
     font-size: 16px;
     font-family: PingFangSC-Medium;
     line-height: 24px;
     letter-spacing: 0em;
-    padding: 0 20px;
   }
 }
 .customStyle {
@@ -38,12 +38,6 @@
   left: 0;
   display: flex;
   justify-content: center;
-  .headerItem {
-    margin-right: 20px;
-  }
-  .headerItem:nth-last-of-type(1) {
-    margin-right: 0;
-  }
 }
 
 .logoTitle {
@@ -51,6 +45,8 @@
   background-repeat: no-repeat;
   background-position: center;
   > h1 {
+    width: 130px;
+    height: 48px;
     margin: 0 20px;
     color: #ffffff;
     visibility: hidden;

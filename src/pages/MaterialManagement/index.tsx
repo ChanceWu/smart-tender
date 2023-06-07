@@ -3,9 +3,9 @@ import PreviewDrawer from '@/components/common/PreviewDrawer';
 import useModalForm from '@/hooks/useModalForm';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { useBoolean } from 'ahooks';
-import { Button, Cascader, Divider, Form, Popconfirm, Table, Tabs } from 'antd';
+import { Button, Cascader, Divider, Form, Pagination, Popconfirm, Table, Tabs } from 'antd';
 import type { ColumnsType } from 'antd/lib/table';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useModel } from 'umi';
 import MaterialDetailModal from './components/MaterialDetailModal';
 import styles from './index.less';
@@ -27,6 +27,24 @@ function MaterialManagement() {
   // const { current, pageSize, setTotal, pagination } = usePagination();
   const [preview, { setTrue: openPreview, setFalse: closePreview }] = useBoolean(false);
   const [curSource, setCurSource] = useState<API.Pinyin_13>();
+
+  const tableRef = useRef<HTMLDivElement>(null);
+  const [offsetTop, setOffsetTop] = useState<number>(0);
+
+  const resizeUpdate = () => {
+    if (tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeUpdate);
+    return () => {
+      window.removeEventListener('resize', resizeUpdate);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (materialList && tableRef.current) setOffsetTop(tableRef.current.offsetTop);
+  }, [materialList, tableRef]);
 
   const {
     openModal,
@@ -195,13 +213,16 @@ function MaterialManagement() {
           </Button>
           <Table
             rowKey="id"
+            ref={tableRef}
             columns={columns}
             dataSource={materialList}
-            pagination={{ ...pagination }}
+            pagination={false}
             bordered
-            scroll={{ y: 'calc(100vh - 88px - 278px)' }}
-            size='middle'
+            scroll={{ y: `calc(100vh - 170px - ${offsetTop}px)` }}
+            style={{ height: `calc(100vh - 124px - ${offsetTop}px)` }}
+            size="middle"
           />
+          <Pagination className={styles.pagination} size="small" {...pagination} />
         </div>
       </div>
       <MaterialDetailModal
