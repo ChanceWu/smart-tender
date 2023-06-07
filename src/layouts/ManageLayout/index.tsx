@@ -25,12 +25,20 @@ const ManageLayout: React.FC<BasicLayoutProps> = (props) => {
       location={props.location}
       headerRender={(p) => <Header {...p} />}
       siderWidth={170}
+      collapsed={false}
+      menu={{ defaultOpenAll: true, ignoreFlatMenu: true }}
       menuDataRender={() => loopMenuItem(props.route?.routes || [])}
-      menuItemRender={(item, dom) => (
-        <Link to={item.path ?? '/'}>
-          <>{dom}</>
-        </Link>
-      )}
+      menuItemRender={(item, dom) => {
+        if (item.isUrl || item.children) return dom;
+        return (
+          <Link to={item.path ?? '/'}>
+            <>
+              {item.icon}
+              {item.name}
+            </>
+          </Link>
+        );
+      }}
     >
       <div>{props.children}</div>
     </ProLayout>
