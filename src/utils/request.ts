@@ -51,12 +51,6 @@ request.interceptors.request.use((url: string, options: RequestOptionsInit) => {
     const personInfo: API.CurrentUser = JSON.parse(localStorage.getItem('personInfo') || '');
     options.headers = {
       ...options.headers,
-      // userName: 'wuqianpeng',
-      // staffCode: '0120230934',
-      // staffName: 'eee',
-      // companyCode: 'tech',
-      // companyName: 'eee',
-      // userId: '1',
       Authorization: `Bearer ${loginMsg.ticket}`,
       supToken: `Bearer ${loginMsg.ticket}`,
       userName: encodeURI(loginMsg.username),
